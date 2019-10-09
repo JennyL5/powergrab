@@ -74,23 +74,22 @@ public class Position {
 		//set East as 0 and north as 90 (in degrees
 		//System.out.println(test.keySet().toArray()[0]);
 		//System.out.print(dir.keySet().);
+		//if (direction == Direction.N)
 		if (dir.keySet().contains(direction)) {
 			degree = dir.get(direction);
-			//System.out.print(degree);
 		}
-			   
 		return degree;
 		
 	}
 
 	public Position nextPosition(Direction direction) {
-		//initialise current position
-		Position currentPos = new Position(this.latitude, this.longitude);
-		
-		//values to be added to current latitude/longitude
+				
+		// Values to be added to current latitude/longitude
 		double width = 0.0003 * Math.sin(Math.toRadians(get_Degree(direction)));
 		double height = 0.0003 * Math.cos(Math.toRadians(get_Degree(direction)));
-		Position nextPos = new Position(currentPos.latitude + width, currentPos.longitude + height);
+		
+		// Create new position
+		Position nextPos = new Position(this.latitude + width, this.longitude + height);
 		
 		return nextPos;
 		
