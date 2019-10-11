@@ -17,6 +17,7 @@ public class Position {
 		// Gets the degree(in double) of direction
 		
 		// Creates a hashmap containing the 16 directions and their degrees
+		// Sets the East to 0
 		HashMap<Direction, Double> dir = new HashMap<Direction, Double>()
 		{
 		    {
@@ -51,12 +52,12 @@ public class Position {
 	public Position nextPosition(Direction direction) {
 		// Returns the next position of the drone when it makes a move in the specified compass direction
 
-		// Values to be added to current latitude/longitude
-		double width = 0.0003 * Math.sin(Math.toRadians(get_Degree(direction)));
-		double height = 0.0003 * Math.cos(Math.toRadians(get_Degree(direction)));
+		// Calculate values to be added to current latitude and longitude using trigonometry
+		double height = 0.0003 * Math.sin(Math.toRadians(get_Degree(direction)));
+		double width = 0.0003 * Math.cos(Math.toRadians(get_Degree(direction)));
 		
-		// Create new position
-		Position nextPos = new Position(this.latitude + width, this.longitude + height);
+		// Create new position, adding the height to the latitude and width to the longitude
+		Position nextPos = new Position(this.latitude + height, this.longitude + width);
 		
 		// Returns the next position of the drone
 		return nextPos;
