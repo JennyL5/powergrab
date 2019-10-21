@@ -8,54 +8,16 @@ public class Position {
 	public double longitude;
 	
 	private static final double r = 0.0003;
-	//as in Figure5 of ILP course work description
     private static final double h2 = r*Math.sin(Math.toRadians(67.5));
 	private static final double h3 = r*Math.sin(Math.toRadians(45));
 	private static final double h4 = r*Math.sin(Math.toRadians(22.5));
     private static final double w2 = h4; 
     private static final double w3 = h3; 
     private static final double w4 = h2; 
-
-	
 	
 	public Position(double latitude, double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
-	}
-	
-	public double get_Degree(Direction direction) {
-		// Gets the degree(in double) of direction
-		
-		// Creates a hashmap containing the 16 directions and their degrees
-		// Sets the East to 0
-		HashMap<Direction, Double> dir = new HashMap<Direction, Double>()
-		{
-		    {
-		        put(Direction.E, 0.0);
-		        put(Direction.ENE, 22.5);
-		        put(Direction.NE, 45.0);
-		        put(Direction.NNE, 67.5);
-		        put(Direction.N, 90.0);
-		        put(Direction.NNW, 112.5);
-		        put(Direction.NW, 135.0);
-		        put(Direction.WNW, 157.5);
-		        put(Direction.W, 180.0);
-		        put(Direction.WSW, 202.5);
-		        put(Direction.SW, 225.0);
-		        put(Direction.SSW, 247.5);
-		        put(Direction.S, 270.0);
-		        put(Direction.SSE, 292.5);
-		        put(Direction.SE, 315.0);
-		        put(Direction.ESE, 337.5);
-		    }
-		};
-		
-		// If given direction is from Direction class, return that direction's degree
-		if (dir.keySet().contains(direction)) {
-			degree = dir.get(direction);
-		}
-		return degree;
-		
 	}
 	
 	
@@ -99,7 +61,6 @@ public class Position {
 			default:
 				return this;
 		}
-		
 		
 	}
 
