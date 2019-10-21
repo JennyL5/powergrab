@@ -1,30 +1,22 @@
 package uk.ac.ed.inf.powergrab;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import com.mapbox.geojson.LineString;
+import com.mapbox.geojson.Point;
 
 public class StatelessDrone extends Drone{
 	
-	public StatelessDrone(Position initPos) {setCurrentPos(initPos);}
-	public StatelessDrone() {setCurrentPos(new Position(-3.192473,55.946233));}
-
-
-
-	// check vicinity and choose best option
-	private Position chooseMove() {
-		// choose position
-		// drone can see around r =0.0003 and sucks coins/power at 0.00025
-		//HashMap<String, Direction> inNeighbourhood = getNeighbourhood();
-		// TODO: Directions
-		// go towards some station
+	public StatelessDrone(Double lat, Double lon, Integer seed) {
+		//Position initPos = new Position(lat, lon);
+		setCurrentPos(new Position(lat, lon));
 		
-		// get away from stations
-		
-		// nothing in vicinity carry on in same direction
-		//if (inNeighbourhood.isEmpty()) {}		
-		
+		while ( moves <= 250 || power > 0) {
+			directionDecision(lat, lon, seed);
+		}
 		
 	}
-
 	
 	
 	// get a random path from selecting random from valid moves
@@ -41,9 +33,8 @@ public class StatelessDrone extends Drone{
 			System.out.println("moves: " + !isFinished() + "   area: " + inPlayArea());
 		}
 		
-		
 		return LineString.fromLngLats(points);
 			
 	}
-
+	
 }
