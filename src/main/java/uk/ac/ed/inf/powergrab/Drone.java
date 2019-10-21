@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
@@ -20,32 +21,37 @@ import com.mapbox.geojson.Point;
 
 
 abstract public class Drone { 
-	protected  Position currentPos; // lon, lat
-	protected  Integer moves; // count the number of moves made
-	protected  Double coins; // count coins
-	protected  Double power; // keep track of power
-	protected Integer seed;
-	protected  List <ChargingStation> Stations;
-	protected  String textfile;
-	public static FeatureCollection fc;
+	public  Position currentPos; // lon, lat
+	public Integer moves; // count the number of moves made
+	public  Double coins; // count coins
+	public  Double power; // keep track of power
+	public Integer seed;
+	public  List <ChargingStation> Stations;
+	public  String textfile;
 
-	public Drone() {	
-		moves = 0;
-		coins = 0.0;
-		power = 0.0;
+	// constructors
+	public Drone(Position currentPos, Integer moves, Double coins, Double power, Integer seed, List <ChargingStation> Stations, String textfile) {	
+		this.moves = moves;
+		this.coins = coins;
+		this.power = power;
+		this.seed = seed;
+		this.Stations = Stations;
+		this.textfile = textfile;
 	}
+
 	// getters
 	public Position getCurrentPos() { return currentPos;}
 	public Integer getMoves() { return this.moves;}
 	public double getCoins() { return this.coins;}
 	public double getPower() { return this.power;}
-
-
+	public Integer getSeed() { return this.seed;}
+	
 	// setters
 	protected void setCurrentPos(Position currentPos) { this.currentPos = currentPos;}
 	protected void setMoves(Integer moves) {this.moves = moves;}
 	protected void setCoins(Double coins) { this.coins = coins;}
 	protected void setPower(Double power) { this.power = power;}
+	protected void setSeed(Integer seed) {this.seed = seed;}
 	
 	
 	// check if drone is within play area
@@ -59,57 +65,83 @@ abstract public class Drone {
 	return direction_point;
 	}
 	
-	protected void directionDecision(Double lat, Double lon, Integer seed, List <ChargingStation> Stations, String textfile) throws IOException {
+	protected void directionDecision(Double lat, Double lon) throws IOException {
 		//for each direction
-		HashSet <Direction> direction_set = new HashSet <Direction>();
-		Feature maxFeat = null;
+		ChargingStation maxFeat = null;
+
+		HashMap <Direction, ChargingStation> directionCharging_set = new HashMap <Direction, ChargingStation>();
+		//Set<Direction>direction_set = null;
 		Double maxCoins = 0.0;
-		Direction maxDirection = null;
+		Direction [] arr = null;
+		int count =0;
 		// Loop through the 16 directions
+		//System.out.print(Stations.size());
+
 		for (Direction d : Direction.values()) {
 			// get position of direction d given current position
 			Point direction_point = getPointOfDirection(d, lat, lon);
-			
+			System.out.print(count);
+			System.out.print(direction_point);
+
 			// Loop for each charging station
 			for (ChargingStation f: Stations) {
-				System.out.print(f);
+
+				//System.out.print(f);
 
 				// check if station is good or bad
-				if (ChargingStation.get_marker(f) == "lighthouse") {
+				if (ChargingStation.get_marker(f).contains("lighthouse")) {
+
 					// get point of charging station
-					Point station_point = (Point) f.geometry();
-					
+					//System.out.print(d);
+					Point station_point = (Point) Point.fromLngLat(Stations.get(count).pos.longitude, Stations.get(count).pos.latitude);
+					System.out.print(count);
+					System.out.print(d);
+					System.out.println(station_point);
+					count ++;
+					//System.out.println(station_point);
+					//System.out.print(station_point);
 					// check distance is within range
 					if(getRange(direction_point, station_point) < 0.00025) {
+						System.out.print("hi");
 						//within range
 						//direction_set.add(d);
 						// add direction to set w
-						Double station_coins = Double.parseDouble(ChargingStation.get_coins(f));
-						if (maxCoins > station_coins) {
-							maxCoins = station_coins;
-							maxFeat = f;
-							maxDirection = d;
-							direction_set.add(d);
-						}
-						
+						HashMap<Direction,ChargingStation> hm= findMaxCoinsStation(d, maxCoins, f);
+						Set<Direction>direction_set = hm.keySet();
+						maxFeat = (ChargingStation) hm.values();
+						arr = (Direction[]) direction_set.toArray();
+						//direction_set.add(max_dir);
 					}
+				} 
+				
+			}
+
+			if (arr != null) {
+				//moveDrone(arr[0]); // move to random direction that has charging stations nearby
+				for (int i =0; i < arr.length;i++) {
+					// find the direction_point_set
+					moveDrone(arr[0], Stations, textfile); // move to random direction that has charging stations nearby
+					updateDrone(maxFeat);
+					updateStation(Stations, maxFeat);
+					
 				}
-				
+			} else {
+				moveDroneRandomly(seed); // move randomly
 			}
 		}
-		if (!direction_set.isEmpty()) {
-			Direction [] arr = (Direction[]) direction_set.toArray();
-			//moveDrone(arr[0]); // move to random direction that has charging stations nearby
-			for (int i =0; i < direction_set.size();i++) {
-				// find the direction_point_set
-				moveDrone(arr[0], Stations, textfile); // move to random direction that has charging stations nearby
-				updateDrone(maxFeat);
-				updateStation(Stations, maxFeat);
-				
-			}
-		} else {
-			moveDroneRandomly(seed); // move randomly
+	}
+	protected HashMap <Direction, ChargingStation>findMaxCoinsStation(Direction d, Double maxCoins, ChargingStation f) {
+		Double station_coins = ChargingStation.get_coins(f);
+		ChargingStation maxFeat = null;
+		Direction maxDirection = null;
+		if (maxCoins > station_coins) {maxCoins = station_coins;
+			maxFeat = f;
+			maxDirection = d;
 		}
+		HashMap<Direction,ChargingStation> hm=new HashMap<>();
+	    hm.put(maxDirection, maxFeat);
+
+		return hm;
 	}
 
 	
@@ -161,7 +193,7 @@ abstract public class Drone {
 	}
 	
 	// add/subtract power and coins for charging station
-	protected void updateStation(List Stations, Feature maxFeat) { 
+	protected void updateStation(List Stations, ChargingStation maxFeat) { 
 		Point point;
 		Double dist;
 		
@@ -176,13 +208,13 @@ abstract public class Drone {
 		
 	}
 	
-	protected void updateDrone(Feature maxFeat) {
+	protected void updateDrone(ChargingStation maxFeat) {
 		//update moves
 		moves =+1;
 		//update power
 		setPower(this.power - 1.25);
 		//update coins
-		Double total_coins = this.coins + Double.parseDouble(ChargingStation.get_coins(maxFeat));
+		Double total_coins = this.coins + ChargingStation.get_coins(maxFeat);
 		setCoins(total_coins);
 	}
 

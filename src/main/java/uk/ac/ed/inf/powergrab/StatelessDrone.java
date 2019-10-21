@@ -9,11 +9,14 @@ import com.mapbox.geojson.Point;
 
 public class StatelessDrone extends Drone{
 	
-	public StatelessDrone(Position currentPos, Integer seed, List <ChargingStation> Stations, String textfile) throws IOException {
+	
+
+	public StatelessDrone(Position currentPos, Integer moves, Double coins, Double power, Integer seed, List <ChargingStation> Stations, String textfile) throws IOException {
 		//Position initPos = new Position(lat, lon);
 		//super(lat, lon, seed, Stations, textfile);
+		super(currentPos,moves, coins, power, seed, Stations, textfile);
 		setCurrentPos(currentPos);
-		//super(currentPos, seed, Stations, textfile);
+
 	}
 	
 	protected void decide() throws IOException {
@@ -21,7 +24,7 @@ public class StatelessDrone extends Drone{
 		Double lat = currentPos.latitude;
 		Double lon = currentPos.longitude;
 		while ( moves <= 250 || power > 0) {
-			directionDecision(lat, lon, seed, Stations, textfile);
+			directionDecision(lat, lon);
 		}
 	}
 	

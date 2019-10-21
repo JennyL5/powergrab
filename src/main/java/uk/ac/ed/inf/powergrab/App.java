@@ -17,7 +17,6 @@ import java.net.URL;
 
 public class App {
 	public static FeatureCollection fc;
-	public static List <ChargingStation> Stations;
 	
 	private static FeatureCollection parseGeoJSON(String day, String month, String year) throws IOException {
 		URL mapURL = new URL(String.format("http://homepages.inf.ed.ac.uk/stg/powergrab/%s/%s/%s/powergrabmap.geojson",
@@ -75,13 +74,15 @@ public class App {
 			c.setCoins(c, f.getProperty("coins").getAsDouble());
 			c.setPower(c, f.getProperty("power").getAsDouble());
 			c.setMarker(c, f.getProperty("marker-symbol").getAsString());
-			System.out.print(f.geometry());
-			//c.setPos(c, f.geometry());
+			Point point = (Point) f.geometry();
+			Position p = new Position (point.latitude(), point.longitude());
+			c.setPos(c, p);
 			//System.out.print(c.coins);
 			//System.out.print(c.power);
 			Stations.add(c);
 			//System.out.println(c);
 		}
+		//System.out.print(Stations.get(0).pos);
 		return Stations;
 	}
 	
@@ -106,8 +107,9 @@ public class App {
 		if (drone_type.contains("stateless")) {
 			Position initPos = new Position(lat, lon);
 
-			//System.out.println(initPos);
-			StatelessDrone stateless = new StatelessDrone(initPos, seed, Stations, textfile);
+			//System.out.println(Stations);
+			//Position currentPos, Integer moves, Double coins, Double power, Integer seed, List <ChargingStation> Stations, String textfile
+			StatelessDrone stateless = new StatelessDrone(initPos, 0, 0.0, 0.0,seed, Stations, textfile);
 			stateless.decide();
 		} 
 	}
