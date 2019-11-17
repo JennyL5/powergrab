@@ -41,14 +41,13 @@ abstract public class Drone {
 
 	// constructors 
 	
-	public Drone(Position currentPos, Double coins, Double power, Integer seed, List <ChargingStation> Stations, String textfile) {	
+	public Drone(Position currentPos, Double coins, Double power, Integer seed, List <ChargingStation> Stations) {	
 		this.currentPos = currentPos;
 		this.movesLeft = 250;
 		this.coins = 0.0;
 		this.power = 250.0;
 		this.seed = seed;
 		this.Stations = Stations;
-		this.textfile = textfile;
 		//this.movesHistory.add(currentPos);
 	}
 
@@ -59,7 +58,6 @@ abstract public class Drone {
 	public double getPower() { return this.power;}
 	public Integer getSeed() { return this.seed;}
 	public List <ChargingStation> getStations() { return this.Stations;}
-	public String getTextfile() { return this.textfile;}
 	public ArrayList<Point> getMovesHistory() { return this.movesHistory;}
 	
 	
@@ -70,46 +68,39 @@ abstract public class Drone {
 	protected void setPower(Double power) { this.power = power;}
 	protected void setSeed(Integer seed) {this.seed = seed;}
 	protected void setStations(List <ChargingStation> Stations) {this.Stations = Stations;}
-	protected void setTextfile(String textfile) {this.textfile = textfile;}
 	protected void setMovesHistory(ArrayList <Point> movesHistory) {this.movesHistory = movesHistory;}
 	
 	// check if drone is within play area
-	protected boolean inPlayArea() { return getCurrentPos().inPlayArea();}
+	protected boolean inPlayArea(Position pos) { 
+		return (pos.inPlayArea());
+		}
 
 	protected Point getPointOfDirection(Direction d, Double lat, Double lon) {
 		// lat lon of the current position
 		Position initPos = new Position(lat, lon);
+
 		Point i = convertToPoint(initPos);
 
 		Position direction_pos = initPos.nextPosition(d);
-		Point direction_point = convertToPoint(direction_pos);
-		
 
+		Point direction_point = convertToPoint(direction_pos);
 	return direction_point;
 	}
 	
 
 	protected void directionDecision(Double lat, Double lon) throws IOException {
-		//for each direction
-		ChargingStation maxFeat = null;
 		HashMap <Direction, ChargingStation> directionCharging = new HashMap <Direction, ChargingStation>();
-		Double maxCoins = 0.0;
-		//List<ChargingStation> goodStations_List = goodStations(Stations);
-
 		// Loop through the 16 directions
-		int index =0; 
-		//System.out.print(Direction.values().length);
+		
 		for (Direction d : Direction.values()) {
-			
 			// get position of direction d given current position
 			Point direction_point = getPointOfDirection(d, lat, lon);
 			// find nearest (good) stations from that d 
 			findGoodNearestStations(directionCharging, d, direction_point);	
 		}
-		System.out.println(directionCharging);
 		if (directionCharging.isEmpty()) {
 			System.out.println("random");
-			moveDroneRandomly(1);
+			moveDroneRandomly(getSeed());
 			
 		}else {
 			Direction dir =null;
@@ -125,7 +116,7 @@ abstract public class Drone {
 		}
 		//System.out.println(coinsHistory);
 		//System.out.println(powerHistory);
-		System.out.println(movesHistory);
+		//System.out.println(movesHistory);
 		//System.out.println(directionHistory);
 		//System.out.println(directionHistory.size());
 
@@ -146,10 +137,9 @@ abstract public class Drone {
 		// initialise prev position as new position 
 		Position new_pos = new Position (direction_point.latitude(), direction_point.longitude());
 
-
+		//if (inPlayArea(new_pos)==true) {
 		setCurrentPos(new_pos);
-
-
+		//}
 		//updateStation(maxFeat);
 		//update station
 		Double st_coins, st_power =0.0;
@@ -181,7 +171,7 @@ abstract public class Drone {
 		Direction d = getRandomDirection(seed);
 		Point direction_point = getPointOfDirection(d, curr_Pos.latitude, curr_Pos.longitude);
 		updateDrone(curr_Pos, d);
-		System.out.print(d);
+		//System.out.print(d);
 		// initialise prev position as new position 
 		Position new_pos = new Position (direction_point.latitude(), direction_point.longitude());
 		Point n = convertToPoint(new_pos);
@@ -189,13 +179,10 @@ abstract public class Drone {
 
 		setCurrentPos(new_pos);
 		Point b = convertToPoint(getCurrentPos());
-		
+		System.out.print("coins: ");
 		System.out.print(this.coins);
 		
 	}
-	
-	
-	
 	
 	
 	protected void findGoodNearestStations(HashMap <Direction, ChargingStation>directionCharging, Direction d, Point direction_point) {
@@ -236,18 +223,14 @@ abstract public class Drone {
 	
 	
 	protected Point convertToPoint(Position pos) {
-		return (Point) Point.fromLngLat(pos.longitude, pos.latitude);
+		System.out.print(Point.fromLngLat(pos.latitude,pos.longitude));
+		return (Point) Point.fromLngLat(pos.latitude,pos.longitude);
 	}
 	
 	protected Double getRange(Point direction_point, Point station) {
 		Double dist,x,y;
-		System.out.println(direction_point);
-		System.out.println(station);
 		x = station.latitude()-direction_point.latitude();
 		y = station.longitude()-direction_point.longitude();
-		//x=2.0;
-		//y=2.0;
-		System.out.print(Math.sqrt(Math.pow(x,2) + Math.pow(y,2)));
 		return Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
 	}
 	
@@ -260,8 +243,12 @@ abstract public class Drone {
 		this.power = getPower()-1.25;
 		System.out.print("power: ");
 		System.out.println(this.power);
+		//System.out.println(curr_Pos.latitude);
+		//System.out.println(curr_Pos.longitude);
 				
 		movesHistory.add(convertToPoint(curr_Pos));
+		//System.out.println(convertToPoint(curr_Pos).coordinates());
+
 		directionHistory.add(d);
 		powerHistory.add(this.power);
 		coinsHistory.add(this.coins);
@@ -292,6 +279,21 @@ abstract public class Drone {
 	// finished moves
 	public boolean isFinished() { return (this.movesLeft == 0) || (this.power < 1.25);}
 	
+	
+	public String totxt() {
+		String text ="";
+		for (int i = 0; i<=this.movesHistory.size()-2;i++) {
+			String a = Double.toString(this.movesHistory.get(i).latitude());
+			String b = Double.toString(this.movesHistory.get(i).longitude());
+			String c = this.directionHistory.get(i).toString();
+			String d = Double.toString(this.movesHistory.get(i+1).latitude());
+			String e = Double.toString(this.movesHistory.get(i+1).longitude());
+			String f = this.coinsHistory.get(i).toString();
+			String g = this.powerHistory.get(i).toString();
+			text += a+", "+b+", "+c+", "+d+". "+e+", "+f+", "+g+"\n";
+		}
+		return text;
+	}
 	
 }
 

@@ -10,10 +10,10 @@ import com.mapbox.geojson.Point;
 public class StatelessDrone extends Drone{
 	
 
-	public StatelessDrone(Position currentPos, Double coins, Double power, Integer seed, List <ChargingStation> Stations, String textfile) throws IOException {
+	public StatelessDrone(Position currentPos, Double coins, Double power, Integer seed, List <ChargingStation> Stations) throws IOException {
 		//Position initPos = new Position(lat, lon);
 		//super(lat, lon, seed, Stations, textfile);
-		super(currentPos, coins, power, seed, Stations, textfile);
+		super(currentPos, coins, power, seed, Stations);
 
 	}
 
@@ -23,7 +23,7 @@ public class StatelessDrone extends Drone{
 
 		while (!isFinished()) {
 		//for(int i =0; i < 5; i++) {
-			directionDecision(this.currentPos.latitude, this.currentPos.latitude);
+			directionDecision(this.currentPos.latitude, this.currentPos.longitude);
 
 
 		}
