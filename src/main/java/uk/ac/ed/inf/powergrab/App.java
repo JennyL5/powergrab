@@ -80,7 +80,6 @@ public class App {
 			//System.out.print(c.coins);
 			//System.out.print(c.power);
 			Stations.add(c);
-			//System.out.println(c);
 		}
 		//System.out.print(Stations.get(0).pos);
 		return Stations;
@@ -109,8 +108,9 @@ public class App {
 
 			//System.out.println(Stations);
 			//Position currentPos, Integer moves, Double coins, Double power, Integer seed, List <ChargingStation> Stations, String textfile
-			StatelessDrone stateless = new StatelessDrone(initPos, 0, 0.0, 0.0,seed, Stations, textfile);
-			stateless.decide();
+			StatelessDrone stateless = new StatelessDrone(initPos, 0.0, 0.0,seed, Stations, textfile);
+			stateless.startGame(lat, lon);
+			
 		} 
 	}
 	

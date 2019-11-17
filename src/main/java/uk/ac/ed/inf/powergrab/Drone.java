@@ -12,47 +12,66 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
 
 
 abstract public class Drone { 
 	public  Position currentPos; // lon, lat
-	public Integer moves; // count the number of moves made
+	public Integer movesLeft; // count the number of moves made
 	public  Double coins; // count coins
 	public  Double power; // keep track of power
 	public Integer seed;
 	public  List <ChargingStation> Stations;
 	public  String textfile;
 
-	// constructors
-	public Drone(Position currentPos, Integer moves, Double coins, Double power, Integer seed, List <ChargingStation> Stations, String textfile) {	
-		this.moves = moves;
-		this.coins = coins;
-		this.power = power;
+	public ArrayList<Point> movesHistory = new ArrayList<Point>();
+	public ArrayList<Double> coinsHistory = new ArrayList<Double>();
+	public ArrayList<Double> powerHistory = new ArrayList<Double>();
+	public ArrayList<Direction> directionHistory = new ArrayList<Direction>();
+
+	//public List<ChargingStation> goodStations_List = goodStations(Stations);
+
+	// constructors 
+	
+	public Drone(Position currentPos, Double coins, Double power, Integer seed, List <ChargingStation> Stations, String textfile) {	
+		this.currentPos = currentPos;
+		this.movesLeft = 250;
+		this.coins = 0.0;
+		this.power = 250.0;
 		this.seed = seed;
 		this.Stations = Stations;
 		this.textfile = textfile;
+		//this.movesHistory.add(currentPos);
 	}
 
 	// getters
 	public Position getCurrentPos() { return currentPos;}
-	public Integer getMoves() { return this.moves;}
+	public Integer getMovesLeft() { return this.movesLeft;}
 	public double getCoins() { return this.coins;}
 	public double getPower() { return this.power;}
 	public Integer getSeed() { return this.seed;}
+	public List <ChargingStation> getStations() { return this.Stations;}
+	public String getTextfile() { return this.textfile;}
+	public ArrayList<Point> getMovesHistory() { return this.movesHistory;}
+	
 	
 	// setters
 	protected void setCurrentPos(Position currentPos) { this.currentPos = currentPos;}
-	protected void setMoves(Integer moves) {this.moves = moves;}
+	protected void setMoves(Integer moves) {this.movesLeft = movesLeft;}
 	protected void setCoins(Double coins) { this.coins = coins;}
 	protected void setPower(Double power) { this.power = power;}
 	protected void setSeed(Integer seed) {this.seed = seed;}
-	
+	protected void setStations(List <ChargingStation> Stations) {this.Stations = Stations;}
+	protected void setTextfile(String textfile) {this.textfile = textfile;}
+	protected void setMovesHistory(ArrayList <Point> movesHistory) {this.movesHistory = movesHistory;}
 	
 	// check if drone is within play area
 	protected boolean inPlayArea() { return getCurrentPos().inPlayArea();}
@@ -60,132 +79,194 @@ abstract public class Drone {
 	protected Point getPointOfDirection(Direction d, Double lat, Double lon) {
 		// lat lon of the current position
 		Position initPos = new Position(lat, lon);
+		Point i = convertToPoint(initPos);
+
 		Position direction_pos = initPos.nextPosition(d);
-		Point direction_point = Point.fromLngLat(direction_pos.longitude, direction_pos.latitude);
+		Point direction_point = convertToPoint(direction_pos);
+		
+
 	return direction_point;
 	}
 	
+
 	protected void directionDecision(Double lat, Double lon) throws IOException {
 		//for each direction
 		ChargingStation maxFeat = null;
-
-		HashMap <Direction, ChargingStation> directionCharging_set = new HashMap <Direction, ChargingStation>();
-		//Set<Direction>direction_set = null;
+		HashMap <Direction, ChargingStation> directionCharging = new HashMap <Direction, ChargingStation>();
 		Double maxCoins = 0.0;
-		Direction [] arr = null;
-		int count =0;
-		// Loop through the 16 directions
-		//System.out.print(Stations.size());
+		//List<ChargingStation> goodStations_List = goodStations(Stations);
 
+		// Loop through the 16 directions
+		int index =0; 
+		//System.out.print(Direction.values().length);
 		for (Direction d : Direction.values()) {
+			
 			// get position of direction d given current position
 			Point direction_point = getPointOfDirection(d, lat, lon);
-			System.out.print(count);
-			System.out.print(direction_point);
-
-			// Loop for each charging station
-			for (ChargingStation f: Stations) {
-
-				//System.out.print(f);
-
-				// check if station is good or bad
-				if (ChargingStation.get_marker(f).contains("lighthouse")) {
-
-					// get point of charging station
-					//System.out.print(d);
-					Point station_point = (Point) Point.fromLngLat(Stations.get(count).pos.longitude, Stations.get(count).pos.latitude);
-					System.out.print(count);
-					System.out.print(d);
-					System.out.println(station_point);
-					count ++;
-					//System.out.println(station_point);
-					//System.out.print(station_point);
-					// check distance is within range
-					if(getRange(direction_point, station_point) < 0.00025) {
-						System.out.print("hi");
-						//within range
-						//direction_set.add(d);
-						// add direction to set w
-						HashMap<Direction,ChargingStation> hm= findMaxCoinsStation(d, maxCoins, f);
-						Set<Direction>direction_set = hm.keySet();
-						maxFeat = (ChargingStation) hm.values();
-						arr = (Direction[]) direction_set.toArray();
-						//direction_set.add(max_dir);
-					}
-				} 
-				
-			}
-
-			if (arr != null) {
-				//moveDrone(arr[0]); // move to random direction that has charging stations nearby
-				for (int i =0; i < arr.length;i++) {
-					// find the direction_point_set
-					moveDrone(arr[0], Stations, textfile); // move to random direction that has charging stations nearby
-					updateDrone(maxFeat);
-					updateStation(Stations, maxFeat);
-					
-				}
-			} else {
-				moveDroneRandomly(seed); // move randomly
-			}
+			// find nearest (good) stations from that d 
+			findGoodNearestStations(directionCharging, d, direction_point);	
 		}
-	}
-	protected HashMap <Direction, ChargingStation>findMaxCoinsStation(Direction d, Double maxCoins, ChargingStation f) {
-		Double station_coins = ChargingStation.get_coins(f);
-		ChargingStation maxFeat = null;
-		Direction maxDirection = null;
-		if (maxCoins > station_coins) {maxCoins = station_coins;
-			maxFeat = f;
-			maxDirection = d;
+		System.out.println(directionCharging);
+		if (directionCharging.isEmpty()) {
+			System.out.println("random");
+			moveDroneRandomly(1);
+			
+		}else {
+			Direction dir =null;
+			ChargingStation sta= null;
+			System.out.println("move");
+			for (Direction i : directionCharging.keySet()) {
+				dir=i;
+				sta=directionCharging.get(i);
+				//System.out.println(dir);
+			}
+			moveDrone(dir,sta);
+			//moveDrone((Direction) directionCharging.entrySet().toArray()[0], directionCharging.get(key));
 		}
-		HashMap<Direction,ChargingStation> hm=new HashMap<>();
-	    hm.put(maxDirection, maxFeat);
+		//System.out.println(coinsHistory);
+		//System.out.println(powerHistory);
+		System.out.println(movesHistory);
+		//System.out.println(directionHistory);
+		//System.out.println(directionHistory.size());
 
-		return hm;
-	}
-
-	
-	protected Double getRange(Point direction_point, Point station_point) {
-		Double dist,x,y;
-		x = direction_point.latitude()-station_point.latitude();
-		y = direction_point.longitude()-station_point.longitude();
-		return Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
 	}
 	
-	protected Double getDist(Point point) {
-		Double dist,x,y;
-		x = point.latitude()-getCurrentPos().latitude;
-		y = point.longitude()-getCurrentPos().longitude;
-		dist = Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
-		return dist;
-	}
-	
-	// move drone 
-	protected void moveDrone(Direction d, List <ChargingStation> Stations, String textfile) throws IOException { 
-		//point = Point.fromLngLat(newPos.longitude, newPos.latitude);
+	// move drone to nearby charging station
+	protected void moveDrone(Direction d, ChargingStation maxFeat) throws IOException { 
 		Position curr_Pos = getCurrentPos();
-		Point target_point = getPointOfDirection(d, curr_Pos.latitude, curr_Pos.longitude);
-		moves +=1;
+		Point direction_point = getPointOfDirection(d, curr_Pos.latitude, curr_Pos.longitude);
+		
+		Double total_power = this.power + ChargingStation.get_power(maxFeat);
+		this.power = this.power + total_power;
+		Double total_coins = this.coins + ChargingStation.get_coins(maxFeat);
+		this.coins = this.coins + total_coins;
+
+		updateDrone(curr_Pos, d);
+
 		// initialise prev position as new position 
-		Position new_pos = new Position (target_point.longitude(), target_point.latitude());
+		Position new_pos = new Position (direction_point.latitude(), direction_point.longitude());
+
+
 		setCurrentPos(new_pos);
-		writeToTextFile(curr_Pos,d, new_pos, Stations, textfile);
+
+
+		//updateStation(maxFeat);
+		//update station
+		Double st_coins, st_power =0.0;
+		
+		if (ChargingStation.get_coins(maxFeat) > 0){
+			st_coins =0.0;
+		} else{
+			st_coins =ChargingStation.get_coins(maxFeat) + this.coins;
+		}
+		
+		if (ChargingStation.get_power(maxFeat) >0) {
+			st_power = 0.0;
+		}else {
+			st_power = ChargingStation.get_power(maxFeat) + this.power;
+		}
+		maxFeat.setCoins(maxFeat, st_coins);
+		System.out.print("coins:");
+		System.out.println(this.coins);
+		maxFeat.setPower(maxFeat, st_power);
+
+		
+		//writeToTextFile(curr_Pos,d, new_pos, textfile);
 	}
 	
-	// move drone randomly
 	protected void moveDroneRandomly(Integer seed) {
+		//HashMap <Direction, ChargingStation> directionCharging = new HashMap <Direction, ChargingStation>();
 		Position curr_Pos = getCurrentPos();
 		// randomly generate direction d
 		Direction d = getRandomDirection(seed);
-		Point target_point = getPointOfDirection(d, curr_Pos.latitude, curr_Pos.longitude);
-		moves +=1;
+		Point direction_point = getPointOfDirection(d, curr_Pos.latitude, curr_Pos.longitude);
+		updateDrone(curr_Pos, d);
+		System.out.print(d);
 		// initialise prev position as new position 
-		Position new_pos = new Position (target_point.longitude(), target_point.latitude());
+		Position new_pos = new Position (direction_point.latitude(), direction_point.longitude());
+		Point n = convertToPoint(new_pos);
+		Point a = convertToPoint(getCurrentPos());
+
 		setCurrentPos(new_pos);
-		setPower(this.power - 1.25);
+		Point b = convertToPoint(getCurrentPos());
+		
+		System.out.print(this.coins);
+		
 	}
 	
+	
+	
+	
+	
+	protected void findGoodNearestStations(HashMap <Direction, ChargingStation>directionCharging, Direction d, Point direction_point) {
+		int count =0;
+		for (ChargingStation f: goodStations()) {
+			Point station_point = convertToPoint(Stations.get(count).pos);
+			count++;
+			//System.out.println(getRange(direction_point, station_point));
+			if(getRange(direction_point, station_point) < 0.00025) {
+				directionCharging.put(d, f);
+			}
+		}
+	}
 
+
+	protected List<ChargingStation> goodStations(){
+		List<ChargingStation> goodStations_List = new ArrayList <ChargingStation>();
+		for (ChargingStation f: Stations) {
+			if (ChargingStation.get_marker(f).contains("lighthouse")) {
+				goodStations_List.add(f);
+			}
+		}
+		return goodStations_List;	
+	}
+	
+	protected List<ChargingStation> badStations(){
+		List<ChargingStation> badStations_List = new ArrayList <ChargingStation>();
+		for (ChargingStation f: Stations) {
+			if (ChargingStation.get_marker(f).contains("danger")) {
+				badStations_List.add(f);
+			}
+		}
+		return badStations_List;	
+	}
+	
+	
+	// Picks direction bases on Direction with station with max coins
+	
+	
+	protected Point convertToPoint(Position pos) {
+		return (Point) Point.fromLngLat(pos.longitude, pos.latitude);
+	}
+	
+	protected Double getRange(Point direction_point, Point station) {
+		Double dist,x,y;
+		System.out.println(direction_point);
+		System.out.println(station);
+		x = station.latitude()-direction_point.latitude();
+		y = station.longitude()-direction_point.longitude();
+		//x=2.0;
+		//y=2.0;
+		System.out.print(Math.sqrt(Math.pow(x,2) + Math.pow(y,2)));
+		return Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
+	}
+	
+	
+	protected void updateDrone(Position curr_Pos, Direction d) {
+		this.movesLeft = getMovesLeft()-1;
+		System.out.print("moves left:");
+		System.out.println(this.movesLeft);
+
+		this.power = getPower()-1.25;
+		System.out.print("power: ");
+		System.out.println(this.power);
+				
+		movesHistory.add(convertToPoint(curr_Pos));
+		directionHistory.add(d);
+		powerHistory.add(this.power);
+		coinsHistory.add(this.coins);
+	}
+	
 	public static Direction getRandomDirection(Integer seed) {
 	    Random random = new Random(seed);
 	    int i = random.nextInt(16);
@@ -193,56 +274,24 @@ abstract public class Drone {
 	}
 	
 	// add/subtract power and coins for charging station
-	protected void updateStation(List Stations, ChargingStation maxFeat) { 
+	protected void updateStation(ChargingStation maxFeat) { 
 		Point point;
 		Double dist;
 		
 		// subtract maxFeat coins from charging station coins
 		//Double d = Double.parseDouble(ChargingStation.get_coins(maxFeat));
 		//Stations
-		ChargingStation c = new ChargingStation();
-		
+		//maxFeat.setCoins(maxFeat, st_coins);
 		// set new coins and power of station to 0
-		c.setCoins(maxFeat, 0.0);
-		c.setPower(maxFeat, 0.0);
+		//c.setCoins(maxFeat, 0.0);
+		//c.setPower(maxFeat, 0.0);
 		
 	}
 	
-	protected void updateDrone(ChargingStation maxFeat) {
-		//update moves
-		moves =+1;
-		//update power
-		setPower(this.power - 1.25);
-		//update coins
-		Double total_coins = this.coins + ChargingStation.get_coins(maxFeat);
-		setCoins(total_coins);
-	}
 
 	// finished moves
-	public boolean isFinished() { return (moves == 250) || (power < 1.25);}
+	public boolean isFinished() { return (this.movesLeft == 0) || (this.power < 1.25);}
 	
 	
-	protected void writeToTextFile(Position curr_Pos, Direction d, Position new_pos, List <ChargingStation> Station, String textfile) throws IOException {
-		//55.944425,-3.188396,SSE,55.944147836140246,-3.1882811949702905,0.0,248.75
-		//before_lat, before_lon, dir, after_lat, after_lon, Drone_coins, Drone_power
-		Double prev_lat = curr_Pos.latitude;
-		Double prev_lon = curr_Pos.longitude;
-		
-		Double next_lat = new_pos.latitude;
-		Double next_lon = new_pos.longitude;
-		
-		Double coins = this.coins;
-		Double power = this.power;
-		String list [] = new String[] {prev_lat.toString(), prev_lon.toString(), d.toString(), next_lat.toString(), next_lon.toString(), coins.toString(), power.toString()};
-		List<String> movesList = Arrays.asList(list);
-		
-		
-		Path file = Paths.get(textfile);
-		Files.write(file, movesList, StandardCharsets.UTF_8);
-		//System.out.print(textfile);
-		//PrintWriter writer = new PrintWriter("the-file-name.txt", "UTF-8");
-		//writer.println("The first line");
-		//writer.close();
-	}
 }
 

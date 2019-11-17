@@ -9,43 +9,31 @@ import com.mapbox.geojson.Point;
 
 public class StatelessDrone extends Drone{
 	
-	
 
-	public StatelessDrone(Position currentPos, Integer moves, Double coins, Double power, Integer seed, List <ChargingStation> Stations, String textfile) throws IOException {
+	public StatelessDrone(Position currentPos, Double coins, Double power, Integer seed, List <ChargingStation> Stations, String textfile) throws IOException {
 		//Position initPos = new Position(lat, lon);
 		//super(lat, lon, seed, Stations, textfile);
-		super(currentPos,moves, coins, power, seed, Stations, textfile);
-		setCurrentPos(currentPos);
+		super(currentPos, coins, power, seed, Stations, textfile);
 
 	}
-	
-	protected void decide() throws IOException {
-		//System.out.print(currentPos);
-		Double lat = currentPos.latitude;
-		Double lon = currentPos.longitude;
-		while ( moves <= 250 || power > 0) {
-			directionDecision(lat, lon);
+
+	public void startGame(Double lat, Double lon) throws IOException {
+		// TODO Auto-generated method stub
+		directionDecision(lat, lon);
+
+		while (!isFinished()) {
+		//for(int i =0; i < 5; i++) {
+			directionDecision(this.currentPos.latitude, this.currentPos.latitude);
+
+
 		}
+		//System.out.print(movesHistory);
+
+	
+		
 	}
 	
 	
-	/*
-	// get a random path from selecting random from valid moves
-	public LineString getStatelessPath() {
-		// test from left top corner to right bottom corner
-		List<Point> points =new ArrayList<Point>();
-		updateStats();
-		while(!isFinished() && inPlayArea()) {
-			// position p from choose move
-			Position p = chooseMove();
-			points.add(Point.fromLngLat(p.longitude, p.latitude));
-			moveDrone(p);
-			updateStats();
-			System.out.println("moves: " + !isFinished() + "   area: " + inPlayArea());
-		}
-		
-		return LineString.fromLngLats(points);
-			
-	}*/
+	
 	
 }
