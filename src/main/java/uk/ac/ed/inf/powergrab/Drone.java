@@ -24,6 +24,9 @@ import com.mapbox.geojson.Point;
 
 
 abstract public class Drone { 
+	private static final Direction N = null;
+	private static final Direction S = null;
+	private static final Direction SSE = null;
 	public  Position currentPos; // lon, lat
 	public Integer movesLeft; // count the number of moves made
 	public  Double coins; // count coins
@@ -78,11 +81,8 @@ abstract public class Drone {
 	protected Point getPointOfDirection(Direction d, Double lat, Double lon) {
 		// lat lon of the current position
 		Position initPos = new Position(lat, lon);
-
 		Point i = convertToPoint(initPos);
-
 		Position direction_pos = initPos.nextPosition(d);
-
 		Point direction_point = convertToPoint(direction_pos);
 	return direction_point;
 	}
@@ -91,16 +91,32 @@ abstract public class Drone {
 	protected void directionDecision(Double lat, Double lon) throws IOException {
 		HashMap <Direction, ChargingStation> directionCharging = new HashMap <Direction, ChargingStation>();
 		// Loop through the 16 directions
-		
+		directionCharging.clear();
 		for (Direction d : Direction.values()) {
 			// get position of direction d given current position
+			//System.out.print("lat");
+			//System.out.print(lat);
 			Point direction_point = getPointOfDirection(d, lat, lon);
+			//System.out.print(direction_point.latitude());
 			// find nearest (good) stations from that d 
 			findGoodNearestStations(directionCharging, d, direction_point);	
 		}
+		//System.out.print("Size of direction charging");
+		//System.out.print(directionCharging.size());
+		//System.out.print(directionCharging.keySet());
+
+
 		if (directionCharging.isEmpty()) {
 			System.out.println("random");
-			moveDroneRandomly(getSeed());
+			Direction d = getRandomDirection(seed);
+			Position new_pos = getNewPos(d);
+			if (new_pos.inPlayArea()){
+				moveDroneRandomly(d); //newpos
+				setCurrentPos(new_pos);
+
+			} else {
+				System.out.println("Stuck!!!");
+			}
 			
 		}else {
 			Direction dir =null;
@@ -108,10 +124,20 @@ abstract public class Drone {
 			System.out.println("move");
 			for (Direction i : directionCharging.keySet()) {
 				dir=i;
+				//System.out.println(i);
 				sta=directionCharging.get(i);
-				//System.out.println(dir);
+				//System.out.println(sta.coins);
+				
 			}
-			moveDrone(dir,sta);
+			Position new_pos = getNewPos(dir);
+			if (new_pos.inPlayArea()){
+				moveDrone(dir,sta);
+				setCurrentPos(new_pos);
+			} else {
+				System.out.println("Stuck!!! R");
+
+			}
+
 			//moveDrone((Direction) directionCharging.entrySet().toArray()[0], directionCharging.get(key));
 		}
 		//System.out.println(coinsHistory);
@@ -125,23 +151,19 @@ abstract public class Drone {
 	// move drone to nearby charging station
 	protected void moveDrone(Direction d, ChargingStation maxFeat) throws IOException { 
 		Position curr_Pos = getCurrentPos();
-		Point direction_point = getPointOfDirection(d, curr_Pos.latitude, curr_Pos.longitude);
-		
+		//System.out.print(direction_point);
+		Position new_pos = getNewPos(d);
+
+		//System.out.print(new_pos.latitude);
+		//System.out.print(new_pos.longitude);
 		Double total_power = this.power + ChargingStation.get_power(maxFeat);
 		this.power = this.power + total_power;
 		Double total_coins = this.coins + ChargingStation.get_coins(maxFeat);
 		this.coins = this.coins + total_coins;
 
-		updateDrone(curr_Pos, d);
-
-		// initialise prev position as new position 
-		Position new_pos = new Position (direction_point.latitude(), direction_point.longitude());
-
-		//if (inPlayArea(new_pos)==true) {
-		setCurrentPos(new_pos);
-		//}
-		//updateStation(maxFeat);
-		//update station
+		updateDrone(d);
+		movesHistory.add(convertToPoint(this.currentPos));
+		
 		Double st_coins, st_power =0.0;
 		
 		if (ChargingStation.get_coins(maxFeat) > 0){
@@ -159,29 +181,32 @@ abstract public class Drone {
 		System.out.print("coins:");
 		System.out.println(this.coins);
 		maxFeat.setPower(maxFeat, st_power);
-
-		
-		//writeToTextFile(curr_Pos,d, new_pos, textfile);
 	}
 	
-	protected void moveDroneRandomly(Integer seed) {
+	protected Position getNewPos(Direction d) { 
+		Point direction_point =  getPointOfDirection(d, this.currentPos.latitude, this.currentPos.longitude);
+
+		return new Position (direction_point.latitude(), direction_point.longitude());
+	}
+	
+	protected void moveDroneRandomly(Direction d) {
 		//HashMap <Direction, ChargingStation> directionCharging = new HashMap <Direction, ChargingStation>();
-		Position curr_Pos = getCurrentPos();
 		// randomly generate direction d
-		Direction d = getRandomDirection(seed);
-		Point direction_point = getPointOfDirection(d, curr_Pos.latitude, curr_Pos.longitude);
-		updateDrone(curr_Pos, d);
 		//System.out.print(d);
 		// initialise prev position as new position 
-		Position new_pos = new Position (direction_point.latitude(), direction_point.longitude());
-		Point n = convertToPoint(new_pos);
-		Point a = convertToPoint(getCurrentPos());
+		Position new_pos = getNewPos(d);
+		updateDrone(d);
+		movesHistory.add(convertToPoint(this.currentPos));
 
-		setCurrentPos(new_pos);
+		Point n = convertToPoint(new_pos);
+
+		Point a = convertToPoint(getCurrentPos());
+		//System.out.print(new_pos.latitude);
+		//System.out.print(new_pos.longitude);
 		Point b = convertToPoint(getCurrentPos());
+
 		System.out.print("coins: ");
 		System.out.print(this.coins);
-		
 	}
 	
 	
@@ -192,7 +217,14 @@ abstract public class Drone {
 			count++;
 			//System.out.println(getRange(direction_point, station_point));
 			if(getRange(direction_point, station_point) < 0.00025) {
+				//System.out.println("direction vs station points");
+				//System.out.print(d);
+				//System.out.print(f.coins);
+				//System.out.print(f.power);
+
 				directionCharging.put(d, f);
+				//System.out.print("coins");
+				//System.out.print(f.coins);
 			}
 		}
 	}
@@ -223,19 +255,19 @@ abstract public class Drone {
 	
 	
 	protected Point convertToPoint(Position pos) {
-		System.out.print(Point.fromLngLat(pos.latitude,pos.longitude));
-		return (Point) Point.fromLngLat(pos.latitude,pos.longitude);
+		//System.out.print(Point.fromLngLat(pos.latitude,pos.longitude));
+		return (Point) Point.fromLngLat(pos.longitude,pos.latitude);
 	}
 	
 	protected Double getRange(Point direction_point, Point station) {
-		Double dist,x,y;
+		Double x,y;
 		x = station.latitude()-direction_point.latitude();
 		y = station.longitude()-direction_point.longitude();
 		return Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
 	}
 	
 	
-	protected void updateDrone(Position curr_Pos, Direction d) {
+	protected void updateDrone(Direction d) {
 		this.movesLeft = getMovesLeft()-1;
 		System.out.print("moves left:");
 		System.out.println(this.movesLeft);
@@ -246,8 +278,10 @@ abstract public class Drone {
 		//System.out.println(curr_Pos.latitude);
 		//System.out.println(curr_Pos.longitude);
 				
-		movesHistory.add(convertToPoint(curr_Pos));
+		//movesHistory.add(convertToPoint(this.currentPos));
 		//System.out.println(convertToPoint(curr_Pos).coordinates());
+		//System.out .print(this.currentPos.latitude);
+		//System.out .print(this.currentPos.longitude);
 
 		directionHistory.add(d);
 		powerHistory.add(this.power);
@@ -255,8 +289,12 @@ abstract public class Drone {
 	}
 	
 	public static Direction getRandomDirection(Integer seed) {
-	    Random random = new Random(seed);
+	    //Random random = new Random(seed);
+		Random random = new Random();
 	    int i = random.nextInt(16);
+	    System.out.print(".............");
+	    System.out.print(i);
+	    System.out.print(Arrays.asList(Direction.values()).get(i));
 	    return Arrays.asList(Direction.values()).get(i);
 	}
 	

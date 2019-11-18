@@ -54,20 +54,6 @@ public class App {
         return result.toString();
     }
 	
-	
-	
-	private static LineString createBounds() {
-		// test from left top corner to right bottom corner
-		List<Point> points = new ArrayList<Point>();
-		// longitude, latitude
-		points.add(Point.fromLngLat(-3.192473, 55.946233));
-		points.add(Point.fromLngLat(-3.184319, 55.946233));
-		points.add(Point.fromLngLat(-3.184319, 55.942617));
-		points.add(Point.fromLngLat(-3.192473, 55.942617));
-		points.add(Point.fromLngLat(-3.192473, 55.946233));
-		return LineString.fromLngLats(points);
-	}
-	
 	protected static List<ChargingStation> Create_Stations_List(FeatureCollection fc) {
 		List <ChargingStation> Stations = new ArrayList <ChargingStation>();
 		for (Feature f : fc.features()) {
@@ -104,31 +90,38 @@ public class App {
     	ArrayList<Feature> features = (ArrayList<Feature>) fc.features();
     	
     	List <ChargingStation> Stations = Create_Stations_List(fc);
-    	
+		Position initPos = new Position(lat, lon);
+
 		//System.out.print(drone_type.toCharArray());
-		String path= "";
-		String map = "";
-		String txt="";
-		if (drone_type.contains("stateless")) {
-			System.out.print("Start Game");
-			Position initPos = new Position(lat, lon);
-			System.out.print(initPos);
-			//System.out.println(Stations);
-			//Position currentPos, Integer moves, Double coins, Double power, Integer seed, List <ChargingStation> Stations,
-			StatelessDrone stateless = new StatelessDrone(initPos, 0.0, 0.0,seed, Stations);
-			stateless.startGame(lat, lon);
-			map = converttofile(stateless.movesHistory, features);
-			txt=stateless.totxt();
-			path="stateless"+day+month+year;
-		} 
-		String filepath = "/afs/inf.ed.ac.uk/user/s17/s1705544/Documents/powergrab/"+path;
-		PrintWriter writer1 = new PrintWriter(filepath + ".geojson");
-		writer1.println(map);
-		writer1.close();
-		PrintWriter writer2 = new PrintWriter(filepath + ".txt");
-		writer2.println(txt);
-		writer2.close();
-		System.out.print("game over");
+    	if(initPos.inPlayArea()) {
+
+			String path= "";
+			String map = "";
+			String txt="";
+			if (drone_type.contains("stateless")) {
+				System.out.print("Start Game");
+				System.out.print(initPos.latitude);
+				System.out.print(initPos.longitude);
+	
+				//System.out.println(Stations);
+				//Position currentPos, Integer moves, Double coins, Double power, Integer seed, List <ChargingStation> Stations,
+				StatelessDrone stateless = new StatelessDrone(initPos, 0.0, 0.0,seed, Stations);
+				stateless.startGame(lat, lon);
+				map = converttofile(stateless.movesHistory, features);
+				txt=stateless.totxt();
+				path="stateless"+day+month+year;
+			} 
+			//String filepath = "/afs/inf.ed.ac.uk/user/s17/s1705544/Documents/powergrab/"+path;
+			String filepath = "C:\\Users\\Jenny\\Downloads\\"+path;
+
+			PrintWriter writer1 = new PrintWriter(filepath + ".geojson");
+			writer1.println(map);
+			writer1.close();
+			PrintWriter writer2 = new PrintWriter(filepath + ".txt");
+			writer2.println(txt);
+			writer2.close();
+			System.out.print("game over");
+    	}
 	}
 	
 	
@@ -149,8 +142,7 @@ public class App {
 		for (int i=0; i<movesHistory.size()-1;i++) {
 			jsonfile +=  movesHistory.get(i).coordinates() + ", ";
 		}
-
-		jsonfile+= movesHistory.get(249).coordinates() + "] },\n" + 
+		jsonfile+= movesHistory.get(movesHistory.size()-1).coordinates() + "] },\n" + 
 				"      \"properties\": {\n" + 
 				"        \"prop0\": \"value0\",\n" + 
 				"        \"prop1\": 0.0\n" + 
