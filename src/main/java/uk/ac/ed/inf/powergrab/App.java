@@ -85,6 +85,8 @@ public class App {
     	
     	String mapString = String.format("http://homepages.inf.ed.ac.uk/stg/powergrab/%s/%s/%s/powergrabmap.geojson",
 				year, month, day);
+    	
+    	new Game(mapString);
     	// Prepare charging station
     	FeatureCollection fc = parseGeoJSON(day, month, year);
     	ArrayList<Feature> features = (ArrayList<Feature>) fc.features();
@@ -107,7 +109,7 @@ public class App {
 				//Position currentPos, Integer moves, Double coins, Double power, Integer seed, List <ChargingStation> Stations,
 				StatelessDrone stateless = new StatelessDrone(initPos, 0.0, 0.0,seed, Stations);
 				stateless.startGame(lat, lon);
-				map = converttofile(stateless.movesHistory, features);
+				map =converttofile(stateless.movesHistory, features);
 				txt=stateless.totxt();
 				path="stateless"+day+month+year;
 			} 
@@ -123,39 +125,40 @@ public class App {
 			System.out.print("game over");
     	}
 	}
-	
-	
-	public static String converttofile(ArrayList<Point> movesHistory,ArrayList<Feature> features ){
-    	ArrayList<Point> pointsMoved = new ArrayList<Point>();
-		String jsonfile = "";
-		jsonfile += "{\n" + 
-				"  \"type\": \"FeatureCollection\",\n" + 
-				"  \"date-generated\": \"Sun Sep 15 2019\",\n" + 
-				"  \"features\": [\n" + 
-				"    \n" + 
-				"    \n" + 
-				"      {\n" + 
-				"      \"type\": \"Feature\",\n" + 
-				"      \"geometry\": {\n" + 
-				"        \"type\": \"LineString\",\n" + 
-				"        \"coordinates\": [" ;
-		for (int i=0; i<movesHistory.size()-1;i++) {
-			jsonfile +=  movesHistory.get(i).coordinates() + ", ";
-		}
-		jsonfile+= movesHistory.get(movesHistory.size()-1).coordinates() + "] },\n" + 
-				"      \"properties\": {\n" + 
-				"        \"prop0\": \"value0\",\n" + 
-				"        \"prop1\": 0.0\n" + 
-				"      }\n" + 
-				"    },";
-		for (int x =0; x<features.size()-1; x++)
-		{
-			jsonfile+= features.get(x).toJson() + ",";
-		}
-		jsonfile+= features.get(features.size()-1).toJson() + "]}";
 
-		return jsonfile;
-	}
+	 private static String converttofile(ArrayList<Point> movesHistory, ArrayList<Feature> allFeatures ){
+	    	ArrayList<Point> pointsMoved = new ArrayList<Point>();
+			String jsonfile = "";
+			jsonfile += "{\n" + 
+					"  \"type\": \"FeatureCollection\",\n" + 
+					"  \"date-generated\": \"Sun Sep 15 2019\",\n" + 
+					"  \"features\": [\n" + 
+					"    \n" + 
+					"    \n" + 
+					"      {\n" + 
+					"      \"type\": \"Feature\",\n" + 
+					"      \"geometry\": {\n" + 
+					"        \"type\": \"LineString\",\n" + 
+					"        \"coordinates\": [" ;
+			for (int i=0; i<movesHistory.size()-1;i++) {
+				jsonfile +=  movesHistory.get(i).coordinates() + ", ";
+			}
+			jsonfile+= movesHistory.get(movesHistory.size()-1).coordinates() + "] },\n" + 
+					"      \"properties\": {\n" + 
+					"        \"prop0\": \"value0\",\n" + 
+					"        \"prop1\": 0.0\n" + 
+					"      }\n" + 
+					"    },";
+			for (int x =0; x< allFeatures.size()-1; x++)
+			{
+				jsonfile+= allFeatures.get(x).toJson() + ",";
+			}
+			jsonfile+= allFeatures.get(allFeatures.size()-1).toJson() + "]}";
+			return jsonfile;
+		}
+
+	
+	
 	
 }
 	

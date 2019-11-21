@@ -22,13 +22,11 @@ public class StatelessDrone extends Drone{
 		System.out.println("Round 1");
 		directionDecision(lat, lon);
 		int c = 1;
-		while (!isFinished()) {
+		while (!isFinished() && c<250) {
 		//for(int i =0; i < 5; i++) {
 			c++;
 			System.out.print("Round ");
 			System.out.println(c);
-			System.out.println(this.currentPos.latitude);
-			System.out.print(this.currentPos.longitude);
 			
 			directionDecision(this.currentPos.longitude, this.currentPos.latitude);
 

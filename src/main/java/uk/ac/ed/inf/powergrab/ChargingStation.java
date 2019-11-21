@@ -21,25 +21,25 @@ public class ChargingStation {
 	public double power;
 	public String marker;
 	List <ChargingStation> Stations = new ArrayList <ChargingStation>();
-	public static double get_coins(ChargingStation f) {
+	public double get_coins(ChargingStation f) {
 		//return f.getProperty("coins").toString();
 		return f.coins;
 	}
 	
-	public static double get_power(ChargingStation f) {
+	public double get_power(ChargingStation f) {
 		return f.power;
 	}
 	
-	public static String get_marker(ChargingStation f) {
+	public String get_marker(ChargingStation f) {
 		return f.marker;
 	}
 	
-	public static Position pos(ChargingStation f) {
+	public Position pos(ChargingStation f) {
 		return f.pos;
 	}
 	
-	protected void setCoins(ChargingStation f, Double coins) { this.coins = coins;}
-	protected void setPower(ChargingStation f, Double power) { this.power = power;}
+	protected void setCoins(ChargingStation f, Double coins) { f.coins = coins;}
+	protected void setPower(ChargingStation f, Double power) { f.power = power;}
 	protected void setMarker(ChargingStation f, String marker) { this.marker = marker;}
 	protected void setPos(ChargingStation f, Position pos) { this.pos = pos;}
 	
