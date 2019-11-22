@@ -21,27 +21,27 @@ public class ChargingStation {
 	public double power;
 	public String marker;
 	List <ChargingStation> Stations = new ArrayList <ChargingStation>();
-	public double get_coins(ChargingStation f) {
+	public double get_coins() {
 		//return f.getProperty("coins").toString();
-		return f.coins;
+		return this.coins;
 	}
 	
-	public double get_power(ChargingStation f) {
-		return f.power;
+	public double get_power() {
+		return this.power;
 	}
 	
-	public String get_marker(ChargingStation f) {
-		return f.marker;
+	public String get_marker() {
+		return this.marker;
 	}
 	
-	public Position pos(ChargingStation f) {
-		return f.pos;
+	public Position pos() {
+		return this.pos;
 	}
 	
-	protected void setCoins(ChargingStation f, Double coins) { f.coins = coins;}
-	protected void setPower(ChargingStation f, Double power) { f.power = power;}
-	protected void setMarker(ChargingStation f, String marker) { this.marker = marker;}
-	protected void setPos(ChargingStation f, Position pos) { this.pos = pos;}
+	protected void setCoins(Double coins) { this.coins = coins;}
+	protected void setPower(Double power) { this.power = power;}
+	protected void setMarker(String marker) { this.marker = marker;}
+	protected void setPos(Position pos) { this.pos = pos;}
 	
 	Map<String,Object> getStationMap() {
         Map<String,Object> stationData = new HashMap<>();

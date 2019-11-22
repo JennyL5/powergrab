@@ -58,12 +58,12 @@ public class App {
 		List <ChargingStation> Stations = new ArrayList <ChargingStation>();
 		for (Feature f : fc.features()) {
 			ChargingStation c = new ChargingStation();
-			c.setCoins(c, f.getProperty("coins").getAsDouble());
-			c.setPower(c, f.getProperty("power").getAsDouble());
-			c.setMarker(c, f.getProperty("marker-symbol").getAsString());
+			c.setCoins(f.getProperty("coins").getAsDouble());
+			c.setPower(f.getProperty("power").getAsDouble());
+			c.setMarker(f.getProperty("marker-symbol").getAsString());
 			Point point = (Point) f.geometry();
 			Position p = new Position (point.latitude(), point.longitude());
-			c.setPos(c, p);
+			c.setPos(p);
 			//System.out.print(c.coins);
 			//System.out.print(c.power);
 			Stations.add(c);
@@ -108,13 +108,13 @@ public class App {
 				//System.out.println(Stations);
 				//Position currentPos, Integer moves, Double coins, Double power, Integer seed, List <ChargingStation> Stations,
 				StatelessDrone stateless = new StatelessDrone(initPos, 0.0, 0.0,seed, Stations);
-				stateless.startGame(lat, lon);
+				stateless.startGame();
 				map =converttofile(stateless.movesHistory, features);
 				txt=stateless.totxt();
 				path="stateless"+day+month+year;
 			} 
-			//String filepath = "/afs/inf.ed.ac.uk/user/s17/s1705544/Documents/powergrab/"+path;
-			String filepath = "C:\\Users\\Jenny\\Downloads\\"+path;
+			String filepath = "/afs/inf.ed.ac.uk/user/s17/s1705544/Documents/powergrab/"+path;
+			//String filepath = "C:\\Users\\Jenny\\Downloads\\"+path;
 
 			PrintWriter writer1 = new PrintWriter(filepath + ".geojson");
 			writer1.println(map);

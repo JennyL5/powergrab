@@ -17,18 +17,20 @@ public class StatelessDrone extends Drone{
 
 	}
 
-	public void startGame(Double lat, Double lon) throws IOException {
+	public void startGame() throws IOException {
 		// TODO Auto-generated method stub
 		System.out.println("Round 1");
-		directionDecision(lat, lon);
+		directionDecision();
 		int c = 1;
-		while (!isFinished() && c<250) {
+		while (!isFinished() ) {
 		//for(int i =0; i < 5; i++) {
 			c++;
 			System.out.print("Round ");
 			System.out.println(c);
-			
-			directionDecision(this.currentPos.longitude, this.currentPos.latitude);
+			System.out.println(this.currentPos.latitude);
+			System.out.println(this.currentPos.longitude);
+
+			directionDecision();
 
 
 		}
