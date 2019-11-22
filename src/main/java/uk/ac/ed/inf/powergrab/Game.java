@@ -30,7 +30,6 @@ public class Game {
     }
     
 
-
 	 private static String getMap(String urlString) {
 	
 	    StringBuilder result = new StringBuilder();
@@ -55,8 +54,8 @@ public class Game {
 	
 	    return result.toString();
 	}
-	 /*
-	 private static String converttofile(ArrayList<Point> movesHistory ){
+	 
+	 public  String convertToFile(ArrayList<Point> movesHistory ){
 	    	ArrayList<Point> pointsMoved = new ArrayList<Point>();
 			String jsonfile = "";
 			jsonfile += "{\n" + 
@@ -85,7 +84,7 @@ public class Game {
 			}
 			jsonfile+= this.allFeatures.get(this.allFeatures.size()-1).toJson() + "]}";
 			return jsonfile;
-		}*/
+		}
 
 
 }
