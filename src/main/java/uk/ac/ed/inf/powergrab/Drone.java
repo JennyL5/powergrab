@@ -130,7 +130,7 @@ abstract public class Drone {
 	}
 	
 	// gets a random direction that is absent from the Directions from input HashMap
-	protected ArrayList<Direction> avoidBadDirection( ArrayList <Direction> badDir) {
+	protected static ArrayList<Direction> avoidBadDirection( ArrayList <Direction> badDir) {
 		//Set<Direction> keys = (Set<Direction>) BadDirectionCharging.keySet();
 		//ArrayList <Direction> badDir = new ArrayList <Direction> (keys);
 		ArrayList <Direction> notBadDir = new ArrayList <Direction>();
@@ -177,6 +177,7 @@ abstract public class Drone {
 	
 	// updates drone's movesLeft, power, and adds to their history
 	protected void updateDrone(Direction d) {
+		System.out.print("update drone");
 		this.movesLeft = getMovesLeft() - 1;
 		System.out.println("moves left:");
 		System.out.println(this.movesLeft);
@@ -278,6 +279,7 @@ abstract public class Drone {
 		for (int i = 0; i <= this.movesHistory.size() - 2; i++) {
 			String lat1 = Double.toString(this.movesHistory.get(i).latitude());
 			String lon1 = Double.toString(this.movesHistory.get(i).longitude());
+			System.out.print(i);
 			String dir = this.directionHistory.get(i).toString();
 			String lat2 = Double.toString(this.movesHistory.get(i + 1).latitude());
 			String lon2 = Double.toString(this.movesHistory.get(i + 1).longitude());

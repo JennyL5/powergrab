@@ -20,141 +20,122 @@ public class StatefulDrone extends Drone {
 
 	public void startGame() throws IOException {
 		int c = 0;
-		while (!isFinished() ) {
+        ArrayList <ChargingStation> goodStations = (ArrayList<ChargingStation>) goodStations();
+
+		while (!isFinished()  ) {
 			c++;
 			System.out.println("Round ");
 			System.out.println(c);
 			System.out.println(this.currentPos.latitude);
 			System.out.println(this.currentPos.longitude);
-			strategy();
+			strategy(goodStations);
 		}
 	}
 	
-	public void strategy() throws IOException {
+	public void strategy(ArrayList <ChargingStation> goodStations) throws IOException {
+
 		// for each direction // find nearby stations
-		
+		HashMap<ChargingStation, Double> distanceOfGoodStations = new HashMap<ChargingStation, Double>();
+
 		HashMap<Direction, ChargingStation> goodStationsInRange = new HashMap<Direction, ChargingStation>();
 		HashMap<Direction, ChargingStation> badStationsInRange = new HashMap<Direction, ChargingStation>();
+
 		for (Direction d : Direction.values()) {
 			// find nearest (good) stations from that d within rANGE
-			HashMap<Direction, ChargingStation>  goodStationsNearby = (findStationsInRange(goodStations(), d));
+			HashMap<Direction, ChargingStation>  goodStationsNearby = (findStationsInRange(goodStations, d));
 			goodStationsInRange.putAll(goodStationsNearby);
 			HashMap<Direction, ChargingStation>  badStationsNearby = (findStationsInRange(badStations(), d));
 			badStationsInRange.putAll(badStationsNearby);
 		}
-		
-		//ArrayList<Direction> goodDirections = new ArrayList<Direction>(goodStationsInRange.keySet());
-		//ArrayList <Direction> badDirections = new ArrayList<Direction>(badStationsInRange.keySet());
-
-		
-		//:D
-		DecimalFormat df = new DecimalFormat("#.####");
-		HashMap<ChargingStation, Double> goodStationsCoins = new HashMap<ChargingStation, Double>();
-		HashMap<ChargingStation, Double> distanceOfGoodStations = new HashMap<ChargingStation, Double>();
-		HashMap<ChargingStation, Double> greenessOfGoodStations = new HashMap<ChargingStation, Double>();
-
-		for (ChargingStation a : goodStations()) { 
-        	//goodStationsCoins.put(a, a.getCoins());
-        	Double distance = calculateDistanceToStation(a.getPos());
+		System.out.println("Good stations");
+		System.out.println(goodStations.size());
+		for (ChargingStation a : goodStations) { 
+        	Double distance = getRange(convertToPoint(this.currentPos), convertToPoint(a.pos));
         	distanceOfGoodStations.put(a, distance);
-        	//greenessOfGoodStations.put(a,Double.valueOf(Color.decode(a.getColour()).getGreen()));
         }
 		
 		// sort good CS by nearest
 		distanceOfGoodStations = sortByValue(distanceOfGoodStations);
-		// get ave distance
-		
-		List<Object> distances = Arrays.asList(((distanceOfGoodStations.values().toArray())));
-        
         // move to nearest charging station (min dist)
-        ChargingStation goal = (ChargingStation) distanceOfGoodStations.keySet().toArray()[0];
+		System.out.print(distanceOfGoodStations.size());
+	
+		if (distanceOfGoodStations.size()==0){
+			// no more good stations
+			System.out.print("no more good stations to go to");
+			ArrayList<Direction> goodDirections = new ArrayList<Direction>(goodStationsInRange.keySet());
 
+			Direction maxDir = getRandomDirection();
+			for (Direction d : goodDirections) {
+				ChargingStation cs = goodStationsInRange.get(d);
+				
+				if (getRange(convertToPoint(this.currentPos), convertToPoint(cs.pos)) < 0.00025) {
+					maxDir = d;
+
+					System.out.println("maxDir-- ");
+					System.out.println(maxDir);
+				}
+			}
+			System.out.println("maxDir");
+			System.out.println(maxDir);
+			updateDrone(maxDir);
+
+			
+		} else {
+		
+	        ChargingStation goal = (ChargingStation) distanceOfGoodStations.keySet().toArray()[0];
+	        Direction minDir = findMinDirection(badStationsInRange, goal);
+	        if (minDir.equals(null)){
+	        	System.out.println("ERROR: no direction to take, as no direction is found for min distance");
+	        } else {
+	        	// move to
+	        	System.out.print("minDir");
+	        	System.out.println(minDir);
+	        	System.out.println("move the drone");
+				Position newPos = this.currentPos.nextPosition(minDir);
+				if (this.currentPos.inPlayArea()) {
+		        	// check if goal station is within range
+					System.out.print("hi");
+					if (getRange(convertToPoint(this.currentPos), convertToPoint(goal.pos))<0.0025) {
+		        		// move to near station
+						System.out.println("Collect from station");
+						moveDrone(minDir, goal);
+						updateStation(goal);
+						setCurrentPos(newPos);
+						goodStations.remove(goal);
+		        	} else {
+		        		// mvoe closer
+		        		System.out.println("moving closer");
+						updateDrone(minDir);
+						setCurrentPos(newPos);
+		        	}
+				} else {
+					System.out.print("outside play area");
+				}
+	        }
+		}
+	}
+	
+
+	
+	public Direction findMinDirection(HashMap<Direction, ChargingStation> badStationsInRange, ChargingStation goal) {
         ArrayList<Direction> badDirectionsInRange = new ArrayList<Direction>(badStationsInRange.keySet());
         ArrayList <Direction> avoidBadDirections = avoidBadDirection(badDirectionsInRange);
         Direction minDir = null;
         double distance = Double.MAX_VALUE;
        
-        // check coins value or reomve from good stations
-        
         // Find the direction to take with the min distance to CS (avoids negative)
         for ( Direction d : avoidBadDirections) {
         	// find min d to get to CS
-        	Double dist = calculateDistanceToStation(goal.pos);
+        	Double dist = getRange(convertToPoint(this.currentPos.nextPosition(d)), convertToPoint(goal.pos));
         	if (dist < distance) {
+        		System.out.print(d);
         		distance = dist;
         		minDir = d;
         	}
 
         }
-        
-        
-        if (minDir.equals(null)){
-        	System.out.println("ERROR: no direction to take, as no direction is found for min distance");
-        } else {
-        	// move to
-        	System.out.println("move");
-			Position newPos = this.currentPos.nextPosition(minDir);
-			if (newPos.inPlayArea()) {
-	        	// check if goal station is within range
-				if (getRange(convertToPoint(newPos), convertToPoint(goal.pos))<0.0025) {
-	        		// move to near station
-					System.out.println("Collect from station");
-					moveDrone(minDir, goal);
-					updateStation(goal);
-					setCurrentPos(newPos);
-	        	} else {
-	        		// mvoe closer
-	        		System.out.println("moving closer");
-					updateDrone(minDir);
-	        	}
-			}
-        }
+		return minDir;
 	}
-	
-	
-	public Position pythagoras (Position nextNextPos) {
-		Double r = 0.0003;
-		Double pyth =Math.sqrt(r*r - r*r);  
-		double lat = nextNextPos.latitude+pyth;
-		return new Position (lat, nextNextPos.longitude);
-	}
-	
-	public void minAngle() { 
-	   	Direction E = null;
-		Position axisE = this.currentPos.nextPosition(E);
-		
-    	Direction W = null;
-		Position axisW = this.currentPos.nextPosition(W);
-        
-        for (Direction d : Direction.values()) {
-        	Position hypotenuse = this.currentPos.nextPosition(d);
-        }
-	}
-	
-	public Double calculateAverage(List<Object> distances) {
-		Double sum = 0.0;
-		Double ave = 0.0;
-		DecimalFormat df = new DecimalFormat("#0.######");
-		for (Object i : distances) {
-			//System.out.println(i);
-		    sum+=(Double)i;
-		}
-		//System.out.println(df.format(sum));
-		if(distances.isEmpty()){
-			ave=null;
-		    System.out.println("List is empty");
-		} else {
-			ave = sum/(float)distances.size();
-		    System.out.println("Average found is " + ave); 
-		}
-		return ave;
-	}
-	
-	public Double calculateDistanceToStation(Position stationPos) {
-		Double distance = getRange(convertToPoint(this.currentPos), convertToPoint(stationPos));
-		return distance;
-	}
-	
 	
 	public static HashMap<ChargingStation, Double> sortByValue(HashMap<ChargingStation, Double> hm) 
     { 
