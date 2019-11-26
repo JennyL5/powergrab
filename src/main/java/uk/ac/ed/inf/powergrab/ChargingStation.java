@@ -5,6 +5,7 @@ public class ChargingStation {
 	public double coins;
 	public double power;
 	public String marker;
+	public String colour;
 	
 	// getters
 	public double getCoins() {
@@ -23,11 +24,15 @@ public class ChargingStation {
 		return this.pos;
 	}
 	
+	public String getColour() {
+		return this.colour;
+	}
 	// setters
 	protected void setCoins(Double coins) { this.coins = coins;}
 	protected void setPower(Double power) { this.power = power;}
 	protected void setMarker(String marker) { this.marker = marker;}
 	protected void setPos(Position pos) { this.pos = pos;}
+	protected void setColour(String colour) { this.colour = colour;}
 
 	
 	

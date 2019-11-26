@@ -128,10 +128,23 @@ abstract public class Drone {
 		Direction randomDir = notBadDir.get(num);
 		return randomDir;
 	}
+	
+	// gets a random direction that is absent from the Directions from input HashMap
+	protected ArrayList<Direction> avoidBadDirection( ArrayList <Direction> badDir) {
+		//Set<Direction> keys = (Set<Direction>) BadDirectionCharging.keySet();
+		//ArrayList <Direction> badDir = new ArrayList <Direction> (keys);
+		ArrayList <Direction> notBadDir = new ArrayList <Direction>();
+		System.out.println(badDir.size());
+		for (Direction d : Direction.values()) {
+			if (!badDir.contains(d)){
+				notBadDir.add(d);
+			}
+		}
+		return notBadDir;
+	}
 
-	// updates power and coins of charging station
+	// updates power and coins of charging station // move to CS
 	protected void updateStation(ChargingStation maxFeat) {
-		System.out.println(Stations.size());
 		for (ChargingStation CS : Stations) {
 			if (CS.pos.equals(maxFeat.pos)) {
 				if (CS.getCoins() > 0) {
@@ -143,7 +156,6 @@ abstract public class Drone {
 					// CS.power is negative
 					CS.setCoins(this.coins-CS.coins);
 					System.out.println("-----Charging Station: ");
-
 					System.out.println("coins: ");
 					System.out.println(CS.getCoins());	
 				}
@@ -172,6 +184,7 @@ abstract public class Drone {
 		this.power = getPower() - 1.25;
 		System.out.println("power: ");
 		System.out.println(this.power);
+		movesHistory.add(convertToPoint(this.currentPos));
 		directionHistory.add(d);
 		powerHistory.add(this.power);
 		coinsHistory.add(this.coins);
@@ -184,7 +197,6 @@ abstract public class Drone {
 		this.power = total_power;
 		Double total_coins = this.coins + c.getCoins();
 		this.coins = total_coins;
-		movesHistory.add(convertToPoint(this.currentPos));
 		System.out.println("coins:");
 		System.out.println(this.coins);
 		updateDrone(d);
@@ -192,7 +204,6 @@ abstract public class Drone {
 	
 	// move drone randomly given random direction
 	protected void moveDroneRandomly(Direction d) {
-		movesHistory.add(convertToPoint(this.currentPos));
 		System.out.println("coins: ");
 		System.out.println(this.coins);
 		updateDrone(d);
