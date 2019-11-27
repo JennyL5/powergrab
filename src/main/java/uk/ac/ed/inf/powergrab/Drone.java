@@ -115,6 +115,14 @@ abstract public class Drone {
 	
 	// gets a random direction that is absent from the Directions from input HashMap
 	protected Direction randDirection( ArrayList <Direction> badDir) {
+		ArrayList <Direction> notBadDir = avoidBadDirection(badDir);
+		int num = this.random.nextInt(notBadDir.size());
+		Direction randomDir = notBadDir.get(num);
+		return randomDir;
+	}
+	
+	// gets a random direction that is absent from the Directions from input HashMap
+	protected ArrayList<Direction> avoidBadDirection( ArrayList <Direction> badDir) {
 		ArrayList <Direction> notBadDir = new ArrayList <Direction>();
 		System.out.println(badDir.size());
 		for (Direction d : Direction.values()) {
@@ -122,14 +130,11 @@ abstract public class Drone {
 				notBadDir.add(d);
 			}
 		}
-		int num = this.random.nextInt(notBadDir.size());
-		Direction randomDir = notBadDir.get(num);
-		return randomDir;
+		return notBadDir;
 	}
 	
-	
-	// Moves in a direction without bad charging stations
-	public void avoidBadStations(ArrayList<Direction> badDirections) {
+	// method for drone moving in random directions but avoiding bad stations
+	public Direction avoidBadStations(ArrayList<Direction> badDirections) {
 		// Avoid bad stations
 		// get random d from not directions of BadDirectionCharging
 		// find random station from directions absent from BadDirectionCharging
@@ -141,10 +146,10 @@ abstract public class Drone {
 			randomDir = randDirection(badDirections);
 			newPos = this.currentPos.nextPosition(randomDir);
 		}
-		moveDroneRandomly(randomDir); 
-		setCurrentPos(newPos);
+		return randomDir;
 	}
-
+	
+	
 	// updates power and coins of charging station // move to CS
 	protected void updateStation(ChargingStation maxFeat) {
 		for (ChargingStation CS : Stations) {
@@ -281,7 +286,6 @@ abstract public class Drone {
 	// generates random direction for movement
 	protected Direction getRandomDirection() {
 		int i = this.random.nextInt(16);
-		// System.out.println(Arrays.asList(Direction.values()).get(i));
 		return Arrays.asList(Direction.values()).get(i);
 	}
 
