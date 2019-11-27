@@ -1,10 +1,7 @@
 package uk.ac.ed.inf.powergrab;
 
-import java.awt.Color;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -22,7 +19,7 @@ public class StatefulDrone extends Drone {
 		int c = 0;
         ArrayList <ChargingStation> goodStations = (ArrayList<ChargingStation>) goodStations();
 
-		while (!isFinished()  ) {
+		while (!isFinished() ) {
 			c++;
 			System.out.println("Round ");
 			System.out.println(c);
@@ -47,6 +44,7 @@ public class StatefulDrone extends Drone {
 			HashMap<Direction, ChargingStation>  badStationsNearby = (findStationsInRange(badStations(), d));
 			badStationsInRange.putAll(badStationsNearby);
 		}
+		
 		System.out.println("Good stations");
 		System.out.println(goodStations.size());
 		for (ChargingStation a : goodStations) { 
@@ -59,43 +57,52 @@ public class StatefulDrone extends Drone {
         // move to nearest charging station (min dist)
 		System.out.print(distanceOfGoodStations.size());
 	
+		Direction lastDir = null;
+		ChargingStation lastGoal = null;
+
+
+		
 		if (distanceOfGoodStations.size()==0){
 			// no more good stations
 			System.out.print("no more good stations to go to");
-			ArrayList<Direction> goodDirections = new ArrayList<Direction>(goodStationsInRange.keySet());
 
-			Direction maxDir = getRandomDirection();
-			for (Direction d : goodDirections) {
-				ChargingStation cs = goodStationsInRange.get(d);
-				
-				if (getRange(convertToPoint(this.currentPos), convertToPoint(cs.pos)) < 0.00025) {
-					maxDir = d;
-
-					System.out.println("maxDir-- ");
-					System.out.println(maxDir);
-				}
+			//directionHistory.get(250-movesLeft-1);
+			
+	        ArrayList<Direction> badDirectionsInRange = new ArrayList<Direction>(badStationsInRange.keySet());
+	        //ArrayList <Direction> avoidBadDirections = avoidBadDirection(badDirectionsInRange);
+	        Direction maxDir = randDirection(badDirectionsInRange);
+	        Position newPos = this.currentPos.nextPosition(maxDir);
+	        
+			while (!newPos.inPlayArea()) {
+		        maxDir = randDirection(badDirectionsInRange);
+		        newPos = this.currentPos.nextPosition(maxDir);
 			}
+
 			System.out.println("maxDir");
 			System.out.println(maxDir);
 			updateDrone(maxDir);
-
+			setCurrentPos(newPos);
+			System.out.print("coins");
+			System.out.println(this.coins);
 			
 		} else {
 		
 	        ChargingStation goal = (ChargingStation) distanceOfGoodStations.keySet().toArray()[0];
 	        Direction minDir = findMinDirection(badStationsInRange, goal);
+	        
+	    	
 	        if (minDir.equals(null)){
 	        	System.out.println("ERROR: no direction to take, as no direction is found for min distance");
 	        } else {
 	        	// move to
-	        	System.out.print("minDir");
+	        	System.out.println("minDir");
 	        	System.out.println(minDir);
 	        	System.out.println("move the drone");
 				Position newPos = this.currentPos.nextPosition(minDir);
-				if (this.currentPos.inPlayArea()) {
+				if (newPos.inPlayArea()) {
 		        	// check if goal station is within range
 					System.out.print("hi");
-					if (getRange(convertToPoint(this.currentPos), convertToPoint(goal.pos))<0.0025) {
+					if (getRange(convertToPoint(newPos), convertToPoint(goal.pos))<0.00025) {
 		        		// move to near station
 						System.out.println("Collect from station");
 						moveDrone(minDir, goal);
@@ -107,14 +114,58 @@ public class StatefulDrone extends Drone {
 		        		System.out.println("moving closer");
 						updateDrone(minDir);
 						setCurrentPos(newPos);
+						
 		        	}
 				} else {
 					System.out.print("outside play area");
+					//goodStations.remove(goal);
+					ChargingStation goal1 = (ChargingStation) distanceOfGoodStations.keySet().toArray()[1];
+			        Direction minDir1 = findMinDirection(badStationsInRange, goal);
+			        if (minDir.equals(null)){
+			        	System.out.println("ERROR: no direction to take, as no direction is found for min distance");
+			        } else {
+		
+			        	Position newPos1 = this.currentPos.nextPosition(minDir1);
+						if (newPos1.inPlayArea()) {
+				        	// check if goal station is within range
+							System.out.print("hi");
+							if (getRange(convertToPoint(newPos1), convertToPoint(goal1.pos))<0.00025) {
+				        		// move to near station
+								System.out.println("Collect from station");
+								moveDrone(minDir1, goal1);
+								updateStation(goal1);
+								setCurrentPos(newPos1);
+								goodStations.remove(goal1);
+				        	} else {
+				        		// mvoe closer
+				        		
+				        		System.out.println("moving closer");
+								updateDrone(minDir1);
+								setCurrentPos(newPos1);
+								
+				        	}
+						} else {
+				        	System.out.print("very stuuuuuuuck");
+
+						}
+			        }
+			       
 				}
 	        }
 		}
 	}
 	
+	// gets a random direction that is absent from the Directions from input HashMap
+	protected static ArrayList<Direction> avoidBadDirection( ArrayList <Direction> badDir) {
+		ArrayList <Direction> notBadDir = new ArrayList <Direction>();
+		System.out.println(badDir.size());
+		for (Direction d : Direction.values()) {
+			if (!badDir.contains(d)){
+				notBadDir.add(d);
+			}
+		}
+		return notBadDir;
+	}
 
 	
 	public Direction findMinDirection(HashMap<Direction, ChargingStation> badStationsInRange, ChargingStation goal) {

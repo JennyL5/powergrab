@@ -23,22 +23,7 @@ public class StatelessDrone extends Drone{
 			strategy();
 		}
 	}
-	
-	public void avoidBadStations(ArrayList<Direction> badDirections) {
-		// Avoid bad stations
-		// get random d from not directions of BadDirectionCharging
-		// find random station from directions absent from BadDirectionCharging
-		System.out.println("find random station from not directions of BadDirectionCharging");
-		Direction randomDir = randDirection(badDirections);
-		Position newPos = this.currentPos.nextPosition(randomDir);
 
-		while (!newPos.inPlayArea()) {
-			randomDir = randDirection(badDirections);
-			newPos = this.currentPos.nextPosition(randomDir);
-		}
-		moveDroneRandomly(randomDir); 
-		setCurrentPos(newPos);
-	}
 	
 	public void moveInAnyDirection() {
 		Direction d = getRandomDirection();

@@ -88,6 +88,17 @@ public class App {
 		writer2.println(txt);
 		writer2.close();
 		System.out.print("game over");
+		
+		/*public void writeToFile(String filename, String filepath, String contents) {
+	        try {
+	            FileWriter file = new FileWriter(filename);
+	            file.write(contents);
+	            file.close();
+	        }catch(Exception e) {
+	            System.out.println(e.toString());
+	        }
+	    }*/
+
 	}
 
 }

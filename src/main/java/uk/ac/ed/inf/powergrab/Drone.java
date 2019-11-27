@@ -115,8 +115,6 @@ abstract public class Drone {
 	
 	// gets a random direction that is absent from the Directions from input HashMap
 	protected Direction randDirection( ArrayList <Direction> badDir) {
-		//Set<Direction> keys = (Set<Direction>) BadDirectionCharging.keySet();
-		//ArrayList <Direction> badDir = new ArrayList <Direction> (keys);
 		ArrayList <Direction> notBadDir = new ArrayList <Direction>();
 		System.out.println(badDir.size());
 		for (Direction d : Direction.values()) {
@@ -129,18 +127,22 @@ abstract public class Drone {
 		return randomDir;
 	}
 	
-	// gets a random direction that is absent from the Directions from input HashMap
-	protected static ArrayList<Direction> avoidBadDirection( ArrayList <Direction> badDir) {
-		//Set<Direction> keys = (Set<Direction>) BadDirectionCharging.keySet();
-		//ArrayList <Direction> badDir = new ArrayList <Direction> (keys);
-		ArrayList <Direction> notBadDir = new ArrayList <Direction>();
-		System.out.println(badDir.size());
-		for (Direction d : Direction.values()) {
-			if (!badDir.contains(d)){
-				notBadDir.add(d);
-			}
+	
+	// Moves in a direction without bad charging stations
+	public void avoidBadStations(ArrayList<Direction> badDirections) {
+		// Avoid bad stations
+		// get random d from not directions of BadDirectionCharging
+		// find random station from directions absent from BadDirectionCharging
+		System.out.println("find random station from not directions of BadDirectionCharging");
+		Direction randomDir = randDirection(badDirections);
+		Position newPos = this.currentPos.nextPosition(randomDir);
+
+		while (!newPos.inPlayArea()) {
+			randomDir = randDirection(badDirections);
+			newPos = this.currentPos.nextPosition(randomDir);
 		}
-		return notBadDir;
+		moveDroneRandomly(randomDir); 
+		setCurrentPos(newPos);
 	}
 
 	// updates power and coins of charging station // move to CS
@@ -148,24 +150,39 @@ abstract public class Drone {
 		for (ChargingStation CS : Stations) {
 			if (CS.pos.equals(maxFeat.pos)) {
 				if (CS.getCoins() > 0) {
-					CS.setCoins(0.0);
+
 					System.out.println("-----Charging Station: ");
+					System.out.println("coins: ");
+					System.out.println(CS.getCoins());	
+					CS.setCoins(0.0);
 					System.out.println("coins: ");
 					System.out.println(CS.getCoins());	
 				} else {
 					// CS.power is negative
-					CS.setCoins(this.coins-CS.coins);
 					System.out.println("-----Charging Station: ");
+					System.out.println("coins: ");
+					System.out.println(CS.getCoins());	
+					CS.setCoins(this.coins-CS.coins);
 					System.out.println("coins: ");
 					System.out.println(CS.getCoins());	
 				}
 				
 				if (CS.getPower() > 0) {
+
+					System.out.println("power: ");
+					System.out.println(CS.getPower());
 					CS.setPower( 0.0);
 					System.out.println("power: ");
 					System.out.println(CS.getPower());
 				} else {
 					// CS.power is negative
+
+					System.out.println("power: ");
+					System.out.println(CS.getPower());
+					CS.setPower(this.power-CS.power);
+					System.out.println("power: ");
+					System.out.println(CS.getPower());
+				
 					CS.setPower(this.power-CS.power);
 					System.out.println("power: ");
 					System.out.println(CS.getPower());
@@ -279,7 +296,6 @@ abstract public class Drone {
 		for (int i = 0; i <= this.movesHistory.size() - 2; i++) {
 			String lat1 = Double.toString(this.movesHistory.get(i).latitude());
 			String lon1 = Double.toString(this.movesHistory.get(i).longitude());
-			System.out.print(i);
 			String dir = this.directionHistory.get(i).toString();
 			String lat2 = Double.toString(this.movesHistory.get(i + 1).latitude());
 			String lon2 = Double.toString(this.movesHistory.get(i + 1).longitude());

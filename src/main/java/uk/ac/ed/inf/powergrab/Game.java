@@ -4,6 +4,7 @@ package uk.ac.ed.inf.powergrab;
 import com.mapbox.geojson.*;
 
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -56,11 +57,13 @@ public class Game {
 	}
 	 
 	 public  String convertToFile(ArrayList<Point> movesHistory ){
-	    	ArrayList<Point> pointsMoved = new ArrayList<Point>();
+	        FeatureCollection full_map = FeatureCollection.fromFeatures(this.allFeatures);
+	  
+	        
+	        ArrayList<Point> pointsMoved = new ArrayList<Point>();
 			String jsonfile = "";
 			jsonfile += "{\n" + 
 					"  \"type\": \"FeatureCollection\",\n" + 
-					"  \"date-generated\": \"Sun Sep 15 2019\",\n" + 
 					"  \"features\": [\n" + 
 					"    \n" + 
 					"    \n" + 
@@ -85,6 +88,31 @@ public class Game {
 			jsonfile+= this.allFeatures.get(this.allFeatures.size()-1).toJson() + "]}";
 			return jsonfile;
 		}
+	 /*
+	  * public void writeToFile(String filename, String filepath, String contents) {
+        try {
+            FileWriter file = new FileWriter(filename);
+            file.write(contents);
+            file.close();
+        }catch(Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+
+	  */
+	 
+	 public String writeToFile(ArrayList<Point> movesHistory) {
+	        FeatureCollection full_map = FeatureCollection.fromFeatures(this.allFeatures);
+	        return "{\n" + fc + "\n" +
+	        		"features=" + "[{" + "\n" +
+	                     "type="+ "Feature" + "," +
+	                     "geometry=" + "{" + "\n" +
+	                       "type=" + "LineString" + "," +
+	                       "coordinates=" + movesHistory +"\n" +
+	        		//"type=" + fc.features() +	"\n" +        		
+	        		'}';
+	        		
+	 }
 
 
 }
