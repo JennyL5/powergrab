@@ -11,7 +11,8 @@ public class StatelessDrone extends Drone{
 	public StatelessDrone(Position currentPos, Integer seed, List <ChargingStation> Stations) throws IOException {
 		super(currentPos, seed, Stations);
 	}
-
+	
+	// starts the game
 	public void startGame() throws IOException {
 		int c = 0;
 		while (!isFinished() ) {
@@ -24,8 +25,7 @@ public class StatelessDrone extends Drone{
 		}
 	}
 	
-	
-	
+	// move the drone in any random direction
 	public void moveInAnyDirection() {
 		Direction d = getRandomDirection();
 		Position newPos = this.currentPos.nextPosition(d);
@@ -39,20 +39,18 @@ public class StatelessDrone extends Drone{
 		setCurrentPos(newPos);
 	}
 	
+	// the next move will put drone outside the play area
 	public void outsideArea(ArrayList<Direction>goodDirections, ArrayList<Direction>badDirections) {
-		System.out.print("Direction point outside play area");// ELSE DIRECTION POINT OUTSIDE PLAY AREA BUT CS IS IN PLAY AREA
-		//pick random direction that is not that is not the max
+		System.out.print("Direction point outside play area");
 		Direction randomDir = randDirection(goodDirections);
 		Position newPos = this.currentPos.nextPosition(randomDir);
-		// there is obviously a good nearby station but cannot reach
-		int c = 0; // counting in the case that drone is surrounded by negative stations
+		int c = 0; 
 		while (!newPos.inPlayArea()) {
 			c++;
 			if (c<16) {
 				randomDir = randDirection(goodDirections);
 				newPos = this.currentPos.nextPosition(randomDir);
 			} else {
-				// too many surrounding neg stations //moves randomly to not bad directions
 				while (!newPos.inPlayArea()) {
 					System.out.print("Just go through");
 					randomDir = randDirection(badDirections);
@@ -87,7 +85,6 @@ public class StatelessDrone extends Drone{
 		}
 		
 		if (!goodDirections.isEmpty()&& sta.getCoins() >0) {
-			// Find good CS with max coins
 			Position newPos = this.currentPos.nextPosition(maxCoinDirection);
 			if (newPos.inPlayArea()) {
 				System.out.println("move to closest good station");
@@ -95,18 +92,13 @@ public class StatelessDrone extends Drone{
 				updateStation(sta);
 				setCurrentPos(newPos);
 			} else {
-				// drone's next position is outside play area
 				outsideArea(goodDirections, badDirections);
 			}
 			
 		} else if((badStationsInRange.isEmpty() || badStationsInRange.size()==16) ){
-		// No bad stations nearby, move completely randomly
 			moveInAnyDirection();
 				
 		} else {
-			// Avoid bad stations
-			// get random d from not directions of BadDirectionCharging
-			// find random station from directions absent from BadDirectionCharging
 			Direction randomDir = avoidBadStations(badDirections);
 
 			moveDroneRandomly(randomDir); 

@@ -167,7 +167,7 @@ abstract public class Drone {
 					System.out.println("-----Charging Station: ");
 					System.out.println("coins: ");
 					System.out.println(CS.getCoins());	
-					CS.setCoins(this.coins-CS.coins);
+					CS.setCoins(0.0);
 					System.out.println("coins: ");
 					System.out.println(CS.getCoins());	
 				}
@@ -184,13 +184,12 @@ abstract public class Drone {
 
 					System.out.println("power: ");
 					System.out.println(CS.getPower());
-					CS.setPower(this.power-CS.power);
+					//CS.setPower(CS.power-this.power);
+					CS.setPower(0.0);
+
 					System.out.println("power: ");
 					System.out.println(CS.getPower());
 				
-					CS.setPower(this.power-CS.power);
-					System.out.println("power: ");
-					System.out.println(CS.getPower());
 				}
 			}
 		}
@@ -217,9 +216,9 @@ abstract public class Drone {
 	// move drone to direction of best charging station and charges drone
 	protected void moveDrone(Direction d, ChargingStation c) throws IOException {
 		Double total_power = this.power + c.getPower();
-		this.power = total_power;
+		setPower(total_power);
 		Double total_coins = this.coins + c.getCoins();
-		this.coins = total_coins;
+		setCoins( total_coins);
 		System.out.println("coins:");
 		System.out.println(this.coins);
 		updateDrone(d);
@@ -296,6 +295,7 @@ abstract public class Drone {
 	
 	// structure for writing to textfile
 	public String totxt() {
+		System.out.print(movesHistory.size());
 		String text = "";
 		for (int i = 0; i <= this.movesHistory.size() - 2; i++) {
 			String lat1 = Double.toString(this.movesHistory.get(i).latitude());
@@ -305,9 +305,18 @@ abstract public class Drone {
 			String lon2 = Double.toString(this.movesHistory.get(i + 1).longitude());
 			String coins = this.coinsHistory.get(i).toString();
 			String power = this.powerHistory.get(i).toString();
-			String movesLeft = this.movesLeftHistory.get(i).toString(); // to be removed
-			text += lat1 + ", " + lon1 + ", " + dir + ", " + lat2 + ". " + lon2 + ", " + coins + ", " + power + "\n" + movesLeft +"," + "\n";
+			text += lat1 + "," + lon1 + "," + dir + "," + lat2 + "," + lon2 + "," + coins + "," + power +"\n";
 		}
+		int moves = movesHistory.size()-1;
+		String lat1 = Double.toString(this.movesHistory.get(moves).latitude());
+		String lon1 = Double.toString(this.movesHistory.get(moves).longitude());
+		String dir = this.directionHistory.get(moves).toString();
+		String lat2 = Double.toString(this.currentPos.latitude);
+		String lon2 = Double.toString(this.currentPos.longitude);
+		String coins = this.coinsHistory.get(moves).toString();
+		String power = this.powerHistory.get(moves).toString();
+		text += lat1 + "," + lon1 + "," + dir + "," + lat2 + "," + lon2 + "," + coins + "," + power;
+
 		return text;
 	}
 
