@@ -1,219 +1,219 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="uk.ac.ed.inf.powergrab.AppTest" time="0.033" tests="30" errors="0" skipped="0" failures="30">
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite tests="30" failures="30" name="uk.ac.ed.inf.powergrab.AppTest" time="0.008" errors="0" skipped="0">
   <properties>
-    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
-    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_162\jre\bin"/>
-    <property name="java.vm.version" value="25.162-b12"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.232.b09-0.el7_7.x86_64/jre/lib/amd64"/>
+    <property name="java.vm.version" value="25.232-b09"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
-    <property name="maven.multiModuleProjectDirectory" value="C:\Users\Jenny\eclipse-workspace\powergrab"/>
+    <property name="maven.multiModuleProjectDirectory" value="/afs/inf.ed.ac.uk/user/s17/s1705544/Documents/powergrab"/>
     <property name="java.vendor.url" value="http://java.oracle.com/"/>
-    <property name="path.separator" value=";"/>
+    <property name="path.separator" value=":"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
-    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
     <property name="file.encoding.pkg" value="sun.io"/>
-    <property name="user.script" value=""/>
     <property name="user.country" value="GB"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
-    <property name="sun.os.patch.level" value=""/>
+    <property name="sun.os.patch.level" value="unknown"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="C:\Users\Jenny\eclipse-workspace\powergrab"/>
-    <property name="java.runtime.version" value="1.8.0_162-b12"/>
-    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.8.0_162\jre\lib\endorsed"/>
+    <property name="user.dir" value="/afs/inf.ed.ac.uk/user/s17/s1705544/Documents/powergrab"/>
+    <property name="java.runtime.version" value="1.8.0_232-b09"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.232.b09-0.el7_7.x86_64/jre/lib/endorsed"/>
     <property name="os.arch" value="amd64"/>
-    <property name="java.io.tmpdir" value="C:\Users\Jenny\AppData\Local\Temp\"/>
-    <property name="line.separator" value="&#10;"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="line.separator" value="
+"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
-    <property name="user.variant" value=""/>
-    <property name="os.name" value="Windows 10"/>
-    <property name="classworlds.conf" value="C:\Users\Jenny\eclipse-workspace\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf5884172478091250900.tmp"/>
-    <property name="sun.jnu.encoding" value="Cp1252"/>
-    <property name="java.library.path" value="C:\Program Files\Java\jdk1.8.0_162\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jdk1.8.0_162/jre/bin/server;C:/Program Files/Java/jdk1.8.0_162/jre/bin;C:/Program Files/Java/jdk1.8.0_162/jre/lib/amd64;C:\Users\Jenny\AppData\Local\Programs\Python\Python37\;C:\Users\Jenny\AppData\Local\Programs\Python\Python37\Scripts;C:\ProgramData\Oracle\Java\javapath;C:\Program Files\Haskell\bin;C:\Program Files\Haskell Platform\8.0.2-a\lib\extralibs\bin;C:\Program Files\Haskell Platform\8.0.2-a\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;C:\Program Files\Haskell Platform\8.0.2-a\mingw\bin;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\MATLAB\R2018b\bin;C:\Users\Jenny\AppData\Local\Programs\Python\Python37\;C:\Program Files\Java\jdk1.8.0_162\bin;C:\Users\Jenny\AppData\Local\Microsoft\WindowsApps;C:\Users\Jenny\AppData\Roaming\npm;C:\Users\Jenny\AppData\Local\GitHubDesktop\bin;C:\Users\Jenny\AppData\Local\atom\bin;C:\Users\Jenny\AppData\Local\Programs\Microsoft VS Code\bin;C:\Python27;C:\Python27\Scripts;C:\Users\Jenny\Downloads\flutter_windows_v1.2.1-stable\flutter\bin;C:\Users\Jenny\AppData\Local\Programs\MiKTeX 2.9\miktex\bin\x64\;;%USERPROFILE%\AppData\Local\Microsoft\WindowsApps;C:\WINDOWS\system32;;."/>
+    <property name="os.name" value="Linux"/>
+    <property name="classworlds.conf" value="/afs/inf.ed.ac.uk/user/s17/s1705544/eclipse-workspace/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf2495949829911765187.tmp"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.class.version" value="52.0"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
-    <property name="os.version" value="10.0"/>
-    <property name="user.home" value="C:\Users\Jenny"/>
-    <property name="user.timezone" value="Europe/London"/>
-    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="os.version" value="3.10.0-1062.1.1.el7.x86_64"/>
+    <property name="user.home" value="/afs/inf.ed.ac.uk/user/s17/s1705544"/>
+    <property name="user.timezone" value="GB"/>
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
+    <property name="file.encoding" value="UTF-8"/>
     <property name="java.specification.version" value="1.8"/>
-    <property name="file.encoding" value="Cp1252"/>
-    <property name="user.name" value="Jenny"/>
-    <property name="java.class.path" value="C:\Users\Jenny\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_1.8.3.20180227-2135\jars\plexus-classworlds-2.5.2.jar"/>
+    <property name="user.name" value="s1705544"/>
+    <property name="java.class.path" value="/opt/eclipse4.8/plugins/org.eclipse.m2e.maven.runtime_1.9.0.20180606-2035/jars/plexus-classworlds-2.5.2.jar"/>
     <property name="java.vm.specification.version" value="1.8"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="java.home" value="C:\Program Files\Java\jdk1.8.0_162\jre"/>
+    <property name="java.home" value="/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.232.b09-0.el7_7.x86_64/jre"/>
     <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B package"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="en"/>
-    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
     <property name="java.vm.info" value="mixed mode"/>
-    <property name="java.version" value="1.8.0_162"/>
-    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.8.0_162\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext"/>
-    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.8.0_162\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_162\jre\classes"/>
+    <property name="java.version" value="1.8.0_232"/>
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.232.b09-0.el7_7.x86_64/jre/lib/ext:/usr/java/packages/lib/ext"/>
+    <property name="securerandom.source" value="file:/dev/./urandom"/>
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.232.b09-0.el7_7.x86_64/jre/lib/resources.jar:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.232.b09-0.el7_7.x86_64/jre/lib/rt.jar:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.232.b09-0.el7_7.x86_64/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.232.b09-0.el7_7.x86_64/jre/lib/jsse.jar:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.232.b09-0.el7_7.x86_64/jre/lib/jce.jar:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.232.b09-0.el7_7.x86_64/jre/lib/charsets.jar:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.232.b09-0.el7_7.x86_64/jre/lib/jfr.jar:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.232.b09-0.el7_7.x86_64/jre/classes"/>
     <property name="java.vendor" value="Oracle Corporation"/>
-    <property name="maven.home" value="C:\Users\Jenny\eclipse-workspace\powergrab\EMBEDDED"/>
-    <property name="file.separator" value="\"/>
+    <property name="maven.home" value="/afs/inf.ed.ac.uk/user/s17/s1705544/Documents/powergrab/EMBEDDED"/>
+    <property name="file.separator" value="/"/>
     <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
-    <property name="sun.desktop" value="windows"/>
-    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.desktop" value="gnome"/>
+    <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testNorthEastThenSouthEastThenSouthWestThenNorthWest" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.004">
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testCentreInPlayArea" time="0.008">
     <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNorthEastThenSouthEastThenSouthWestThenNorthWest(AppTest.java:91)
+	at uk.ac.ed.inf.powergrab.AppTest.testCentreInPlayArea(AppTest.java:31)
 Caused by: java.lang.ClassNotFoundException: org.junit.Assert
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:338)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
-	... 13 more
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:382)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:418)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:352)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:351)
+	... 19 more
 </failure>
   </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testNorthNorthEastThenSouthSouthWest" classname="uk.ac.ed.inf.powergrab.AppTest" time="0">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNorthNorthEastThenSouthSouthWest(AppTest.java:170)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testEastNorthEastThenWestSouthWest" classname="uk.ac.ed.inf.powergrab.AppTest" time="0">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testEastNorthEastThenWestSouthWest(AppTest.java:177)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testEastSouthEastThenWestNorthWest" classname="uk.ac.ed.inf.powergrab.AppTest" time="0">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testEastSouthEastThenWestNorthWest(AppTest.java:191)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testNorthNorthWestThenSouthSouthEast" classname="uk.ac.ed.inf.powergrab.AppTest" time="0">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNorthNorthWestThenSouthSouthEast(AppTest.java:184)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testSouthEastThenNorthWest" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.001">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testSouthEastThenNorthWest(AppTest.java:156)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testPositionConstructor" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.002">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testPositionConstructor(AppTest.java:14)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testNorthThenSouth" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.001">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNorthThenSouth(AppTest.java:66)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testPositionLatitude" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.001">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testPositionLatitude(AppTest.java:21)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testSWisSouthWest" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.001">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testSWisSouthWest(AppTest.java:123)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testNEisNorthEast" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.001">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNEisNorthEast(AppTest.java:105)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testSouthWestThenNorthEast" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.001">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testSouthWestThenNorthEast(AppTest.java:163)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSE" classname="uk.ac.ed.inf.powergrab.AppTest" time="0">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSE(AppTest.java:208)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testPositionLongitude" classname="uk.ac.ed.inf.powergrab.AppTest" time="0">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testPositionLongitude(AppTest.java:26)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testPositionOutOfPlayArea" classname="uk.ac.ed.inf.powergrab.AppTest" time="0">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testPositionOutOfPlayArea(AppTest.java:43)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testNextPositionNotIdentity" classname="uk.ac.ed.inf.powergrab.AppTest" time="0">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNextPositionNotIdentity(AppTest.java:59)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testNorthThenEastIsNotNorthEast" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.001">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNorthThenEastIsNotNorthEast(AppTest.java:99)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testNNEisNorthEast" classname="uk.ac.ed.inf.powergrab.AppTest" time="0">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNNEisNorthEast(AppTest.java:111)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testWSWisSouthWest" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.001">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testWSWisSouthWest(AppTest.java:129)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testBoundaryOutOfPlayArea" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.001">
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testBoundaryOutOfPlayArea" time="0">
     <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
 	at uk.ac.ed.inf.powergrab.AppTest.testBoundaryOutOfPlayArea(AppTest.java:37)
 </failure>
   </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testNorthEastThenSouthWest" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.001">
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testPositionOutOfPlayArea" time="0">
     <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNorthEastThenSouthWest(AppTest.java:142)
+	at uk.ac.ed.inf.powergrab.AppTest.testPositionOutOfPlayArea(AppTest.java:43)
 </failure>
   </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testNorthWestThenSouthEast" classname="uk.ac.ed.inf.powergrab.AppTest" time="0">
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testSSEthenS" time="0">
     <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNorthWestThenSouthEast(AppTest.java:149)
+	at uk.ac.ed.inf.powergrab.AppTest.testSSEthenS(AppTest.java:199)
 </failure>
   </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testCentreInPlayArea" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.001">
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSE" time="0">
     <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testCentreInPlayArea(AppTest.java:31)
+	at uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSE(AppTest.java:208)
 </failure>
   </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testNorthSouthEastWest" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.001">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNorthSouthEastWest(AppTest.java:82)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testENEisNorthEast" classname="uk.ac.ed.inf.powergrab.AppTest" time="0">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testENEisNorthEast(AppTest.java:117)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testSSWisSouthWest" classname="uk.ac.ed.inf.powergrab.AppTest" time="0">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testSSWisSouthWest(AppTest.java:135)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSEthenNEthenWNW" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.002">
-    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSEthenNEthenWNW(AppTest.java:229)
-</failure>
-  </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSEthenNE" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.002">
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSEthenNE" time="0">
     <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
 	at uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSEthenNE(AppTest.java:218)
 </failure>
   </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testEastThenWest" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.002">
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSEthenNEthenWNW" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSEthenNEthenWNW(AppTest.java:229)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testNextPositionNotIdentity" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNextPositionNotIdentity(AppTest.java:59)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testPositionLatitude" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testPositionLatitude(AppTest.java:21)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testPositionLongitude" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testPositionLongitude(AppTest.java:26)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testNorthThenSouth" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNorthThenSouth(AppTest.java:66)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testEastThenWest" time="0">
     <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
 	at uk.ac.ed.inf.powergrab.AppTest.testEastThenWest(AppTest.java:73)
 </failure>
   </testcase>
-  <testcase name="uk.ac.ed.inf.powergrab.AppTest.testSSEthenS" classname="uk.ac.ed.inf.powergrab.AppTest" time="0.002">
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testNorthSouthEastWest" time="0">
     <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testSSEthenS(AppTest.java:199)
+	at uk.ac.ed.inf.powergrab.AppTest.testNorthSouthEastWest(AppTest.java:82)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testNorthEastThenSouthEastThenSouthWestThenNorthWest" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNorthEastThenSouthEastThenSouthWestThenNorthWest(AppTest.java:91)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testNorthThenEastIsNotNorthEast" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNorthThenEastIsNotNorthEast(AppTest.java:99)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testNEisNorthEast" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNEisNorthEast(AppTest.java:105)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testNNEisNorthEast" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNNEisNorthEast(AppTest.java:111)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testENEisNorthEast" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testENEisNorthEast(AppTest.java:117)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testSWisSouthWest" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testSWisSouthWest(AppTest.java:123)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testWSWisSouthWest" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testWSWisSouthWest(AppTest.java:129)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testSSWisSouthWest" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testSSWisSouthWest(AppTest.java:135)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testNorthEastThenSouthWest" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNorthEastThenSouthWest(AppTest.java:142)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testNorthWestThenSouthEast" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNorthWestThenSouthEast(AppTest.java:149)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testSouthEastThenNorthWest" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testSouthEastThenNorthWest(AppTest.java:156)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testSouthWestThenNorthEast" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testSouthWestThenNorthEast(AppTest.java:163)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testNorthNorthEastThenSouthSouthWest" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNorthNorthEastThenSouthSouthWest(AppTest.java:170)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testEastNorthEastThenWestSouthWest" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testEastNorthEastThenWestSouthWest(AppTest.java:177)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testNorthNorthWestThenSouthSouthEast" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNorthNorthWestThenSouthSouthEast(AppTest.java:184)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testEastSouthEastThenWestNorthWest" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testEastSouthEastThenWestNorthWest(AppTest.java:191)
+</failure>
+  </testcase>
+  <testcase classname="uk.ac.ed.inf.powergrab.AppTest" name="uk.ac.ed.inf.powergrab.AppTest.testPositionConstructor" time="0">
+    <failure message="org/junit/Assert" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testPositionConstructor(AppTest.java:14)
 </failure>
   </testcase>
 </testsuite>

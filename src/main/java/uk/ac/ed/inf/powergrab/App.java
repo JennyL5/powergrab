@@ -78,13 +78,13 @@ public class App {
 			txt=stateful.totxt();
 			path="stateful"+"-"+day+"-"+month+"-"+year;
 		}
-		//String filepath = "/afs/inf.ed.ac.uk/user/s17/s1705544/Documents/powergrab/"+path;
-		String filepath = "C:\\Users\\Jenny\\Downloads\\"+path;
 
-		PrintWriter writer1 = new PrintWriter(filepath + ".geojson");
-		writer1.println(map);
+
+		PrintWriter writer1 = new PrintWriter(System.getProperty("user.dir") + "/" + path + ".geojson");
+//		System.out.print(System.getProperty("user.dir") + "/" + path + ".geojson");
+		writer1.print(map);
 		writer1.close();
-		PrintWriter writer2 = new PrintWriter(filepath + ".txt");
+		PrintWriter writer2 = new PrintWriter(System.getProperty("user.dir") + "/" + path + ".txt");
 		writer2.print(txt);
 		writer2.close();
 		System.out.print("game over");

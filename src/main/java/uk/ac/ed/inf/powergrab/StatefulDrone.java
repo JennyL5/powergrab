@@ -164,9 +164,15 @@ public class StatefulDrone extends Drone {
 	// function for when the next position of move is out of play area and sets new charging station goal
 	public void changeGoal(ArrayList<ChargingStation> goodStations, ArrayList <Direction> badDirectionsInRange, HashMap <ChargingStation, Double>distanceOfGoodStations, HashMap <Direction, ChargingStation> badStationsInRange, ArrayList<ChargingStation> visitLater) throws IOException {
 		System.out.println(distanceOfGoodStations.keySet().size());
-		// refind distance of food stations
+		
 		distanceOfGoodStations = getSortedDistances(distanceOfGoodStations, visitLater);
 		ChargingStation goal1 = (ChargingStation) distanceOfGoodStations.keySet().toArray()[0];
+		
+		if (distanceOfGoodStations.size()>2) {
+			distanceOfGoodStations = getSortedDistances(distanceOfGoodStations, goodStations);
+			goal1 = (ChargingStation) distanceOfGoodStations.keySet().toArray()[1];
+		}
+		
         Direction minDir1 = findMinDirection(badStationsInRange, goal1);
         if (minDir1.equals(null)){
         	System.out.println("No direction is found for min distance");

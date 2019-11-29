@@ -133,6 +133,13 @@ abstract public class Drone {
 		return notBadDir;
 	}
 	
+	/**
+	 * Returns a random direction for the drone and avoids the bad directions.
+	 * It also ensures that the new position is within the range.
+	 *
+	 * @param  badDirections  an arraylist of directions with bad stations
+	 * @return      the direction to move in
+	 */
 	// method for drone moving in random directions but avoiding bad stations
 	public Direction avoidBadStations(ArrayList<Direction> badDirections) {
 		// Avoid bad stations

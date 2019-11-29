@@ -1,16 +1,112 @@
 -------------------------------------------------------------------------------
 Test set: uk.ac.ed.inf.powergrab.AppTest
 -------------------------------------------------------------------------------
-Tests run: 30, Failures: 30, Errors: 0, Skipped: 0, Time elapsed: 0.033 sec <<< FAILURE! - in uk.ac.ed.inf.powergrab.AppTest
-uk.ac.ed.inf.powergrab.AppTest.testNorthEastThenSouthEastThenSouthWestThenNorthWest()  Time elapsed: 0.004 sec  <<< FAILURE!
+Tests run: 30, Failures: 30, Errors: 0, Skipped: 0, Time elapsed: 0.012 sec <<< FAILURE!
+uk.ac.ed.inf.powergrab.AppTest.testCentreInPlayArea()  Time elapsed: 0.008 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testCentreInPlayArea(AppTest.java:31)
+Caused by: java.lang.ClassNotFoundException: org.junit.Assert
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:382)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:418)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:352)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:351)
+	... 19 more
+
+uk.ac.ed.inf.powergrab.AppTest.testBoundaryOutOfPlayArea()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testBoundaryOutOfPlayArea(AppTest.java:37)
+
+uk.ac.ed.inf.powergrab.AppTest.testPositionOutOfPlayArea()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testPositionOutOfPlayArea(AppTest.java:43)
+
+uk.ac.ed.inf.powergrab.AppTest.testSSEthenS()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testSSEthenS(AppTest.java:199)
+
+uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSE()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSE(AppTest.java:208)
+
+uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSEthenNE()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSEthenNE(AppTest.java:218)
+
+uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSEthenNEthenWNW()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSEthenNEthenWNW(AppTest.java:229)
+
+uk.ac.ed.inf.powergrab.AppTest.testNextPositionNotIdentity()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNextPositionNotIdentity(AppTest.java:59)
+
+uk.ac.ed.inf.powergrab.AppTest.testPositionLatitude()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testPositionLatitude(AppTest.java:21)
+
+uk.ac.ed.inf.powergrab.AppTest.testPositionLongitude()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testPositionLongitude(AppTest.java:26)
+
+uk.ac.ed.inf.powergrab.AppTest.testNorthThenSouth()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNorthThenSouth(AppTest.java:66)
+
+uk.ac.ed.inf.powergrab.AppTest.testEastThenWest()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testEastThenWest(AppTest.java:73)
+
+uk.ac.ed.inf.powergrab.AppTest.testNorthSouthEastWest()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNorthSouthEastWest(AppTest.java:82)
+
+uk.ac.ed.inf.powergrab.AppTest.testNorthEastThenSouthEastThenSouthWestThenNorthWest()  Time elapsed: 0 sec  <<< FAILURE!
 java.lang.NoClassDefFoundError: org/junit/Assert
 	at uk.ac.ed.inf.powergrab.AppTest.testNorthEastThenSouthEastThenSouthWestThenNorthWest(AppTest.java:91)
-Caused by: java.lang.ClassNotFoundException: org.junit.Assert
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:338)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
-	... 13 more
+
+uk.ac.ed.inf.powergrab.AppTest.testNorthThenEastIsNotNorthEast()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNorthThenEastIsNotNorthEast(AppTest.java:99)
+
+uk.ac.ed.inf.powergrab.AppTest.testNEisNorthEast()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNEisNorthEast(AppTest.java:105)
+
+uk.ac.ed.inf.powergrab.AppTest.testNNEisNorthEast()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNNEisNorthEast(AppTest.java:111)
+
+uk.ac.ed.inf.powergrab.AppTest.testENEisNorthEast()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testENEisNorthEast(AppTest.java:117)
+
+uk.ac.ed.inf.powergrab.AppTest.testSWisSouthWest()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testSWisSouthWest(AppTest.java:123)
+
+uk.ac.ed.inf.powergrab.AppTest.testWSWisSouthWest()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testWSWisSouthWest(AppTest.java:129)
+
+uk.ac.ed.inf.powergrab.AppTest.testSSWisSouthWest()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testSSWisSouthWest(AppTest.java:135)
+
+uk.ac.ed.inf.powergrab.AppTest.testNorthEastThenSouthWest()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNorthEastThenSouthWest(AppTest.java:142)
+
+uk.ac.ed.inf.powergrab.AppTest.testNorthWestThenSouthEast()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testNorthWestThenSouthEast(AppTest.java:149)
+
+uk.ac.ed.inf.powergrab.AppTest.testSouthEastThenNorthWest()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testSouthEastThenNorthWest(AppTest.java:156)
+
+uk.ac.ed.inf.powergrab.AppTest.testSouthWestThenNorthEast()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NoClassDefFoundError: org/junit/Assert
+	at uk.ac.ed.inf.powergrab.AppTest.testSouthWestThenNorthEast(AppTest.java:163)
 
 uk.ac.ed.inf.powergrab.AppTest.testNorthNorthEastThenSouthSouthWest()  Time elapsed: 0 sec  <<< FAILURE!
 java.lang.NoClassDefFoundError: org/junit/Assert
@@ -20,111 +116,15 @@ uk.ac.ed.inf.powergrab.AppTest.testEastNorthEastThenWestSouthWest()  Time elapse
 java.lang.NoClassDefFoundError: org/junit/Assert
 	at uk.ac.ed.inf.powergrab.AppTest.testEastNorthEastThenWestSouthWest(AppTest.java:177)
 
-uk.ac.ed.inf.powergrab.AppTest.testEastSouthEastThenWestNorthWest()  Time elapsed: 0 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testEastSouthEastThenWestNorthWest(AppTest.java:191)
-
 uk.ac.ed.inf.powergrab.AppTest.testNorthNorthWestThenSouthSouthEast()  Time elapsed: 0 sec  <<< FAILURE!
 java.lang.NoClassDefFoundError: org/junit/Assert
 	at uk.ac.ed.inf.powergrab.AppTest.testNorthNorthWestThenSouthSouthEast(AppTest.java:184)
 
-uk.ac.ed.inf.powergrab.AppTest.testSouthEastThenNorthWest()  Time elapsed: 0.001 sec  <<< FAILURE!
+uk.ac.ed.inf.powergrab.AppTest.testEastSouthEastThenWestNorthWest()  Time elapsed: 0 sec  <<< FAILURE!
 java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testSouthEastThenNorthWest(AppTest.java:156)
+	at uk.ac.ed.inf.powergrab.AppTest.testEastSouthEastThenWestNorthWest(AppTest.java:191)
 
-uk.ac.ed.inf.powergrab.AppTest.testPositionConstructor()  Time elapsed: 0.002 sec  <<< FAILURE!
+uk.ac.ed.inf.powergrab.AppTest.testPositionConstructor()  Time elapsed: 0 sec  <<< FAILURE!
 java.lang.NoClassDefFoundError: org/junit/Assert
 	at uk.ac.ed.inf.powergrab.AppTest.testPositionConstructor(AppTest.java:14)
-
-uk.ac.ed.inf.powergrab.AppTest.testNorthThenSouth()  Time elapsed: 0.001 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNorthThenSouth(AppTest.java:66)
-
-uk.ac.ed.inf.powergrab.AppTest.testPositionLatitude()  Time elapsed: 0.001 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testPositionLatitude(AppTest.java:21)
-
-uk.ac.ed.inf.powergrab.AppTest.testSWisSouthWest()  Time elapsed: 0.001 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testSWisSouthWest(AppTest.java:123)
-
-uk.ac.ed.inf.powergrab.AppTest.testNEisNorthEast()  Time elapsed: 0.001 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNEisNorthEast(AppTest.java:105)
-
-uk.ac.ed.inf.powergrab.AppTest.testSouthWestThenNorthEast()  Time elapsed: 0.001 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testSouthWestThenNorthEast(AppTest.java:163)
-
-uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSE()  Time elapsed: 0 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSE(AppTest.java:208)
-
-uk.ac.ed.inf.powergrab.AppTest.testPositionLongitude()  Time elapsed: 0 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testPositionLongitude(AppTest.java:26)
-
-uk.ac.ed.inf.powergrab.AppTest.testPositionOutOfPlayArea()  Time elapsed: 0 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testPositionOutOfPlayArea(AppTest.java:43)
-
-uk.ac.ed.inf.powergrab.AppTest.testNextPositionNotIdentity()  Time elapsed: 0 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNextPositionNotIdentity(AppTest.java:59)
-
-uk.ac.ed.inf.powergrab.AppTest.testNorthThenEastIsNotNorthEast()  Time elapsed: 0.001 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNorthThenEastIsNotNorthEast(AppTest.java:99)
-
-uk.ac.ed.inf.powergrab.AppTest.testNNEisNorthEast()  Time elapsed: 0 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNNEisNorthEast(AppTest.java:111)
-
-uk.ac.ed.inf.powergrab.AppTest.testWSWisSouthWest()  Time elapsed: 0.001 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testWSWisSouthWest(AppTest.java:129)
-
-uk.ac.ed.inf.powergrab.AppTest.testBoundaryOutOfPlayArea()  Time elapsed: 0.001 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testBoundaryOutOfPlayArea(AppTest.java:37)
-
-uk.ac.ed.inf.powergrab.AppTest.testNorthEastThenSouthWest()  Time elapsed: 0.001 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNorthEastThenSouthWest(AppTest.java:142)
-
-uk.ac.ed.inf.powergrab.AppTest.testNorthWestThenSouthEast()  Time elapsed: 0 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNorthWestThenSouthEast(AppTest.java:149)
-
-uk.ac.ed.inf.powergrab.AppTest.testCentreInPlayArea()  Time elapsed: 0.001 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testCentreInPlayArea(AppTest.java:31)
-
-uk.ac.ed.inf.powergrab.AppTest.testNorthSouthEastWest()  Time elapsed: 0.001 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testNorthSouthEastWest(AppTest.java:82)
-
-uk.ac.ed.inf.powergrab.AppTest.testENEisNorthEast()  Time elapsed: 0 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testENEisNorthEast(AppTest.java:117)
-
-uk.ac.ed.inf.powergrab.AppTest.testSSWisSouthWest()  Time elapsed: 0 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testSSWisSouthWest(AppTest.java:135)
-
-uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSEthenNEthenWNW()  Time elapsed: 0.002 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSEthenNEthenWNW(AppTest.java:229)
-
-uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSEthenNE()  Time elapsed: 0.002 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testSSEthenSthenSEthenNE(AppTest.java:218)
-
-uk.ac.ed.inf.powergrab.AppTest.testEastThenWest()  Time elapsed: 0.002 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testEastThenWest(AppTest.java:73)
-
-uk.ac.ed.inf.powergrab.AppTest.testSSEthenS()  Time elapsed: 0.002 sec  <<< FAILURE!
-java.lang.NoClassDefFoundError: org/junit/Assert
-	at uk.ac.ed.inf.powergrab.AppTest.testSSEthenS(AppTest.java:199)
 
