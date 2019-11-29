@@ -85,7 +85,7 @@ public class App {
 		writer1.println(map);
 		writer1.close();
 		PrintWriter writer2 = new PrintWriter(filepath + ".txt");
-		writer2.println(txt);
+		writer2.print(txt);
 		writer2.close();
 		System.out.print("game over");
 		
