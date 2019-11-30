@@ -1,15 +1,19 @@
 package uk.ac.ed.inf.powergrab;
 
-
-import com.mapbox.geojson.*;
-
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.Geometry;
+import com.mapbox.geojson.LineString;
+import com.mapbox.geojson.Point;
 
 public class Game {
 
@@ -18,106 +22,81 @@ public class Game {
 	protected String jsonMap;
 	private List<Feature> allFeatures;
 
-    Game(String url) {
-        this.url = url;
-        this.jsonMap = Game.getMap(this.url);
-        this.fc = FeatureCollection.fromJson(this.jsonMap);
-        this.allFeatures = FeatureCollection.fromJson(this.jsonMap).features();
-    }
-    
-    /**
-	 * Gets the geojson map by perform http get request for url and reading the input string.
-	 * @param urlString   string of locatin of geojson map
+	Game(String url) {
+		this.url = url;
+		this.jsonMap = Game.getMap(this.url);
+		this.fc = FeatureCollection.fromJson(this.jsonMap);
+		this.allFeatures = FeatureCollection.fromJson(this.jsonMap).features();
+	}
+
+	/**
+	 * Gets the geojson map by perform http get request for url and reading the
+	 * input string.
+	 * 
+	 * @param urlString string of locatin of geojson map
+	 * 
 	 * @return String of the result
 	 */
-	 private static String getMap(String urlString) {
-	
-	    StringBuilder result = new StringBuilder();
-	    try {
-	        URL mapURL = new URL(urlString);
-	        HttpURLConnection conn = (HttpURLConnection) mapURL.openConnection();
-	        conn.setReadTimeout(10000);
-	        conn.setConnectTimeout(15000);
-	        conn.setRequestMethod("GET");
-	        conn.setDoInput(true);
-	        conn.connect();
-	
-	        String line;
-	        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-	        while ((line = reader.readLine()) != null) {
-	            result.append(line);
-	        }
-	        reader.close();
-	    } catch (IOException e){
-	        e.printStackTrace();
-	    }
-	
-	    return result.toString();
+	protected static String getMap(String urlString) {
+
+		StringBuilder result = new StringBuilder();
+		try {
+			URL mapURL = new URL(urlString);
+			HttpURLConnection conn = (HttpURLConnection) mapURL.openConnection();
+			conn.setReadTimeout(10000);
+			conn.setConnectTimeout(15000);
+			conn.setRequestMethod("GET");
+			conn.setDoInput(true);
+			conn.connect();
+
+			String line;
+			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			while ((line = reader.readLine()) != null) {
+				result.append(line);
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return result.toString();
 	}
-	 
-		
+
 	/**
-	 * Formats the string content ready for writing to json file.
-	 * It gets the features from feature collections and appends the moveHistory coordinates
-	 * for the line string for geo json.
-	 * @param  movesHistory  an arraylist of coordinate points drone has moved
+	 * Formats the string content ready for writing to json file. It gets the
+	 * features from feature collections and appends the moveHistory coordinates for
+	 * the line string for geo json.
+	 * 
+	 * @param movesHistory an arraylist of coordinate points drone has moved
 	 * @return string of content for writing
 	 */
-	 public  String convertToFile(ArrayList<Point> movesHistory ){
-	        FeatureCollection full_map = FeatureCollection.fromFeatures(this.allFeatures);
-	  
-			String jsonfile = "";
-			jsonfile += "{\n" + 
-					"  \"type\": \"FeatureCollection\",\n" + 
-					"  \"features\": [\n" + 
-					"    \n" + 
-					"    \n" + 
-					"      {\n" + 
-					"      \"type\": \"Feature\",\n" + 
-					"      \"geometry\": {\n" + 
-					"        \"type\": \"LineString\",\n" + 
-					"        \"coordinates\": [" ;
-			for (int i=0; i<movesHistory.size()-1;i++) {
-				jsonfile +=  movesHistory.get(i).coordinates() + ", ";
-			}
-			jsonfile+= movesHistory.get(movesHistory.size()-1).coordinates() + "] },\n" + 
-					"      \"properties\": {\n" + 
-					"        \"prop0\": \"value0\",\n" + 
-					"        \"prop1\": 0.0\n" + 
-					"      }\n" + 
-					"    },";
-			for (int x =0; x< this.allFeatures.size()-1; x++)
-			{
-				jsonfile+= this.allFeatures.get(x).toJson() + ",";
-			}
-			jsonfile+= this.allFeatures.get(this.allFeatures.size()-1).toJson() + "]}";
-			return jsonfile;
+	protected String prepareJson(ArrayList<Point> movesHistory) {
+
+		Geometry geometryFlightPath = LineString.fromLngLats(movesHistory);
+		Feature flightPathFeature = Feature.fromGeometry(geometryFlightPath);
+		this.allFeatures.add(flightPathFeature);
+
+		FeatureCollection fullMap = FeatureCollection.fromFeatures(this.allFeatures);
+
+		return fullMap.toJson();
+	}
+
+	/**
+	 * This function writes the content (geojson map and text file) to files.
+	 * 
+	 * @param filename a string of the file name for content to be saved as.
+	 * @param contents a string of the geojson map or movement history of drone.
+	 * @return string of content for writing
+	 */
+	protected void writeToFile(String filename, String contents) {
+		try {
+			FileWriter file = new FileWriter(filename);
+			file.write(contents);
+			file.close();
+			System.out.println("writing " + filename);
+		} catch (Exception e) {
+			System.out.println(e.toString());
 		}
-	 /*
-	  * public void writeToFile(String filename, String filepath, String contents) {
-        try {
-            FileWriter file = new FileWriter(filename);
-            file.write(contents);
-            file.close();
-        }catch(Exception e) {
-            System.out.println(e.toString());
-        }
-    }
-
-	  */
-	 
-	 public String writeToFile(ArrayList<Point> movesHistory) {
-	        FeatureCollection full_map = FeatureCollection.fromFeatures(this.allFeatures);
-	        return "{\n" + fc + "\n" +
-	        		"features=" + "[{" + "\n" +
-	                     "type="+ "Feature" + "," +
-	                     "geometry=" + "{" + "\n" +
-	                       "type=" + "LineString" + "," +
-	                       "coordinates=" + movesHistory +"\n" +
-	        		//"type=" + fc.features() +	"\n" +        		
-	        		'}';
-	        		
-	 }
-
+	}
 
 }
