@@ -12,6 +12,7 @@ import java.util.Map;
 
 public class StatefulDrone extends Drone {
 	public StatefulDrone(Position currentPos, Integer seed, List<ChargingStation> Stations) throws IOException {
+
 		super(currentPos, seed, Stations);
 	}
 
