@@ -1,7 +1,4 @@
 package uk.ac.ed.inf.powergrab;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,16 +6,19 @@ import java.util.List;
 
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
-import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
-
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 
 public class App {
 	public static FeatureCollection fc;
 	
+	/**
+	 * Creates a list of all the stations from the features of the feature collection.
+	 * It gets the charging stations's coins, power, marker and position.
+	 * 
+	 * @param  fc  a feature collection
+	 * @result Stations   a list of all charging stations
+	 */
 	protected static List<ChargingStation> Create_Stations_List(FeatureCollection fc) {
 		List <ChargingStation> Stations = new ArrayList <ChargingStation>();
 		for (Feature f : fc.features()) {
@@ -26,7 +26,6 @@ public class App {
 			c.setCoins(f.getProperty("coins").getAsDouble());
 			c.setPower(f.getProperty("power").getAsDouble());
 			c.setMarker(f.getProperty("marker-symbol").getAsString());
-			c.setColour(f.getProperty("marker-color").getAsString());
 
 			Point point = (Point) f.geometry();
 			
@@ -37,8 +36,15 @@ public class App {
 		return Stations;
 	}
 	
+	
+	/**
+	 * The main method that will run. It gets the arguments and splits them into 
+	 * day, month, year, latitude, longitude, seed, and drone type to play the game.
+	 * Once the game is finished, this writes the results to text file and json file.
+	 * 
+	 * @param  args[]  string arguments passed in
+	 */
 	public static void main(String[] args) throws IOException {
-		//15 09 2019 55.944425 -3.188396 5678 stateless
 
     	String day = args[0];
     	String month = args[1];
@@ -62,9 +68,6 @@ public class App {
 		String txt="";
 		if (drone_type.equals("stateless")) {
 			System.out.println("Start Game for stateless drone");
-			System.out.print(initPos.latitude);
-			System.out.print(initPos.longitude);
-
 			StatelessDrone stateless = new StatelessDrone(initPos,seed, Stations);
 			stateless.startGame();
 			map =game.convertToFile(stateless.movesHistory);

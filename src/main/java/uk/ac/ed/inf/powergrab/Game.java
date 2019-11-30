@@ -4,7 +4,6 @@ package uk.ac.ed.inf.powergrab;
 import com.mapbox.geojson.*;
 
 import java.io.BufferedReader;
-import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -13,10 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-	private List <ChargingStation> Stations;
-	private List <ChargingStation> goodStations;
-	private List <ChargingStation> badStations;
-	private boolean gameState;
 
 	protected String url;
 	protected FeatureCollection fc;
@@ -30,7 +25,11 @@ public class Game {
         this.allFeatures = FeatureCollection.fromJson(this.jsonMap).features();
     }
     
-
+    /**
+	 * Gets the geojson map by perform http get request for url and reading the input string.
+	 * @param urlString   string of locatin of geojson map
+	 * @return String of the result
+	 */
 	 private static String getMap(String urlString) {
 	
 	    StringBuilder result = new StringBuilder();
@@ -56,11 +55,17 @@ public class Game {
 	    return result.toString();
 	}
 	 
+		
+	/**
+	 * Formats the string content ready for writing to json file.
+	 * It gets the features from feature collections and appends the moveHistory coordinates
+	 * for the line string for geo json.
+	 * @param  movesHistory  an arraylist of coordinate points drone has moved
+	 * @return string of content for writing
+	 */
 	 public  String convertToFile(ArrayList<Point> movesHistory ){
 	        FeatureCollection full_map = FeatureCollection.fromFeatures(this.allFeatures);
 	  
-	        
-	        ArrayList<Point> pointsMoved = new ArrayList<Point>();
 			String jsonfile = "";
 			jsonfile += "{\n" + 
 					"  \"type\": \"FeatureCollection\",\n" + 

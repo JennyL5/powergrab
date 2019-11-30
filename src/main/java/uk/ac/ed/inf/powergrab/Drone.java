@@ -97,14 +97,20 @@ abstract public class Drone {
 		return (pos.inPlayArea());
 	}
 
-	
-	// gets direction of station with maximum coins
-	protected Direction findMaxCoins(ArrayList<Direction> GoodDirection, HashMap <Direction, ChargingStation> GoodDirectionCharging) {
+	/**
+	 * Find the charging station with the maximum amount of coins and returns
+	 * the direction to get to that charging station
+	 * 
+	 * @param  goodDirection   an arraylist of direction that are good
+	 * @param  goodDirectionCharging   a hashmap wtih the directions and their charging stations that are good
+	 * @return maxDir   the best direction to take to get to that charging station with max coins
+	 */
+	protected Direction findMaxCoins(ArrayList<Direction> goodDirection, HashMap <Direction, ChargingStation> goodDirectionCharging) {
 		Double maxCoins = (double) Integer.MAX_VALUE;
 
-		Direction maxDir = GoodDirection.get(0);
-		for (Direction d : GoodDirection) {
-			ChargingStation cs = GoodDirectionCharging.get(d);
+		Direction maxDir = goodDirection.get(0);
+		for (Direction d : goodDirection) {
+			ChargingStation cs = goodDirectionCharging.get(d);
 			if (cs.getCoins()>maxCoins) {
 				maxCoins=cs.getCoins();
 				maxDir = d;
@@ -113,24 +119,37 @@ abstract public class Drone {
 		return maxDir;
 	}
 	
-	// gets a random direction that is absent from the Directions from input HashMap
-	protected Direction randDirection( ArrayList <Direction> badDir) {
-		ArrayList <Direction> notBadDir = avoidBadDirection(badDir);
+	/**
+	 * Get a random direction that is absent from the Direction from the input hashmap (bad directions).
+	 * This helps to pick directions to avoid the negatively charged station.
+	 * 
+	 * @param  badDirection   an arraylist of direction that are bad
+	 * @return randomDir   the best direction to take to get to that charging station with max coins
+	 */
+	protected Direction randDirection( ArrayList <Direction> badDirection) {
+		ArrayList <Direction> notBadDir = avoidBadDirection(badDirection);
 		int num = this.random.nextInt(notBadDir.size());
 		Direction randomDir = notBadDir.get(num);
 		return randomDir;
 	}
 	
+	/**
+	 * Generates a list of possible directions the drone can take, in which 
+	 * its next position will not be within the range negatively charged stations.
+	 * 
+	 * @param  badDirection   an arraylist of direction that are bad
+	 * @return notBadDirections   an arraylist of direction absent from given list
+	 */
 	// gets a random direction that is absent from the Directions from input HashMap
-	protected ArrayList<Direction> avoidBadDirection( ArrayList <Direction> badDir) {
-		ArrayList <Direction> notBadDir = new ArrayList <Direction>();
-		System.out.println(badDir.size());
+	protected ArrayList<Direction> avoidBadDirection( ArrayList <Direction> badDirection) {
+		ArrayList <Direction> notBadDirections = new ArrayList <Direction>();
+		System.out.println(badDirection.size());
 		for (Direction d : Direction.values()) {
-			if (!badDir.contains(d)){
-				notBadDir.add(d);
+			if (!badDirection.contains(d)){
+				notBadDirections.add(d);
 			}
 		}
-		return notBadDir;
+		return notBadDirections;
 	}
 	
 	/**
@@ -140,11 +159,7 @@ abstract public class Drone {
 	 * @param  badDirections  an arraylist of directions with bad stations
 	 * @return      the direction to move in
 	 */
-	// method for drone moving in random directions but avoiding bad stations
 	public Direction avoidBadStations(ArrayList<Direction> badDirections) {
-		// Avoid bad stations
-		// get random d from not directions of BadDirectionCharging
-		// find random station from directions absent from BadDirectionCharging
 		System.out.println("find random station from not directions of BadDirectionCharging");
 		Direction randomDir = randDirection(badDirections);
 		Position newPos = this.currentPos.nextPosition(randomDir);
@@ -156,11 +171,14 @@ abstract public class Drone {
 		return randomDir;
 	}
 	
-	
-	// updates power and coins of charging station // move to CS
-	protected void updateStation(ChargingStation maxFeat) {
+	/**
+	 * Updates the power and coins of the charging station
+	 * 
+	 * @param  goal  a charging station
+	 */
+	protected void updateStation(ChargingStation goal) {
 		for (ChargingStation CS : Stations) {
-			if (CS.pos.equals(maxFeat.pos)) {
+			if (CS.pos.equals(goal.pos)) {
 				if (CS.getCoins() > 0) {
 
 					System.out.println("-----Charging Station: ");
@@ -187,7 +205,6 @@ abstract public class Drone {
 					System.out.println("power: ");
 					System.out.println(CS.getPower());
 				} else {
-					// CS.power is negative
 
 					System.out.println("power: ");
 					System.out.println(CS.getPower());
@@ -203,7 +220,13 @@ abstract public class Drone {
 
 	}
 	
-	// updates drone's movesLeft, power, and adds to their history
+	/**
+	 * Decrement the number of moves the drone has left, and reduces the drone's power, and
+	 * adds current moves, direction, power and coins to their relevant arraylist
+	 * to keep track of the drone's movements.
+	 *
+	 * @param  d  a direction moved in
+	 */
 	protected void updateDrone(Direction d) {
 		System.out.print("update drone");
 		this.movesLeft = getMovesLeft() - 1;
@@ -217,10 +240,15 @@ abstract public class Drone {
 		directionHistory.add(d);
 		powerHistory.add(this.power);
 		coinsHistory.add(this.coins);
-		movesLeftHistory.add(this.movesLeft); //NEED REMOVED when finished
 	}
-
-	// move drone to direction of best charging station and charges drone
+	
+	/**
+	 * Moves the drone in a certain direction to achieve charging from the 
+	 * nearby charging station.
+	 *
+	 * @param  d  the direction taken to get nearby the charging station
+	 * @param  c  a charging station the drone will charge from
+	 */
 	protected void moveDrone(Direction d, ChargingStation c) throws IOException {
 		Double total_power = this.power + c.getPower();
 		setPower(total_power);
@@ -231,14 +259,25 @@ abstract public class Drone {
 		updateDrone(d);
 	}
 	
-	// move drone randomly given random direction
+	/**
+	 * Moves the drone in a certain given random direction.
+	 *
+	 * @param  d  the random generated direction for the drone to move in
+	 */
 	protected void moveDroneRandomly(Direction d) {
 		System.out.println("coins: ");
 		System.out.println(this.coins);
 		updateDrone(d);
 	}
 	
-	// find the stations that are within range from the input list(good/bad stations)
+	/**
+	 * Returns a hashmap of the directions and charging stations 
+	 * that are within the charging range. 	 
+	 * 
+	 * @param  list  a list of charging stations either positive charging or negative charging
+	 * @param  d  the direction taken to get nearby the charging station
+	 * @return directionCharging   a hashmap of the directions and charging station within range
+	 */
 	protected HashMap<Direction, ChargingStation> findStationsInRange(List<ChargingStation> list, Direction d) {
 		HashMap<Direction, ChargingStation> directionCharging = new HashMap<Direction, ChargingStation>();
 		Position direction_pos = this.currentPos.nextPosition(d);
@@ -254,7 +293,12 @@ abstract public class Drone {
 		return directionCharging;
 	}
 	
-	// gets the lighthouse stations
+	/**
+	 * Returns a list of charging station of the charging stations
+	 * that are positively charging, identified by the 'lighthouse' marker. 
+	 * 
+	 * @return goodStations_List   a list of positively charged stations
+	 */
 	protected List<ChargingStation> goodStations() {
 		List<ChargingStation> goodStations_List = new ArrayList<ChargingStation>();
 		for (ChargingStation f : Stations) {
@@ -264,8 +308,13 @@ abstract public class Drone {
 		}
 		return goodStations_List;
 	}
-	
-	// gets the danger stations
+
+	/**
+	 * Returns a list of charging station of the charging stations
+	 * that are positively charging, identified by the 'danger' marker. 
+	 * 
+	 * @return badStations_List   a list of negatively charged stations
+	 */
 	protected List<ChargingStation> badStations() {
 		List<ChargingStation> badStations_List = new ArrayList<ChargingStation>();
 		for (ChargingStation f : Stations) {
@@ -276,31 +325,54 @@ abstract public class Drone {
 		return badStations_List;
 	}
 
-	// convert Position class to Point Class
+	/**
+	 * Converts the given position into a Point
+	 * 
+	 * @param  pos   a position from the Position class
+	 * @return point 
+	 */
 	protected Point convertToPoint(Position pos) {
 		return (Point) Point.fromLngLat(pos.longitude, pos.latitude);
 	}
 	
-	// gets the distance between station and direction movement
-	protected Double getRange(Point direction_point, Point station) {
-		Double x, y;
-		x = station.latitude() - direction_point.latitude();
-		y = station.longitude() - direction_point.longitude();
+	/**
+	 * Returns the distance between the given points
+	 * 
+	 * @param  direction_point a   a given point 
+	 * @param  station			   a given point
+	 * @return goodStations_List   a list of positively charged stations
+	 */
+	protected Double getRange(Point direction_point, Point station_point) {
+		Double x = station_point.latitude() - direction_point.latitude();
+		Double y = station_point.longitude() - direction_point.longitude();
 		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 	}
 	
-	// generates random direction for movement
+	/**
+	 * Returns a random generate direction from the 16 possible directions
+	 * 
+	 * @return a direction
+	 */
 	protected Direction getRandomDirection() {
 		int i = this.random.nextInt(16);
 		return Arrays.asList(Direction.values()).get(i);
 	}
-
-	// finishes if no moves left or not enough power
+	
+	/**
+	 * Returns a boolean if condition is met. True, if the no moves left and power is less than 1.25
+	 * 
+	 * @return true if finished, false if not finished
+	 */
 	public boolean isFinished() {
 		return (this.movesLeft == 0) || (this.power < 1.25);
 	}
 	
-	// structure for writing to textfile
+	/**
+	 * Prepares string to write to file with the drone's moves, directions taken, coins and power collected in 
+	 * the format of "lat1,lon2,dir,lat2,lon2,coins,power" for all the moves made.
+	 * 
+	 * @return a string of concatenated history of drone's move
+	 */
 	public String totxt() {
 		System.out.print(movesHistory.size());
 		String text = "";

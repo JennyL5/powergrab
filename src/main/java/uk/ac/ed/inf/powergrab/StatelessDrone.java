@@ -12,7 +12,10 @@ public class StatelessDrone extends Drone{
 		super(currentPos, seed, Stations);
 	}
 	
-	// starts the game
+	/**
+	 * Starts and ends the game.
+	 * 
+	 */
 	public void startGame() throws IOException {
 		int c = 0;
 		while (!isFinished() ) {
@@ -25,7 +28,10 @@ public class StatelessDrone extends Drone{
 		}
 	}
 	
-	// move the drone in any random direction
+	/**
+	 * Move the drone in a random direction generated, and sets the new position of the drone.
+	 * 
+	 */
 	public void moveInAnyDirection() {
 		Direction d = getRandomDirection();
 		Position newPos = this.currentPos.nextPosition(d);
@@ -39,7 +45,15 @@ public class StatelessDrone extends Drone{
 		setCurrentPos(newPos);
 	}
 	
-	// the next move will put drone outside the play area
+	/**
+	 * Runs function if the drone's next move is outside the play area.
+	 * This generates a random direction from the list of directions that a good,
+	 * and moves towards that random direction generated. If there are no good directions
+	 * the drone will need to go towards a bad direction. And sets the new position of the drone.
+	 * 
+	 * @param  goodDirection   an arraylist of direction that are positively charged
+	 * @param  badDirection   an arraylist of direction that are negatively charged
+	 */
 	public void outsideArea(ArrayList<Direction>goodDirections, ArrayList<Direction>badDirections) {
 		System.out.print("Direction point outside play area");
 		Direction randomDir = randDirection(goodDirections);
@@ -62,7 +76,13 @@ public class StatelessDrone extends Drone{
 		setCurrentPos(newPos);
 	}
 	
-	// splits station into good/bad, and tries to go to station with more coins and avoid negative stations
+	/**
+	 * This method controls the strategy of the drone.
+	 * Find the good and bad stations that are within range of the drone's current position, and gets their 
+	 * directions. Try to find from the good charging station within range, the one with the maximum coins, and
+	 * performs move if that move is within play area. Else it will pick a random direction to move in.
+	 * 
+	 */	
 	protected void strategy() throws IOException {
 		HashMap<Direction, ChargingStation> goodStationsInRange = new HashMap<Direction, ChargingStation>();
 		HashMap<Direction, ChargingStation> badStationsInRange = new HashMap<Direction, ChargingStation>();
