@@ -23,8 +23,10 @@ public class Position {
 		return this.longitude;
 	}
 
-	// Gets the degree(in double) of direction
-
+	/**
+	 * This method sets the degrees for the 16 directions
+	 * 
+	 */
 	public static void set_Degree() {
 		double E = 0;
 		double ENE = 22.5;
@@ -43,10 +45,14 @@ public class Position {
 		double SE = 315;
 		double ESE = 337.5;
 	}
+	
+	/**
+	 * This method gets the degrees from the hashmap created.
+	 * 
+	 * @param  Direction  a direction from the 16 directinos in Direction class
+	 * @return degree   a hashmap of sorted charging stations and their distances.
+	 */
 	public double get_Degree(Direction direction) {
-		// Gets the degree(in double) of direction
-
-		// Creates a hashmap containing the 16 directions and their degrees
 		HashMap<Direction, Double> dir = new HashMap<Direction, Double>()
 		{
 		    {
@@ -69,40 +75,35 @@ public class Position {
 		    }
 		};
 
-	
-		//System.out.println(dir);	
-		//direction.getClass().getField(name)
-		//set East as 0 and north as 90 (in degrees
-		//System.out.println(test.keySet().toArray()[0]);
-		//System.out.print(dir.keySet().);
-		//if (direction == Direction.N)
 
-		// If given direction is from Direction class, return that direction's degree
 		if (dir.keySet().contains(direction)) {
 			degree = dir.get(direction);
 		}
 		return degree;
 	}
 
-
+	/**
+	 * This method returns the next position of the drone when it makes a move in the specified compass direction
+	 * It adds values to the latitude and longitude of the current position
+	 * 
+	 * @param  Direction  a direction from the 16 directinos in Direction class
+	 * @return nextPos   a position when moved in a direction 
+	 */
 	public Position nextPosition(Direction direction) {
-
-		// Returns the next position of the drone when it makes a move in the specified compass direction
-
-		// Values to be added to current latitude/longitude
 		double width = 0.0003 * Math.sin(Math.toRadians(get_Degree(direction)));
 		double height = 0.0003 * Math.cos(Math.toRadians(get_Degree(direction)));
 
-		// Create new position
 		Position nextPos = new Position(this.latitude + width, this.longitude + height);
 
-		// Returns the next position of the drone
 		return nextPos;
 
 	}
-
+	
+	/**
+	 * This method return true if drone is within play area, and false if not.
+	 * 
+	 */
 	public boolean inPlayArea() {
-		// Checks whether or not this Position lies in the PowerGrab play area 
 		return 55.942617 < this.latitude && this.latitude < 55.946233 && -3.192473 < this.longitude && this.longitude < -3.184319;
 	}
 } 
