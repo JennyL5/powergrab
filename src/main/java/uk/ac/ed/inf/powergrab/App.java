@@ -31,9 +31,8 @@ public class App {
 			ChargingStation c = new ChargingStation();
 			c.setCoins(f.getProperty("coins").getAsDouble());
 			c.setPower(f.getProperty("power").getAsDouble());
-
+			c.setMarker(f.getProperty("marker-symbol").getAsString());
 			Point point = (Point) f.geometry();
-
 			Position p = new Position(point.latitude(), point.longitude());
 			c.setPos(p);
 			stations.add(c);

@@ -422,6 +422,7 @@ abstract public class Drone {
 		for (ChargingStation f : stations) {
 			if (f.getMarker().contains("lighthouse")) {
 				goodStations_List.add(f);
+
 			}
 		}
 		return goodStations_List;
@@ -485,7 +486,7 @@ abstract public class Drone {
 	 * 
 	 * @return true if finished, false if not finished
 	 */
-	public boolean isFinished() {
+	protected boolean isFinished() {
 		return (this.movesLeft == 0) || (this.power < 1.25);
 	}
 
@@ -496,7 +497,7 @@ abstract public class Drone {
 	 * 
 	 * @return a string of concatenated history of drone's move
 	 */
-	public String totxt() {
+	protected String totxt() {
 		String text = "";
 		for (int i = 0; i <= this.movesHistory.size() - 2; i++) {
 			String lat1 = Double.toString(this.movesHistory.get(i).latitude());

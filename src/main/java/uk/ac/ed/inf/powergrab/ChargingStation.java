@@ -81,5 +81,9 @@ public class ChargingStation {
 	protected void setPos(Position pos) {
 		this.pos = pos;
 	}
+	
+	protected void setMarker(String marker) {
+		this.marker = marker;
+	}
 
 }
