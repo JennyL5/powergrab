@@ -6,16 +6,27 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
 import com.mapbox.geojson.Point;
 
+/**
+ * Represent a Drone
+ * 
+ * @author Jenny
+ *
+ */
 abstract public class Drone {
+	/**
+	 * Represents the Drone's current position, moves left, coins, power, seed,
+	 * stations, random generator, movesHistory, coins History, powerHistory, and
+	 * directionHistory.
+	 * 
+	 */
 	protected Position currentPos;
 	protected Integer movesLeft;
 	protected Double coins;
 	protected Double power;
 	protected Integer seed;
-	protected List<ChargingStation> Stations;
+	protected List<ChargingStation> stations;
 	protected Random random;
 
 	protected ArrayList<Point> movesHistory = new ArrayList<Point>();
@@ -23,71 +34,153 @@ abstract public class Drone {
 	protected ArrayList<Double> powerHistory = new ArrayList<Double>();
 	protected ArrayList<Direction> directionHistory = new ArrayList<Direction>();
 
-	// constructors
-	public Drone(Position currentPos, Integer seed, List<ChargingStation> Stations) {
+	/**
+	 * 
+	 * @param currentPos
+	 *            Position
+	 * @param seed
+	 *            Integer
+	 * @param stations
+	 *            List<ChargingStations>
+	 */
+	public Drone(Position currentPos, Integer seed, List<ChargingStation> stations) {
 		this.currentPos = currentPos;
 		this.movesLeft = 250;
 		this.coins = 0.0;
 		this.power = 250.0;
 		this.seed = seed;
-		this.Stations = Stations;
+		this.stations = stations;
 		this.random = new Random(seed);
 	}
 
-	// getters
+	/**
+	 * Gets the drone's current position.
+	 * 
+	 * @return this.currentPos a Position
+	 */
 	protected Position getCurrentPos() {
-		return currentPos;
+		return this.currentPos;
 	}
 
+	/**
+	 * Gets the drone's number of moves left.
+	 * 
+	 * @return this.movesLeft an Integer
+	 */
 	protected Integer getMovesLeft() {
 		return this.movesLeft;
 	}
 
+	/**
+	 * Gets the drone's current amount of coins
+	 * 
+	 * @return this.coins a Double
+	 */
 	protected double getCoins() {
 		return this.coins;
 	}
 
+	/**
+	 * Gets the drone's current amount of power
+	 * 
+	 * @return this.power a Double
+	 */
 	protected double getPower() {
 		return this.power;
 	}
 
+	/**
+	 * Gets the drone's seed value
+	 * 
+	 * @return this.seed an Integer
+	 */
 	protected Integer getSeed() {
 		return this.seed;
 	}
 
+	/**
+	 * Gets the list of charging stations
+	 * 
+	 * @return this.stations a list of charging stations
+	 */
 	protected List<ChargingStation> getStations() {
-		return this.Stations;
+		return this.stations;
 	}
 
+	/**
+	 * Gets the drone's moves history
+	 * 
+	 * @return this.movesHistory an ArrayList of moves
+	 */
 	protected ArrayList<Point> getMovesHistory() {
 		return this.movesHistory;
 	}
 
-	// setters
+	/**
+	 * Sets the drone's current position.
+	 * 
+	 * @param currentPos
+	 *            a Position
+	 */
 	protected void setCurrentPos(Position currentPos) {
 		this.currentPos = currentPos;
 	}
 
+	/**
+	 * Sets the number of moves lefts for the drone.
+	 * 
+	 * @param movesLeft
+	 *            an Integer
+	 */
 	protected void setMoves(Integer movesLeft) {
 		this.movesLeft = movesLeft;
 	}
 
+	/**
+	 * Sets the drone's coins.
+	 * 
+	 * @param coins
+	 *            a Double
+	 */
 	protected void setCoins(Double coins) {
 		this.coins = coins;
 	}
 
+	/**
+	 * Sets the drone's power.
+	 * 
+	 * @param power
+	 *            a Double
+	 */
 	protected void setPower(Double power) {
 		this.power = power;
 	}
 
+	/**
+	 * Sets the seed for the game.
+	 * 
+	 * @param seed
+	 *            an Integer
+	 */
 	protected void setSeed(Integer seed) {
 		this.seed = seed;
 	}
 
-	protected void setStations(List<ChargingStation> Stations) {
-		this.Stations = Stations;
+	/**
+	 * Sets the list of all charging stations.
+	 * 
+	 * @param stations
+	 *            a list of charging stations
+	 */
+	protected void setStations(List<ChargingStation> stations) {
+		this.stations = stations;
 	}
 
+	/**
+	 * Sets the list of the drone's moves history.
+	 * 
+	 * @param movesHistory
+	 */
 	protected void setMovesHistory(ArrayList<Point> movesHistory) {
 		this.movesHistory = movesHistory;
 	}
@@ -95,7 +188,8 @@ abstract public class Drone {
 	/**
 	 * Checks if th drone is within the play area.
 	 * 
-	 * @param pos the position of the drone's move
+	 * @param pos
+	 *            the position of the drone's move
 	 * @return true if within play area, else false.
 	 */
 	protected boolean inPlayArea(Position pos) {
@@ -106,9 +200,11 @@ abstract public class Drone {
 	 * Find the charging station with the maximum amount of coins and returns the
 	 * direction to get to that charging station
 	 * 
-	 * @param goodDirection         an arraylist of direction that are good
-	 * @param goodDirectionCharging a hashmap wtih the directions and their charging
-	 *                              stations that are good
+	 * @param goodDirection
+	 *            an arraylist of direction that are good
+	 * @param goodDirectionCharging
+	 *            a hashmap wtih the directions and their charging stations that are
+	 *            good
 	 * @return maxDir the best direction to take to get to that charging station
 	 *         with max coins
 	 */
@@ -132,7 +228,8 @@ abstract public class Drone {
 	 * hashmap (bad directions). This helps to pick directions to avoid the
 	 * negatively charged station.
 	 * 
-	 * @param badDirection an arraylist of direction that are bad
+	 * @param badDirection
+	 *            an arraylist of direction that are bad
 	 * @return randomDir the best direction to take to get to that charging station
 	 *         with max coins
 	 */
@@ -147,7 +244,8 @@ abstract public class Drone {
 	 * Generates a list of possible directions the drone can take, in which its next
 	 * position will not be within the range negatively charged stations.
 	 * 
-	 * @param badDirection an arraylist of direction that are bad
+	 * @param badDirection
+	 *            an arraylist of direction that are bad
 	 * @return notBadDirections an arraylist of direction absent from given list
 	 */
 	// gets a random direction that is absent from the Directions from input HashMap
@@ -166,7 +264,8 @@ abstract public class Drone {
 	 * Returns a random direction for the drone and avoids the bad directions. It
 	 * also ensures that the new position is within the range.
 	 *
-	 * @param badDirections an arraylist of directions with bad stations
+	 * @param badDirections
+	 *            an arraylist of directions with bad stations
 	 * @return the direction to move in
 	 */
 	protected Direction avoidBadStations(ArrayList<Direction> badDirections) {
@@ -184,10 +283,11 @@ abstract public class Drone {
 	/**
 	 * Updates the power and coins of the charging station
 	 * 
-	 * @param goal a charging station
+	 * @param goal
+	 *            a charging station
 	 */
 	protected void updateStation(ChargingStation goal) {
-		for (ChargingStation CS : Stations) {
+		for (ChargingStation CS : stations) {
 			if (CS.pos.equals(goal.pos)) {
 				if (CS.getCoins() > 0) {
 
@@ -235,7 +335,8 @@ abstract public class Drone {
 	 * power, and adds current moves, direction, power and coins to their relevant
 	 * arraylist to keep track of the drone's movements.
 	 *
-	 * @param d a direction moved in
+	 * @param d
+	 *            a direction moved in
 	 */
 	protected void updateDrone(Direction d) {
 		System.out.print("update drone");
@@ -256,8 +357,10 @@ abstract public class Drone {
 	 * Moves the drone in a certain direction to achieve charging from the nearby
 	 * charging station.
 	 *
-	 * @param d the direction taken to get nearby the charging station
-	 * @param c a charging station the drone will charge from
+	 * @param d
+	 *            the direction taken to get nearby the charging station
+	 * @param c
+	 *            a charging station the drone will charge from
 	 */
 	protected void moveDrone(Direction d, ChargingStation c) throws IOException {
 		Double total_power = this.power + c.getPower();
@@ -272,7 +375,8 @@ abstract public class Drone {
 	/**
 	 * Moves the drone in a certain given random direction.
 	 *
-	 * @param d the random generated direction for the drone to move in
+	 * @param d
+	 *            the random generated direction for the drone to move in
 	 */
 	protected void moveDroneRandomly(Direction d) {
 		System.out.println("coins: ");
@@ -284,9 +388,11 @@ abstract public class Drone {
 	 * Returns a hashmap of the directions and charging stations that are within the
 	 * charging range.
 	 * 
-	 * @param list a list of charging stations either positive charging or negative
-	 *             charging
-	 * @param d    the direction taken to get nearby the charging station
+	 * @param list
+	 *            a list of charging stations either positive charging or negative
+	 *            charging
+	 * @param d
+	 *            the direction taken to get nearby the charging station
 	 * @return directionCharging a hashmap of the directions and charging station
 	 *         within range
 	 */
@@ -313,7 +419,7 @@ abstract public class Drone {
 	 */
 	protected List<ChargingStation> goodStations() {
 		List<ChargingStation> goodStations_List = new ArrayList<ChargingStation>();
-		for (ChargingStation f : Stations) {
+		for (ChargingStation f : stations) {
 			if (f.getMarker().contains("lighthouse")) {
 				goodStations_List.add(f);
 			}
@@ -329,7 +435,7 @@ abstract public class Drone {
 	 */
 	protected List<ChargingStation> badStations() {
 		List<ChargingStation> badStations_List = new ArrayList<ChargingStation>();
-		for (ChargingStation f : Stations) {
+		for (ChargingStation f : stations) {
 			if (f.getMarker().contains("danger")) {
 				badStations_List.add(f);
 			}
@@ -340,7 +446,8 @@ abstract public class Drone {
 	/**
 	 * Converts the given position into a Point
 	 * 
-	 * @param pos a position from the Position class
+	 * @param pos
+	 *            a position from the Position class
 	 * @return point
 	 */
 	protected Point convertToPoint(Position pos) {
@@ -350,8 +457,10 @@ abstract public class Drone {
 	/**
 	 * Returns the distance between the given points
 	 * 
-	 * @param direction_point a a given point
-	 * @param station         a given point
+	 * @param direction_point
+	 *            a a given point
+	 * @param station
+	 *            a given point
 	 * @return goodStations_List a list of positively charged stations
 	 */
 	protected Double getRange(Point direction_point, Point station_point) {
@@ -388,7 +497,6 @@ abstract public class Drone {
 	 * @return a string of concatenated history of drone's move
 	 */
 	public String totxt() {
-		System.out.print(movesHistory.size());
 		String text = "";
 		for (int i = 0; i <= this.movesHistory.size() - 2; i++) {
 			String lat1 = Double.toString(this.movesHistory.get(i).latitude());

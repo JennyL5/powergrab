@@ -1,52 +1,85 @@
 package uk.ac.ed.inf.powergrab;
 
+/**
+ * Represent a charging station
+ * 
+ * @author Jenny
+ *
+ */
 public class ChargingStation {
+	/**
+	 * Represents the charging station's position, coins, power, and marker.
+	 * 
+	 */
 	protected Position pos;
-	protected double coins;
-	protected double power;
+	protected Double coins;
+	protected Double power;
 	protected String marker;
-	protected String colour;
 
-	// getters
-	protected double getCoins() {
+	/**
+	 * Gets the charging stations's coins
+	 * 
+	 * @return this.coins a Double
+	 */
+	protected Double getCoins() {
 		return this.coins;
 	}
 
-	protected double getPower() {
+	/**
+	 * Gets the charging stations's power
+	 * 
+	 * @return this.power a Double
+	 */
+	protected Double getPower() {
 		return this.power;
 	}
 
+	/**
+	 * Gets the charging stations's marker
+	 * 
+	 * @return this.marker a String
+	 */
 	protected String getMarker() {
 		return this.marker;
 	}
 
+	/**
+	 * Gets the charging stations's position
+	 * 
+	 * @return this.pos a Position
+	 */
 	protected Position getPos() {
 		return this.pos;
 	}
 
-	protected String getColour() {
-		return this.colour;
-	}
-
-	// setters
+	/**
+	 * Sets the charging stations's coins
+	 * 
+	 * @param coins
+	 *            a Double
+	 */
 	protected void setCoins(Double coins) {
 		this.coins = coins;
 	}
 
+	/**
+	 * Sets the charging stations's power
+	 * 
+	 * @param power
+	 *            a Double
+	 */
 	protected void setPower(Double power) {
 		this.power = power;
 	}
 
-	protected void setMarker(String marker) {
-		this.marker = marker;
-	}
-
+	/**
+	 * Sets the charging stations's position
+	 * 
+	 * @param pos
+	 *            a Position
+	 */
 	protected void setPos(Position pos) {
 		this.pos = pos;
-	}
-
-	protected void setColour(String colour) {
-		this.colour = colour;
 	}
 
 }

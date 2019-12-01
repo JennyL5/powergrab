@@ -5,15 +5,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Represents the StatelessDrone
+ * 
+ * @author Jenny
+ *
+ */
 public class StatelessDrone extends Drone {
 
-	public StatelessDrone(Position currentPos, Integer seed, List<ChargingStation> Stations) throws IOException {
-		super(currentPos, seed, Stations);
+	/**
+	 * Represents StatelessDrone inherits from Drone
+	 * 
+	 * @param currentPos
+	 *            Position
+	 * @param seed
+	 *            Integer
+	 * @param stations
+	 *            List<ChargingStation>
+	 * @throws IOException
+	 */
+	public StatelessDrone(Position currentPos, Integer seed, List<ChargingStation> stations) throws IOException {
+		super(currentPos, seed, stations);
 	}
 
 	/**
 	 * Starts and ends the game.
 	 * 
+	 * @throws IOException
 	 */
 	protected void startGame() throws IOException {
 		int c = 0;
@@ -34,8 +52,10 @@ public class StatelessDrone extends Drone {
 	 * directions the drone will need to go towards a bad direction. And sets the
 	 * new position of the drone.
 	 * 
-	 * @param goodDirection an arraylist of direction that are positively charged
-	 * @param badDirection  an arraylist of direction that are negatively charged
+	 * @param goodDirection
+	 *            an arraylist of direction that are positively charged
+	 * @param badDirection
+	 *            an arraylist of direction that are negatively charged
 	 */
 	private void outsideArea(ArrayList<Direction> goodDirections, ArrayList<Direction> badDirections) {
 		System.out.print("Direction point outside play area");
@@ -60,18 +80,17 @@ public class StatelessDrone extends Drone {
 	}
 
 	/**
-	 * This method controls the strategy of the drone. Find the good and bad
-	 * stations that are within range of the drone's current position, and gets
-	 * their directions. Try to find from the good charging station within range,
-	 * the one with the maximum coins, and performs move if that move is within play
-	 * area. Else it will pick a random direction to move in.
+	 * Controls the strategy of the drone. Finds the good and bad stations that are
+	 * within range of the drone's current position, and gets their directions.
+	 * Tries to find from the good charging station within range, the one with the
+	 * maximum coins, and performs move if that move is within play area. Else it
+	 * will pick a random direction to move in.
 	 * 
 	 */
 	private void strategy() throws IOException {
 		HashMap<Direction, ChargingStation> goodStationsInRange = new HashMap<Direction, ChargingStation>();
 		HashMap<Direction, ChargingStation> badStationsInRange = new HashMap<Direction, ChargingStation>();
 		for (Direction d : Direction.values()) {
-			// find nearest (good) stations from that d within rANGE
 			HashMap<Direction, ChargingStation> goodStationsNearby = (findStationsInRange(goodStations(), d));
 			goodStationsInRange.putAll(goodStationsNearby);
 			HashMap<Direction, ChargingStation> badStationsNearby = (findStationsInRange(badStations(), d));

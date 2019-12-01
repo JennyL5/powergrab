@@ -15,13 +15,28 @@ import com.mapbox.geojson.Geometry;
 import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
 
+/**
+ * Represents a game
+ * 
+ * @author Jenny
+ *
+ */
 public class Game {
-
+	/**
+	 * Represents Game's url, feature collection, jsonMap and list of features.
+	 */
 	protected String url;
 	protected FeatureCollection fc;
 	protected String jsonMap;
 	private List<Feature> allFeatures;
 
+	/**
+	 * Creates a game with the Geo-JSON map passes in as String url, with url,
+	 * jsonMap, feature collection and features.
+	 * 
+	 * @param url
+	 *            : String
+	 */
 	Game(String url) {
 		this.url = url;
 		this.jsonMap = Game.getMap(this.url);
@@ -33,9 +48,11 @@ public class Game {
 	 * Gets the geojson map by perform http get request for url and reading the
 	 * input string.
 	 * 
-	 * @param urlString string of locatin of geojson map
+	 * @param urlString
+	 *            string of locatin of geojson map
 	 * 
 	 * @return String of the result
+	 * @throws IOEcxception
 	 */
 	protected static String getMap(String urlString) {
 
@@ -67,7 +84,8 @@ public class Game {
 	 * features from feature collections and appends the moveHistory coordinates for
 	 * the line string for geo json.
 	 * 
-	 * @param movesHistory an arraylist of coordinate points drone has moved
+	 * @param movesHistory
+	 *            an arraylist of coordinate points drone has moved
 	 * @return string of content for writing
 	 */
 	protected String prepareJson(ArrayList<Point> movesHistory) {
@@ -82,11 +100,14 @@ public class Game {
 	}
 
 	/**
-	 * This function writes the content (geojson map and text file) to files.
+	 * Writes the content (geo-JSON map and text file) to files.
 	 * 
-	 * @param filename a string of the file name for content to be saved as.
-	 * @param contents a string of the geojson map or movement history of drone.
+	 * @param filename
+	 *            a string of the file name for content to be saved as.
+	 * @param contents
+	 *            a string of the geo-JSON map or movement history of drone.
 	 * @return string of content for writing
+	 * @throws Exception
 	 */
 	protected void writeToFile(String filename, String contents) {
 		try {

@@ -10,15 +10,30 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents the StatefulDone
+ * 
+ * @author Jenny
+ *
+ */
 public class StatefulDrone extends Drone {
+	/**
+	 * Represents StatelefulDrone inherits from Drone
+	 * 
+	 * @param currentPos
+	 * @param seed
+	 * @param Stations
+	 * @throws IOException
+	 */
 	public StatefulDrone(Position currentPos, Integer seed, List<ChargingStation> Stations) throws IOException {
 		super(currentPos, seed, Stations);
 	}
 
 	/**
-	 * Starts and ends the game. Created goodStations, badStations, and visitLater
+	 * Starts and ends the game. Creates goodStations, badStations, and visitLater
 	 * lists.
 	 * 
+	 * @throws IOException
 	 */
 	protected void startGame() throws IOException {
 
@@ -38,16 +53,20 @@ public class StatefulDrone extends Drone {
 	}
 
 	/**
-	 * This function is run to find the strategy to determine how the drone should
-	 * move. Created a hashmap for storing goodStations and badStations nearby, to
-	 * find their distances and sort them in an ascending order to find minimum
-	 * distance. The drone will try get to the closest charging station, and will
-	 * charge if in range, else either move closer or change goal or move randomly.
+	 * Finds the strategy to determine how the drone should move. Creates a hashmap
+	 * for storing goodStations and badStations nearby, to find their distances and
+	 * sort them in an ascending order to find minimum distance. The drone will try
+	 * get to the closest charging station, and will charge if in range, else either
+	 * move closer or change goal or move randomly.
 	 * 
-	 * @param goodStations a list of positively charged charging station
-	 * @param baddStations a list of negatively charged charging station
-	 * @param visitLater   a list of charging stations to be visited later due to it
-	 *                     being difficult to get
+	 * @param goodStations
+	 *            a list of positively charged charging station
+	 * @param baddStations
+	 *            a list of negatively charged charging station
+	 * @param visitLater
+	 *            a list of charging stations to be visited later due to it being
+	 *            difficult to get
+	 * @throws IOException
 	 */
 	private void strategy(ArrayList<ChargingStation> goodStations, ArrayList<ChargingStation> badStations,
 			ArrayList<ChargingStation> visitLater) throws IOException {
@@ -93,6 +112,7 @@ public class StatefulDrone extends Drone {
 					changeGoal(goodStations, badDirectionsInRange, distanceOfGoodStations, badStationsInRange,
 							visitLater);
 				} else {
+					
 					System.out.print("no new goal move random");
 					Direction randomDir = avoidBadStations(badDirectionsInRange);
 					newPos = this.currentPos.nextPosition(randomDir);
@@ -104,23 +124,26 @@ public class StatefulDrone extends Drone {
 	}
 
 	/**
-	 * This function checks if the drone can move to the dismissed charging stations
-	 * (added to checkVisitLater) and tries to charge from them, by sorting the
-	 * visitLater list distances in an ascending order to find minimum distance. The
-	 * drone will try get to the closest charging station, and will charge if in
-	 * range, else either move closer or change goal or move randomly.
+	 * Checks if the drone can move to the dismissed charging stations (added to
+	 * checkVisitLater) and tries to charge from them, by sorting the visitLater
+	 * list distances in an ascending order to find minimum distance. The drone will
+	 * try get to the closest charging station, and will charge if in range, else
+	 * either move closer or change goal or move randomly.
 	 * 
-	 * @param goodStations           a list of positively charged charging station
-	 * @param badDirectionsInRange   a list of directions for positively charged
-	 *                               charging station
-	 * @param distanceOfGoodStations a hashmap of positively charged charging
-	 *                               station with their distances
-	 * @param badStationsInRange     a hashmap of negatively charged charging
-	 *                               station within range
-	 * @param goodStationsInRange    a hashmap of positively charged charging
-	 *                               station within range
-	 * @param visitLater             a list of charging stations to be visited later
-	 *                               due to it being difficult to get
+	 * @param goodStations
+	 *            a list of positively charged charging station
+	 * @param badDirectionsInRange
+	 *            a list of directions for positively charged charging station
+	 * @param distanceOfGoodStations
+	 *            a hashmap of positively charged charging station with their
+	 *            distances
+	 * @param badStationsInRange
+	 *            a hashmap of negatively charged charging station within range
+	 * @param goodStationsInRange
+	 *            a hashmap of positively charged charging station within range
+	 * @param visitLater
+	 *            a list of charging stations to be visited later due to it being
+	 *            difficult to get
 	 */
 	private void checkVisitLater(ArrayList<ChargingStation> goodStations, ArrayList<Direction> badDirectionsInRange,
 			HashMap<ChargingStation, Double> distanceOfGoodStations,
@@ -176,27 +199,32 @@ public class StatefulDrone extends Drone {
 	}
 
 	/**
-	 * This function tries to get closer to the charging station or to get to goal
-	 * charging station to charge. It checks if the charging station is within range
-	 * to charge, if so, it will move to charge from the charging station and
-	 * removes it from the list of goodStations and sets its new position. Otherwise
-	 * it will try and get out a loop, an move to a random direction that is not
-	 * near a negatively charged station.
+	 * Tries to get closer to the charging station or to get to goal charging
+	 * station to charge. It checks if the charging station is within range to
+	 * charge, if so, it will move to charge from the charging station and removes
+	 * it from the list of goodStations and sets its new position. Otherwise it will
+	 * try and get out a loop, an move to a random direction that is not near a
+	 * negatively charged station.
 	 * 
-	 * @param newPos                 a new position when moved in direction
-	 * @param goal                   a charging station the drone is trying to get
-	 *                               to
-	 * @param minDir                 a direction the drone is taking with minimum
-	 *                               distance to nearest charging station
-	 * @param goodStations           a list of positively charged charging station
-	 * @param badDirectionsInRange   a list of directions for positively charged
-	 *                               charging station
-	 * @param distanceOfGoodStations a hashmap of positively charged charging
-	 *                               station with their distances
-	 * @param badStationsInRange     a hashmap of negatively charged charging
-	 *                               station within range
-	 * @param visitLater             a list of charging stations to be visited later
-	 *                               due to it being difficult to get
+	 * @param newPos
+	 *            a new position when moved in direction
+	 * @param goal
+	 *            a charging station the drone is trying to get to
+	 * @param minDir
+	 *            a direction the drone is taking with minimum distance to nearest
+	 *            charging station
+	 * @param goodStations
+	 *            a list of positively charged charging station
+	 * @param badDirectionsInRange
+	 *            a list of directions for positively charged charging station
+	 * @param distanceOfGoodStations
+	 *            a hashmap of positively charged charging station with their
+	 *            distances
+	 * @param badStationsInRange
+	 *            a hashmap of negatively charged charging station within range
+	 * @param visitLater
+	 *            a list of charging stations to be visited later due to it being
+	 *            difficult to get
 	 */
 	private void approachStation(Position newPos, ChargingStation goal, Direction minDir,
 			ArrayList<ChargingStation> goodStations, ArrayList<Direction> badDirectionsInRange,
@@ -227,18 +255,23 @@ public class StatefulDrone extends Drone {
 	}
 
 	/**
+	 * 
 	 * This function is called when the next position of move is out of play area
 	 * and will set a new charging station as goal .
 	 * 
-	 * @param goodStations           a list of positively charged charging station
-	 * @param badDirectionsInRange   a list of directions for positively charged
-	 *                               charging station
-	 * @param distanceOfGoodStations a hashmap of positively charged charging
-	 *                               station with their distances
-	 * @param badStationsInRange     a hashmap of negatively charged charging
-	 *                               station within range
-	 * @param visitLater             a list of charging stations to be visited later
-	 *                               due to it being difficult to get
+	 * @param goodStations
+	 *            a list of positively charged charging station
+	 * @param badDirectionsInRange
+	 *            a list of directions for positively charged charging station
+	 * @param distanceOfGoodStations
+	 *            a hashmap of positively charged charging station with their
+	 *            distances
+	 * @param badStationsInRange
+	 *            a hashmap of negatively charged charging station within range
+	 * @param visitLater
+	 *            a list of charging stations to be visited later due to it being
+	 *            difficult to get
+	 * @throws IOException
 	 */
 	private void changeGoal(ArrayList<ChargingStation> goodStations, ArrayList<Direction> badDirectionsInRange,
 			HashMap<ChargingStation, Double> distanceOfGoodStations,
@@ -285,19 +318,24 @@ public class StatefulDrone extends Drone {
 	}
 
 	/**
-	 * This method return a direction to try get out of a dead end, where the drone
-	 * goes back and forth. It looks for repeated positions/directions in the
-	 * history arraylist already made by drone.
+	 * Return a direction to try get out of a dead end, where the drone goes back
+	 * and forth. It looks for repeated positions/directions in the history
+	 * arraylist already made by drone.
 	 * 
-	 * @param minDir             a direction the drone is taking with minimum
-	 *                           distance to nearest charging station
-	 * @param newPos             a new position when moved in direction
-	 * @param goal               a charging station the drone is trying to get to
-	 * @param badStationsInRange a hashmap of negatively charged charging station
-	 *                           within range
-	 * @param visitLater         a list of charging stations to be visited later due
-	 *                           to it being difficult to get
-	 * @param goodStations       a list of positively charged charging station
+	 * @param minDir
+	 *            a direction the drone is taking with minimum distance to nearest
+	 *            charging station
+	 * @param newPos
+	 *            a new position when moved in direction
+	 * @param goal
+	 *            a charging station the drone is trying to get to
+	 * @param badStationsInRange
+	 *            a hashmap of negatively charged charging station within range
+	 * @param visitLater
+	 *            a list of charging stations to be visited later due to it being
+	 *            difficult to get
+	 * @param goodStations
+	 *            a list of positively charged charging station
 	 * @return minDir a direction to get out loop
 	 */
 	private Direction getOutOfLoop(Direction minDir, Position newPos, ChargingStation goal,
@@ -327,12 +365,12 @@ public class StatefulDrone extends Drone {
 	}
 
 	/**
-	 * This method get the direction with the closest distance to goal charging
-	 * station.
+	 * Gets the direction with the closest distance to goal charging station.
 	 * 
-	 * @param badStationsInRange a hashmap of negatively charged charging station
-	 *                           within range
-	 * @param goal               a charging station the drone is trying to get to
+	 * @param badStationsInRange
+	 *            a hashmap of negatively charged charging station within range
+	 * @param goal
+	 *            a charging station the drone is trying to get to
 	 * @return minDir the directin with the smallest range from the goal charging
 	 *         station
 	 */
@@ -357,13 +395,13 @@ public class StatefulDrone extends Drone {
 	}
 
 	/**
-	 * This method gets and sorts distance of nearby good/bad stations in ascending
-	 * order.
+	 * Gets and sorts distance of nearby good/bad stations in ascending order.
 	 * 
-	 * @param distanceOfStations a hashmap of positively/negatively charged charging
-	 *                           station with their distances
-	 * @param theStations        a list of positively/negatively charged charging
-	 *                           station
+	 * @param distanceOfStations
+	 *            a hashmap of positively/negatively charged charging station with
+	 *            their distances
+	 * @param theStations
+	 *            a list of positively/negatively charged charging station
 	 * @return temp a hashmap of sorted charging stations and their distances.
 	 */
 	private HashMap<ChargingStation, Double> getSortedDistances(HashMap<ChargingStation, Double> distanceOfStations,

@@ -3,11 +3,16 @@ package uk.ac.ed.inf.powergrab;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
 
+/**
+ * Represents an App
+ * 
+ * @author Jenny
+ *
+ */
 public class App {
 	public static FeatureCollection fc;
 
@@ -16,24 +21,24 @@ public class App {
 	 * collection. It gets the charging stations's coins, power, marker and
 	 * position.
 	 * 
-	 * @param fc a feature collection
+	 * @param fc
+	 *            a feature collection
 	 * @result Stations a list of all charging stations
 	 */
-	protected static List<ChargingStation> Create_Stations_List(FeatureCollection fc) {
-		List<ChargingStation> Stations = new ArrayList<ChargingStation>();
+	protected static List<ChargingStation> createStationsList(FeatureCollection fc) {
+		List<ChargingStation> stations = new ArrayList<ChargingStation>();
 		for (Feature f : fc.features()) {
 			ChargingStation c = new ChargingStation();
 			c.setCoins(f.getProperty("coins").getAsDouble());
 			c.setPower(f.getProperty("power").getAsDouble());
-			c.setMarker(f.getProperty("marker-symbol").getAsString());
 
 			Point point = (Point) f.geometry();
 
 			Position p = new Position(point.latitude(), point.longitude());
 			c.setPos(p);
-			Stations.add(c);
+			stations.add(c);
 		}
-		return Stations;
+		return stations;
 	}
 
 	/**
@@ -42,7 +47,9 @@ public class App {
 	 * Once the game is finished, this writes the results to text file and json
 	 * file.
 	 * 
-	 * @param args[] string arguments passed in
+	 * @param args[]
+	 *            string arguments passed in
+	 * @throws IllegalArgumentException
 	 */
 	public static void main(String[] args) throws IOException {
 		try {
@@ -60,7 +67,7 @@ public class App {
 
 			FeatureCollection fc = game.fc;
 
-			List<ChargingStation> Stations = Create_Stations_List(fc);
+			List<ChargingStation> Stations = createStationsList(fc);
 
 			Position initPos = new Position(lat, lon);
 

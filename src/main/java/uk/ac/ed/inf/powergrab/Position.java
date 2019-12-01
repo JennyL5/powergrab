@@ -2,31 +2,57 @@ package uk.ac.ed.inf.powergrab;
 
 import java.util.HashMap;
 
+/**
+ * Represents a position
+ * 
+ * @author Jenny
+ *
+ */
 public class Position {
 	public double latitude;
 	public double longitude;
 	double degree = 0;
 
+	/**
+	 * Represents the latitude and longitude of the position
+	 * 
+	 * @param latitude
+	 *            : Double
+	 * @param longitude
+	 *            : Double
+	 */
 	protected Position(double latitude, double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
 
-	// Get Latitude from Position class
-	protected double get_Latitude(Position position) {
+	/**
+	 * Gets the latitude of the position
+	 * 
+	 * @param position
+	 *            a Position
+	 * @return this.Latitude a Double
+	 */
+	protected double getLatitude(Position position) {
 		return this.latitude;
 	}
 
-	// Get Longitude from Position class
-	protected double get_Longitude(Position position) {
+	/**
+	 * Gets the longitude of the position
+	 * 
+	 * @param position
+	 *            a Position
+	 * @return this.longitude a Double
+	 */
+	protected double getLongitude(Position position) {
 		return this.longitude;
 	}
 
 	/**
-	 * This method sets the degrees for the 16 directions
+	 * Sets the degrees for the 16 directions
 	 * 
 	 */
-	protected static void set_Degree() {
+	protected static void setDegree() {
 		double E = 0;
 		double ENE = 22.5;
 		double NE = 45;
@@ -48,10 +74,11 @@ public class Position {
 	/**
 	 * This method gets the degrees from the hashmap created.
 	 * 
-	 * @param Direction a direction from the 16 directinos in Direction class
+	 * @param Direction
+	 *            a direction from the 16 directinos in Direction class
 	 * @return degree a hashmap of sorted charging stations and their distances.
 	 */
-	protected double get_Degree(Direction direction) {
+	protected double getDegree(Direction direction) {
 		HashMap<Direction, Double> dir = new HashMap<Direction, Double>() {
 			{
 				put(Direction.E, 0.0);
@@ -80,16 +107,17 @@ public class Position {
 	}
 
 	/**
-	 * This method returns the next position of the drone when it makes a move in
-	 * the specified compass direction It adds values to the latitude and longitude
-	 * of the current position
+	 * Returns the next position of the drone when it makes a move in the specified
+	 * compass direction. It adds values to the latitude and longitude of the
+	 * current position
 	 * 
-	 * @param Direction a direction from the 16 directinos in Direction class
+	 * @param Direction
+	 *            a direction from the 16 directinos in Direction class
 	 * @return nextPos a position when moved in a direction
 	 */
 	protected Position nextPosition(Direction direction) {
-		double width = 0.0003 * Math.sin(Math.toRadians(get_Degree(direction)));
-		double height = 0.0003 * Math.cos(Math.toRadians(get_Degree(direction)));
+		double width = 0.0003 * Math.sin(Math.toRadians(getDegree(direction)));
+		double height = 0.0003 * Math.cos(Math.toRadians(getDegree(direction)));
 
 		Position nextPos = new Position(this.latitude + width, this.longitude + height);
 
