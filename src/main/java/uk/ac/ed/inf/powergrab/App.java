@@ -3,12 +3,14 @@ package uk.ac.ed.inf.powergrab;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
 
 /**
- * Represents an App
+ * Represents an App. This is the main class which calls the methods from the
+ * other classes.
  * 
  * @author Jenny
  *
@@ -21,8 +23,7 @@ public class App {
 	 * collection. It gets the charging stations's coins, power, marker and
 	 * position.
 	 * 
-	 * @param fc
-	 *            a feature collection
+	 * @param fc a feature collection
 	 * @result Stations a list of all charging stations
 	 */
 	protected static List<ChargingStation> createStationsList(FeatureCollection fc) {
@@ -46,8 +47,7 @@ public class App {
 	 * Once the game is finished, this writes the results to text file and json
 	 * file.
 	 * 
-	 * @param args[]
-	 *            string arguments passed in
+	 * @param args[] string arguments passed in
 	 * @throws IllegalArgumentException
 	 */
 	public static void main(String[] args) throws IOException {

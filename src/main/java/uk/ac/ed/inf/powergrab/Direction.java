@@ -1,10 +1,10 @@
 package uk.ac.ed.inf.powergrab;
 
 /**
+ * This class represents a direction and enumerates through all the 16 cardinal
+ * directions of the compass,
  * 
  * @author Jenny
- *
- * Enumerate through the 16 Directions
  * 
  */
 public enum Direction {

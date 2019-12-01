@@ -1,7 +1,9 @@
 package uk.ac.ed.inf.powergrab;
 
 /**
- * Represent a charging station
+ * This class represents a charging station, and is used to get the features of
+ * the charging stations faster. This convenience allows the rendered Geo-JSON
+ * features to be accessed more conveniently.
  * 
  * @author Jenny
  *
@@ -55,8 +57,7 @@ public class ChargingStation {
 	/**
 	 * Sets the charging stations's coins
 	 * 
-	 * @param coins
-	 *            a Double
+	 * @param coins a Double
 	 */
 	protected void setCoins(Double coins) {
 		this.coins = coins;
@@ -65,8 +66,7 @@ public class ChargingStation {
 	/**
 	 * Sets the charging stations's power
 	 * 
-	 * @param power
-	 *            a Double
+	 * @param power a Double
 	 */
 	protected void setPower(Double power) {
 		this.power = power;
@@ -75,13 +75,12 @@ public class ChargingStation {
 	/**
 	 * Sets the charging stations's position
 	 * 
-	 * @param pos
-	 *            a Position
+	 * @param pos a Position
 	 */
 	protected void setPos(Position pos) {
 		this.pos = pos;
 	}
-	
+
 	protected void setMarker(String marker) {
 		this.marker = marker;
 	}

@@ -16,7 +16,8 @@ import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
 
 /**
- * Represents a game
+ * This class represents the game, and gets the map, writes to file and prepare
+ * JSON file when the game has not yet started or has ended.
  * 
  * @author Jenny
  *
@@ -34,8 +35,7 @@ public class Game {
 	 * Creates a game with the Geo-JSON map passes in as String url, with url,
 	 * jsonMap, feature collection and features.
 	 * 
-	 * @param url
-	 *            : String
+	 * @param url : String
 	 */
 	Game(String url) {
 		this.url = url;
@@ -48,8 +48,7 @@ public class Game {
 	 * Gets the geojson map by perform http get request for url and reading the
 	 * input string.
 	 * 
-	 * @param urlString
-	 *            string of locatin of geojson map
+	 * @param urlString string of locatin of geojson map
 	 * 
 	 * @return String of the result
 	 * @throws IOEcxception
@@ -84,8 +83,7 @@ public class Game {
 	 * features from feature collections and appends the moveHistory coordinates for
 	 * the line string for geo json.
 	 * 
-	 * @param movesHistory
-	 *            an arraylist of coordinate points drone has moved
+	 * @param movesHistory an arraylist of coordinate points drone has moved
 	 * @return string of content for writing
 	 */
 	protected String prepareJson(ArrayList<Point> movesHistory) {
@@ -102,10 +100,8 @@ public class Game {
 	/**
 	 * Writes the content (geo-JSON map and text file) to files.
 	 * 
-	 * @param filename
-	 *            a string of the file name for content to be saved as.
-	 * @param contents
-	 *            a string of the geo-JSON map or movement history of drone.
+	 * @param filename a string of the file name for content to be saved as.
+	 * @param contents a string of the geo-JSON map or movement history of drone.
 	 * @return string of content for writing
 	 * @throws Exception
 	 */

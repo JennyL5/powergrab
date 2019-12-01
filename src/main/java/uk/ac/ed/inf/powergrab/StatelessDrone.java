@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Represents the StatelessDrone
+ * This class represents the Stateless drone, it inherits from its parents class
+ * (Drone), and also has methods which is unique to the stateless drone class,
+ * and cannot be accessed from the stateful drone class.
  * 
  * @author Jenny
  *
@@ -16,12 +18,9 @@ public class StatelessDrone extends Drone {
 	/**
 	 * Represents StatelessDrone inherits from Drone
 	 * 
-	 * @param currentPos
-	 *            Position
-	 * @param seed
-	 *            Integer
-	 * @param stations
-	 *            List<ChargingStation>
+	 * @param currentPos Position
+	 * @param seed       Integer
+	 * @param stations   List<ChargingStation>
 	 * @throws IOException
 	 */
 	public StatelessDrone(Position currentPos, Integer seed, List<ChargingStation> stations) throws IOException {
@@ -52,10 +51,8 @@ public class StatelessDrone extends Drone {
 	 * directions the drone will need to go towards a bad direction. And sets the
 	 * new position of the drone.
 	 * 
-	 * @param goodDirection
-	 *            an arraylist of direction that are positively charged
-	 * @param badDirection
-	 *            an arraylist of direction that are negatively charged
+	 * @param goodDirection an arraylist of direction that are positively charged
+	 * @param badDirection  an arraylist of direction that are negatively charged
 	 */
 	private void outsideArea(ArrayList<Direction> goodDirections, ArrayList<Direction> badDirections) {
 		System.out.print("Direction point outside play area");

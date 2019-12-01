@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents the StatefulDone
+ * This class represents the Stateful drone, it inherits from its parents class
+ * (Drone), and also has methods which is unique to the stateful drone class,
+ * and cannot be accessed from the stateless drone class.
  * 
  * @author Jenny
  *
@@ -59,13 +61,10 @@ public class StatefulDrone extends Drone {
 	 * get to the closest charging station, and will charge if in range, else either
 	 * move closer or change goal or move randomly.
 	 * 
-	 * @param goodStations
-	 *            a list of positively charged charging station
-	 * @param baddStations
-	 *            a list of negatively charged charging station
-	 * @param visitLater
-	 *            a list of charging stations to be visited later due to it being
-	 *            difficult to get
+	 * @param goodStations a list of positively charged charging station
+	 * @param baddStations a list of negatively charged charging station
+	 * @param visitLater   a list of charging stations to be visited later due to it
+	 *                     being difficult to get
 	 * @throws IOException
 	 */
 	private void strategy(ArrayList<ChargingStation> goodStations, ArrayList<ChargingStation> badStations,
@@ -86,39 +85,33 @@ public class StatefulDrone extends Drone {
 
 		System.out.println("Good stations");
 		System.out.println(goodStations.size());
+		System.out.println("visit later");
+		System.out.println(visitLater.size());
 
 		distanceOfGoodStations = getSortedDistances(distanceOfGoodStations, goodStations);
-
-		System.out.print(visitLater.size());
 
 		if (distanceOfGoodStations.size() == 0) {
 			checkVisitLater(goodStations, badDirectionsInRange, distanceOfGoodStations, badStationsInRange,
 					goodStationsInRange, visitLater);
-
 		} else {
-
 			ChargingStation goal = (ChargingStation) distanceOfGoodStations.keySet().toArray()[0];
 			Direction minDir = findMinDirection(badStationsInRange, goal);
 
 			System.out.println("move the drone");
 			Position newPos = this.currentPos.nextPosition(minDir);
+
 			if (newPos.inPlayArea()) {
 				System.out.println("approach station");
 				approachStation(newPos, goal, minDir, goodStations, badDirectionsInRange, distanceOfGoodStations,
 						badStationsInRange, visitLater);
+			} else if ((isTrapped() && availableGoodStations(goodStations, visitLater))) {
+				changeGoal(goodStations, badDirectionsInRange, distanceOfGoodStations, badStationsInRange, visitLater);
 			} else {
-				if (distanceOfGoodStations.size() > 2 && distanceOfGoodStations.keySet().size() > 2) {
-					System.out.println("TRAPPED: (temp) remove original goal, set new goal");
-					changeGoal(goodStations, badDirectionsInRange, distanceOfGoodStations, badStationsInRange,
-							visitLater);
-				} else {
-					
-					System.out.print("no new goal move random");
-					Direction randomDir = avoidBadStations(badDirectionsInRange);
-					newPos = this.currentPos.nextPosition(randomDir);
-					moveDroneRandomly(randomDir);
-					setCurrentPos(newPos);
-				}
+				System.out.print("no new goal move random");
+				Direction randomDir = avoidBadStations(badDirectionsInRange);
+				newPos = this.currentPos.nextPosition(randomDir);
+				moveDroneRandomly(randomDir);
+				setCurrentPos(newPos);
 			}
 		}
 	}
@@ -130,37 +123,44 @@ public class StatefulDrone extends Drone {
 	 * try get to the closest charging station, and will charge if in range, else
 	 * either move closer or change goal or move randomly.
 	 * 
-	 * @param goodStations
-	 *            a list of positively charged charging station
-	 * @param badDirectionsInRange
-	 *            a list of directions for positively charged charging station
-	 * @param distanceOfGoodStations
-	 *            a hashmap of positively charged charging station with their
-	 *            distances
-	 * @param badStationsInRange
-	 *            a hashmap of negatively charged charging station within range
-	 * @param goodStationsInRange
-	 *            a hashmap of positively charged charging station within range
-	 * @param visitLater
-	 *            a list of charging stations to be visited later due to it being
-	 *            difficult to get
+	 * @param goodStations           a list of positively charged charging station
+	 * @param badDirectionsInRange   a list of directions for positively charged
+	 *                               charging station
+	 * @param distanceOfGoodStations a hashmap of positively charged charging
+	 *                               station with their distances
+	 * @param badStationsInRange     a hashmap of negatively charged charging
+	 *                               station within range
+	 * @param goodStationsInRange    a hashmap of positively charged charging
+	 *                               station within range
+	 * @param visitLater             a list of charging stations to be visited later
+	 *                               due to it being difficult to get
 	 */
 	private void checkVisitLater(ArrayList<ChargingStation> goodStations, ArrayList<Direction> badDirectionsInRange,
 			HashMap<ChargingStation, Double> distanceOfGoodStations,
 			HashMap<Direction, ChargingStation> badStationsInRange,
 			HashMap<Direction, ChargingStation> goodStationsInRange, ArrayList<ChargingStation> visitLater)
 			throws IOException {
+
 		if (visitLater.size() != 0) {
-			System.out.println("no more good stations to go to so check visitLater");
+			System.out.println("no more good stations to go, to so check visitLater");
+
 			for (Direction d : Direction.values()) {
 				HashMap<Direction, ChargingStation> goodStationsNearby = (findStationsInRange(visitLater, d));
 				goodStationsInRange.putAll(goodStationsNearby);
 			}
-			distanceOfGoodStations = getSortedDistances(distanceOfGoodStations, visitLater);
-			ChargingStation goal = (ChargingStation) distanceOfGoodStations.keySet().toArray()[0];
+
+			ChargingStation goal = null;
+			if (visitLater.size() == 1) {
+				goal = visitLater.get(0);
+			} else {
+				distanceOfGoodStations = getSortedDistances(distanceOfGoodStations, visitLater);
+				goal = (ChargingStation) distanceOfGoodStations.keySet().toArray()[0];
+			}
+
 			Direction minDir = findMinDirection(badStationsInRange, goal);
-			System.out.println("move the drone");
+
 			Position newPos = this.currentPos.nextPosition(minDir);
+
 			if (newPos.inPlayArea()) {
 				System.out.println("approaching station");
 				if (getRange(convertToPoint(newPos), convertToPoint(goal.pos)) < 0.00025) {
@@ -169,28 +169,34 @@ public class StatefulDrone extends Drone {
 					moveDrone(minDir, goal);
 					updateStation(goal);
 					setCurrentPos(newPos);
+				} else if (isTrapped() && availableGoodStations(goodStations, visitLater)) {
+					changeGoal(goodStations, badDirectionsInRange, distanceOfGoodStations, badStationsInRange,
+							visitLater);
 				} else {
-
-					System.out.println("not within range, move closer to goal charging station");
-					try {
-						minDir = getOutOfLoop(minDir, newPos, goal, badDirectionsInRange, visitLater, goodStations);
-						// changeGoal(goodStations, badDirectionsInRange, distanceOfGoodStations,
-						// badStationsInRange, visitLater);
-
-						newPos = this.currentPos.nextPosition(minDir);
-					} catch (Exception e) {
-						System.out.println(e);
-					}
-
+					System.out.print("move closer to goal");
+					newPos = this.currentPos.nextPosition(minDir);
 					moveDroneRandomly(minDir);
 					setCurrentPos(newPos);
 				}
 			} else {
-				System.out.println("outside area, remove original goal, set new goal");
-				changeGoal(goodStations, badDirectionsInRange, distanceOfGoodStations, badStationsInRange, visitLater);
+				System.out.println("outside area, check if trapped, remove original goal, set new goal");
+				if ((isTrapped() && availableGoodStations(goodStations, visitLater))) {
+					goodStations.remove(goal);
+					visitLater.add(goal);
+					changeGoal(goodStations, badDirectionsInRange, distanceOfGoodStations, badStationsInRange,
+							visitLater);
+				} else {
+					System.out.print("no new goal move random");
+					Direction randomDir = avoidBadStations(badDirectionsInRange);
+					newPos = this.currentPos.nextPosition(randomDir);
+					moveDroneRandomly(randomDir);
+					setCurrentPos(newPos);
+				}
 			}
+
 		} else {
-			System.out.println("no more good stations to go to");
+
+			System.out.print("no new goal move random");
 			Direction randomDir = avoidBadStations(badDirectionsInRange);
 			Position newPos = this.currentPos.nextPosition(randomDir);
 			moveDroneRandomly(randomDir);
@@ -202,53 +208,44 @@ public class StatefulDrone extends Drone {
 	 * Tries to get closer to the charging station or to get to goal charging
 	 * station to charge. It checks if the charging station is within range to
 	 * charge, if so, it will move to charge from the charging station and removes
-	 * it from the list of goodStations and sets its new position. Otherwise it will
-	 * try and get out a loop, an move to a random direction that is not near a
-	 * negatively charged station.
+	 * it from the list of goodStations and sets its new position. Otherwise if it
+	 * is trapped (repeating same position) then change charging station goal, or
+	 * move closer if valid, or move randomly.
 	 * 
-	 * @param newPos
-	 *            a new position when moved in direction
-	 * @param goal
-	 *            a charging station the drone is trying to get to
-	 * @param minDir
-	 *            a direction the drone is taking with minimum distance to nearest
-	 *            charging station
-	 * @param goodStations
-	 *            a list of positively charged charging station
-	 * @param badDirectionsInRange
-	 *            a list of directions for positively charged charging station
-	 * @param distanceOfGoodStations
-	 *            a hashmap of positively charged charging station with their
-	 *            distances
-	 * @param badStationsInRange
-	 *            a hashmap of negatively charged charging station within range
-	 * @param visitLater
-	 *            a list of charging stations to be visited later due to it being
-	 *            difficult to get
+	 * @param newPos                 a new position when moved in direction
+	 * @param goal                   a charging station the drone is trying to get
+	 *                               to
+	 * @param minDir                 a direction the drone is taking with minimum
+	 *                               distance to nearest charging station
+	 * @param goodStations           a list of positively charged charging station
+	 * @param badDirectionsInRange   a list of directions for positively charged
+	 *                               charging station
+	 * @param distanceOfGoodStations a hashmap of positively charged charging
+	 *                               station with their distances
+	 * @param badStationsInRange     a hashmap of negatively charged charging
+	 *                               station within range
+	 * @param visitLater             a list of charging stations to be visited later
+	 *                               due to it being difficult to get
 	 */
 	private void approachStation(Position newPos, ChargingStation goal, Direction minDir,
 			ArrayList<ChargingStation> goodStations, ArrayList<Direction> badDirectionsInRange,
 			HashMap<ChargingStation, Double> distanceOfGoodStations,
 			HashMap<Direction, ChargingStation> badStationsInRange, ArrayList<ChargingStation> visitLater)
 			throws IOException {
+		System.out.println("movesHistory");
+		System.out.println(movesHistory.size());
 		if (getRange(convertToPoint(newPos), convertToPoint(goal.pos)) < 0.00025) {
 			System.out.println("Collect from station");
 			moveDrone(minDir, goal);
 			updateStation(goal);
 			setCurrentPos(newPos);
 			goodStations.remove(goal);
+		} else if ((isTrapped() && availableGoodStations(goodStations, visitLater))) {
+			goodStations.remove(goal);
+			visitLater.add(goal);
+			changeGoal(goodStations, badDirectionsInRange, distanceOfGoodStations, badStationsInRange, visitLater);
 		} else {
-			System.out.println("not within range, move closer to goal charging station");
-			int len = movesHistory.size();
-			if (len > 5 && directionHistory.get(len - 2).equals(minDir)
-					&& movesHistory.get(len - 2).equals(movesHistory.get(len - 4))) {
-				minDir = getOutOfLoop(minDir, newPos, goal, badDirectionsInRange, visitLater, goodStations);
-				// changeGoal(goodStations, badDirectionsInRange, distanceOfGoodStations,
-				// badStationsInRange, visitLater);
-
-				newPos = this.currentPos.nextPosition(minDir);
-
-			}
+			System.out.println("move closer to goal station");
 			moveDroneRandomly(minDir);
 			setCurrentPos(newPos);
 		}
@@ -256,121 +253,147 @@ public class StatefulDrone extends Drone {
 
 	/**
 	 * 
-	 * This function is called when the next position of move is out of play area
-	 * and will set a new charging station as goal .
+	 * This function is called when the next position of move is out of play area or
+	 * if the drone is trapped and will set a new charging station as goal using the
+	 * goodStations first then checking visitLater list.
 	 * 
-	 * @param goodStations
-	 *            a list of positively charged charging station
-	 * @param badDirectionsInRange
-	 *            a list of directions for positively charged charging station
-	 * @param distanceOfGoodStations
-	 *            a hashmap of positively charged charging station with their
-	 *            distances
-	 * @param badStationsInRange
-	 *            a hashmap of negatively charged charging station within range
-	 * @param visitLater
-	 *            a list of charging stations to be visited later due to it being
-	 *            difficult to get
+	 * @param goodStations           a list of positively charged charging station
+	 * @param badDirectionsInRange   a list of directions for positively charged
+	 *                               charging station
+	 * @param distanceOfGoodStations a hashmap of positively charged charging
+	 *                               station with their distances
+	 * @param badStationsInRange     a hashmap of negatively charged charging
+	 *                               station within range
+	 * @param visitLater             a list of charging stations to be visited later
+	 *                               due to it being difficult to get
 	 * @throws IOException
 	 */
 	private void changeGoal(ArrayList<ChargingStation> goodStations, ArrayList<Direction> badDirectionsInRange,
 			HashMap<ChargingStation, Double> distanceOfGoodStations,
 			HashMap<Direction, ChargingStation> badStationsInRange, ArrayList<ChargingStation> visitLater)
 			throws IOException {
-		System.out.println(distanceOfGoodStations.keySet().size());
 
-		distanceOfGoodStations = getSortedDistances(distanceOfGoodStations, visitLater);
-		ChargingStation goal1 = (ChargingStation) distanceOfGoodStations.keySet().toArray()[0];
+		distanceOfGoodStations.clear();
+		ChargingStation goal = null;
 
-		try {
+		if (!goodStations.isEmpty()) {
+			System.out.print("good stations");
+			if (goodStations.size() == 1) {
+				goal = goodStations.get(0);
+			} else {
+				distanceOfGoodStations = getSortedDistances(distanceOfGoodStations, goodStations);
+				goal = (ChargingStation) distanceOfGoodStations.keySet().toArray()[0];
+			}
 
-			// if (distanceOfGoodStations.size()>2) {
-			distanceOfGoodStations = getSortedDistances(distanceOfGoodStations, goodStations);
-			goal1 = (ChargingStation) distanceOfGoodStations.keySet().toArray()[1];
-		} catch (Exception e) {
-			System.out.print(e);
-		}
+			Direction minDir = findMinDirection(badStationsInRange, goal);
 
-		Direction minDir1 = findMinDirection(badStationsInRange, goal1);
-		if (minDir1.equals(null)) {
-			System.out.println("No direction is found for min distance");
-			Direction minDir = avoidBadStations(badDirectionsInRange);
-			Position newPos = this.currentPos.nextPosition(minDir);
-			moveDroneRandomly(minDir);
-			setCurrentPos(newPos);
-		} else {
-			Position newPos1 = this.currentPos.nextPosition(minDir1);
+			Position newPos1 = this.currentPos.nextPosition(minDir);
+
 			if (newPos1.inPlayArea()) {
 
-				System.out.print("check if new goal station is within range");
-				approachStation(newPos1, goal1, minDir1, goodStations, badDirectionsInRange, distanceOfGoodStations,
-						badStationsInRange, visitLater);
+				if (getRange(convertToPoint(newPos1), convertToPoint(goal.pos)) < 0.00025) {
+					System.out.println("Collect from station");
+					moveDrone(minDir, goal);
+					updateStation(goal);
+					setCurrentPos(newPos1);
+					goodStations.remove(goal);
+				} else if (isTrapped()) {
+					System.out.print("Move randomly but avoid bad stations");
+					minDir = avoidBadStations(badDirectionsInRange);
+					Position newPos = this.currentPos.nextPosition(minDir);
+					moveDroneRandomly(minDir);
+					setCurrentPos(newPos);
+
+				} else {
+					System.out.println("move closer to goal station");
+					moveDroneRandomly(minDir);
+					setCurrentPos(newPos1);
+				}
 
 			} else {
-				System.out.print("ERROR: stuuuuuuuck");
-				Direction minDir = avoidBadStations(badDirectionsInRange);
+				System.out.print("Move randomly but avoid bad stations");
+				minDir = avoidBadStations(badDirectionsInRange);
+				Position newPos = this.currentPos.nextPosition(minDir);
+				moveDroneRandomly(minDir);
+				setCurrentPos(newPos);
+			}
+
+		} else {
+			if (visitLater.size() == 1) {
+
+				goal = visitLater.get(0);
+			} else {
+				distanceOfGoodStations = getSortedDistances(distanceOfGoodStations, visitLater);
+				goal = (ChargingStation) distanceOfGoodStations.keySet().toArray()[0];
+
+			}
+
+			Direction minDir = findMinDirection(badStationsInRange, goal);
+
+			Position newPos1 = this.currentPos.nextPosition(minDir);
+
+			if (newPos1.inPlayArea()) {
+
+				if (getRange(convertToPoint(newPos1), convertToPoint(goal.pos)) < 0.00025) {
+					System.out.println("Collect from station");
+					moveDrone(minDir, goal);
+					updateStation(goal);
+					setCurrentPos(newPos1);
+					visitLater.remove(goal);
+
+				} else if (isTrapped()) {
+					System.out.print("Move randomly but avoid bad stations");
+					minDir = avoidBadStations(badDirectionsInRange);
+					Position newPos = this.currentPos.nextPosition(minDir);
+					moveDroneRandomly(minDir);
+					setCurrentPos(newPos);
+
+				} else {
+					System.out.println("move closer to goal station");
+					moveDroneRandomly(minDir);
+					setCurrentPos(newPos1);
+				}
+
+			} else {
+				System.out.print("Move randomly but avoid bad stations");
+				minDir = avoidBadStations(badDirectionsInRange);
 				Position newPos = this.currentPos.nextPosition(minDir);
 				moveDroneRandomly(minDir);
 				setCurrentPos(newPos);
 
 			}
 		}
+
 	}
 
 	/**
-	 * Return a direction to try get out of a dead end, where the drone goes back
-	 * and forth. It looks for repeated positions/directions in the history
-	 * arraylist already made by drone.
+	 * Checks if drone is ending up in the same position previously
 	 * 
-	 * @param minDir
-	 *            a direction the drone is taking with minimum distance to nearest
-	 *            charging station
-	 * @param newPos
-	 *            a new position when moved in direction
-	 * @param goal
-	 *            a charging station the drone is trying to get to
-	 * @param badStationsInRange
-	 *            a hashmap of negatively charged charging station within range
-	 * @param visitLater
-	 *            a list of charging stations to be visited later due to it being
-	 *            difficult to get
-	 * @param goodStations
-	 *            a list of positively charged charging station
-	 * @return minDir a direction to get out loop
+	 * @return boolean
 	 */
-	private Direction getOutOfLoop(Direction minDir, Position newPos, ChargingStation goal,
-			ArrayList<Direction> badDirectionsInRange, ArrayList<ChargingStation> visitLater,
-			ArrayList<ChargingStation> goodStations) {
+	private boolean isTrapped() {
+		return (movesHistory.size() > 5
+				&& movesHistory.get(movesHistory.size() - 2).equals(movesHistory.get(movesHistory.size() - 4)));
+	}
 
-		int len = directionHistory.size();
-		if (directionHistory.get(len - 2).equals(minDir)
-				&& movesHistory.get(len - 2).equals(movesHistory.get(len - 4))) {
-			visitLater.add(goal);
-			goodStations.remove(goal);
-			System.out.print("If goal station on/near bad station!!!!");
-			// maybe change goal (in approach & visitlater)
-			// changeGoal(goodStations, badDirectionsInRange, distanceOfGoodStations,
-			// badStationsInRange, visitLater);
-
-			minDir = avoidBadStations(badDirectionsInRange);
-			newPos = this.currentPos.nextPosition(minDir);
-			while (!newPos.inPlayArea()) {
-				minDir = avoidBadStations(badDirectionsInRange);
-				newPos = this.currentPos.nextPosition(minDir);
-			}
-		}
-
-		return minDir;
-
+	/**
+	 * Checks if there are still any available good stations to charge from.
+	 * 
+	 * @param goodStations ArrayList<ChargingStation>goodStations
+	 * @param visitLater   ArrayList<ChargingStation>goodStations
+	 * @return boolean
+	 */
+	private boolean availableGoodStations(ArrayList<ChargingStation> goodStations,
+			ArrayList<ChargingStation> visitLater) {
+		return (visitLater.size() > 0 || goodStations.size() > 0);
 	}
 
 	/**
 	 * Gets the direction with the closest distance to goal charging station.
 	 * 
-	 * @param badStationsInRange
-	 *            a hashmap of negatively charged charging station within range
-	 * @param goal
-	 *            a charging station the drone is trying to get to
+	 * @param badStationsInRange a hashmap of negatively charged charging station
+	 *                           within range
+	 * @param goal               a charging station the drone is trying to get to
 	 * @return minDir the directin with the smallest range from the goal charging
 	 *         station
 	 */
@@ -385,11 +408,9 @@ public class StatefulDrone extends Drone {
 			if (dist < distance) {
 				System.out.print(d);
 				System.out.print("+");
-
 				distance = dist;
 				minDir = d;
 			}
-
 		}
 		return minDir;
 	}
@@ -397,11 +418,10 @@ public class StatefulDrone extends Drone {
 	/**
 	 * Gets and sorts distance of nearby good/bad stations in ascending order.
 	 * 
-	 * @param distanceOfStations
-	 *            a hashmap of positively/negatively charged charging station with
-	 *            their distances
-	 * @param theStations
-	 *            a list of positively/negatively charged charging station
+	 * @param distanceOfStations a hashmap of positively/negatively charged charging
+	 *                           station with their distances
+	 * @param theStations        a list of positively/negatively charged charging
+	 *                           station
 	 * @return temp a hashmap of sorted charging stations and their distances.
 	 */
 	private HashMap<ChargingStation, Double> getSortedDistances(HashMap<ChargingStation, Double> distanceOfStations,

@@ -3,7 +3,8 @@ package uk.ac.ed.inf.powergrab;
 import java.util.HashMap;
 
 /**
- * Represents a position
+ * This class represents a position and stores the latitude and longitude of the
+ * position.
  * 
  * @author Jenny
  *
@@ -16,10 +17,8 @@ public class Position {
 	/**
 	 * Represents the latitude and longitude of the position
 	 * 
-	 * @param latitude
-	 *            : Double
-	 * @param longitude
-	 *            : Double
+	 * @param latitude  : Double
+	 * @param longitude : Double
 	 */
 	protected Position(double latitude, double longitude) {
 		this.latitude = latitude;
@@ -29,8 +28,7 @@ public class Position {
 	/**
 	 * Gets the latitude of the position
 	 * 
-	 * @param position
-	 *            a Position
+	 * @param position a Position
 	 * @return this.Latitude a Double
 	 */
 	protected double getLatitude(Position position) {
@@ -40,8 +38,7 @@ public class Position {
 	/**
 	 * Gets the longitude of the position
 	 * 
-	 * @param position
-	 *            a Position
+	 * @param position a Position
 	 * @return this.longitude a Double
 	 */
 	protected double getLongitude(Position position) {
@@ -74,8 +71,7 @@ public class Position {
 	/**
 	 * This method gets the degrees from the hashmap created.
 	 * 
-	 * @param Direction
-	 *            a direction from the 16 directinos in Direction class
+	 * @param Direction a direction from the 16 directinos in Direction class
 	 * @return degree a hashmap of sorted charging stations and their distances.
 	 */
 	protected double getDegree(Direction direction) {
@@ -111,8 +107,7 @@ public class Position {
 	 * compass direction. It adds values to the latitude and longitude of the
 	 * current position
 	 * 
-	 * @param Direction
-	 *            a direction from the 16 directinos in Direction class
+	 * @param Direction a direction from the 16 directinos in Direction class
 	 * @return nextPos a position when moved in a direction
 	 */
 	protected Position nextPosition(Direction direction) {
