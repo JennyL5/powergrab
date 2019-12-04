@@ -230,24 +230,6 @@ abstract public class Drone {
 	}
 
 	/**
-	 * Generates a list of possible directions the drone can take, in which its next
-	 * position will not be within the range negatively charged stations.
-	 * 
-	 * @param badDirection an arraylist of direction that are bad
-	 * @return notBadDirections an arraylist of direction absent from given list
-	 */
-	protected ArrayList<Direction> avoidBadDirection(ArrayList<Direction> badDirection) {
-		ArrayList<Direction> notBadDirections = new ArrayList<Direction>();
-		System.out.println(badDirection.size());
-		for (Direction d : Direction.values()) {
-			if (!badDirection.contains(d)) {
-				notBadDirections.add(d);
-			}
-		}
-		return notBadDirections;
-	}
-
-	/**
 	 * Returns a random direction for the drone and avoids the bad directions. It
 	 * also ensures that the new position is within the range.
 	 *
@@ -267,6 +249,24 @@ abstract public class Drone {
 	}
 
 	/**
+	 * Generates a list of possible directions the drone can take, in which its next
+	 * position will not be within the range negatively charged stations.
+	 * 
+	 * @param badDirection an arraylist of direction that are bad
+	 * @return notBadDirections an arraylist of direction absent from given list
+	 */
+	protected ArrayList<Direction> avoidBadDirection(ArrayList<Direction> badDirection) {
+		ArrayList<Direction> notBadDirections = new ArrayList<Direction>();
+		System.out.println(badDirection.size());
+		for (Direction d : Direction.values()) {
+			if (!badDirection.contains(d)) {
+				notBadDirections.add(d);
+			}
+		}
+		return notBadDirections;
+	}
+
+	/**
 	 * Updates the power and coins of the charging station
 	 * 
 	 * @param goal a charging station
@@ -276,7 +276,7 @@ abstract public class Drone {
 			if (CS.pos.equals(goal.pos)) {
 				if (CS.getCoins() > 0) {
 
-					System.out.println("-----Charging Station: ");
+					System.out.println("----- PositiveCharging Station: ");
 					System.out.println("coins: ");
 					System.out.println(CS.getCoins());
 					CS.setCoins(0.0);
@@ -284,7 +284,7 @@ abstract public class Drone {
 					System.out.println(CS.getCoins());
 				} else {
 					// CS.power is negative
-					System.out.println("-----Charging Station: ");
+					System.out.println("-----Negative Charging Station: ");
 					System.out.println("coins: ");
 					System.out.println(CS.getCoins());
 					CS.setCoins(0.0);
@@ -303,8 +303,8 @@ abstract public class Drone {
 
 					System.out.println("power: ");
 					System.out.println(CS.getPower());
-					// CS.setPower(CS.power-this.power);
-					CS.setPower(0.0);
+					CS.setPower(CS.power - this.power);
+					// CS.setPower(0.0);
 
 					System.out.println("power: ");
 					System.out.println(CS.getPower());
@@ -363,6 +363,30 @@ abstract public class Drone {
 		System.out.println("coins: ");
 		System.out.println(this.coins);
 		updateDrone(d);
+	}
+
+	protected void allDirectionsBad(ArrayList<Direction> badDirections,
+			HashMap<Direction, ChargingStation> badStationsInRange,
+			HashMap<Direction, ChargingStation> goodStationsInRange) {
+
+		try {
+			System.out.print("all directions are bad");
+			Direction maxCoinDirection = findMaxCoins(badDirections, badStationsInRange);
+			ChargingStation sta = goodStationsInRange.get(maxCoinDirection);
+			Position newPos = this.currentPos.nextPosition(maxCoinDirection);
+			while (!newPos.inPlayArea()) {
+				badDirections.remove(maxCoinDirection);
+				maxCoinDirection = findMaxCoins(badDirections, badStationsInRange);
+				sta = goodStationsInRange.get(maxCoinDirection);
+				newPos = this.currentPos.nextPosition(maxCoinDirection);
+			}
+			moveDrone(maxCoinDirection, sta);
+			updateStation(sta);
+			setCurrentPos(newPos);
+		} catch (IOException e) {
+			System.out.print(e);
+		}
+
 	}
 
 	/**

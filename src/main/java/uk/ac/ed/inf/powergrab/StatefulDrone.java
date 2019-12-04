@@ -82,6 +82,7 @@ public class StatefulDrone extends Drone {
 		}
 
 		ArrayList<Direction> badDirectionsInRange = new ArrayList<Direction>(badStationsInRange.keySet());
+		ArrayList<Direction> avoidBadDirections = avoidBadDirection(badDirectionsInRange);
 
 		System.out.println("Good stations");
 		System.out.println(goodStations.size());
@@ -100,12 +101,16 @@ public class StatefulDrone extends Drone {
 			System.out.println("move the drone");
 			Position newPos = this.currentPos.nextPosition(minDir);
 
-			if (newPos.inPlayArea()) {
+			if (newPos.inPlayArea() && avoidBadDirections.contains(minDir) && goal.coins > 0) {
 				System.out.println("approach station");
 				approachStation(newPos, goal, minDir, goodStations, badDirectionsInRange, distanceOfGoodStations,
 						badStationsInRange, visitLater);
 			} else if ((isTrapped() && availableGoodStations(goodStations, visitLater))) {
+				goodStations.remove(goal);
+				visitLater.add(goal);
 				changeGoal(goodStations, badDirectionsInRange, distanceOfGoodStations, badStationsInRange, visitLater);
+			} else if (badDirectionsInRange.size() == 16) {
+				allDirectionsBad(badDirectionsInRange, badStationsInRange, goodStationsInRange);
 			} else {
 				System.out.print("no new goal move random");
 				Direction randomDir = avoidBadStations(badDirectionsInRange);
@@ -140,6 +145,7 @@ public class StatefulDrone extends Drone {
 			HashMap<Direction, ChargingStation> badStationsInRange,
 			HashMap<Direction, ChargingStation> goodStationsInRange, ArrayList<ChargingStation> visitLater)
 			throws IOException {
+		ArrayList<Direction> avoidBadDirections = avoidBadDirection(badDirectionsInRange);
 
 		if (visitLater.size() != 0) {
 			System.out.println("no more good stations to go, to so check visitLater");
@@ -161,7 +167,7 @@ public class StatefulDrone extends Drone {
 
 			Position newPos = this.currentPos.nextPosition(minDir);
 
-			if (newPos.inPlayArea()) {
+			if (newPos.inPlayArea() && avoidBadDirections.contains(minDir) && goal.coins > 0) {
 				System.out.println("approaching station");
 				if (getRange(convertToPoint(newPos), convertToPoint(goal.pos)) < 0.00025) {
 					visitLater.remove(goal);
@@ -169,7 +175,7 @@ public class StatefulDrone extends Drone {
 					moveDrone(minDir, goal);
 					updateStation(goal);
 					setCurrentPos(newPos);
-				} else if (isTrapped() && availableGoodStations(goodStations, visitLater)) {
+				} else if (isTrapped()) {
 					changeGoal(goodStations, badDirectionsInRange, distanceOfGoodStations, badStationsInRange,
 							visitLater);
 				} else {
@@ -180,9 +186,7 @@ public class StatefulDrone extends Drone {
 				}
 			} else {
 				System.out.println("outside area, check if trapped, remove original goal, set new goal");
-				if ((isTrapped() && availableGoodStations(goodStations, visitLater))) {
-					goodStations.remove(goal);
-					visitLater.add(goal);
+				if ((isTrapped())) {
 					changeGoal(goodStations, badDirectionsInRange, distanceOfGoodStations, badStationsInRange,
 							visitLater);
 				} else {
@@ -272,6 +276,7 @@ public class StatefulDrone extends Drone {
 			HashMap<ChargingStation, Double> distanceOfGoodStations,
 			HashMap<Direction, ChargingStation> badStationsInRange, ArrayList<ChargingStation> visitLater)
 			throws IOException {
+		ArrayList<Direction> avoidBadDirections = avoidBadDirection(badDirectionsInRange);
 
 		distanceOfGoodStations.clear();
 		ChargingStation goal = null;
@@ -289,7 +294,7 @@ public class StatefulDrone extends Drone {
 
 			Position newPos1 = this.currentPos.nextPosition(minDir);
 
-			if (newPos1.inPlayArea()) {
+			if (newPos1.inPlayArea() && avoidBadDirections.contains(minDir) && goal.coins > 0) {
 
 				if (getRange(convertToPoint(newPos1), convertToPoint(goal.pos)) < 0.00025) {
 					System.out.println("Collect from station");
@@ -332,7 +337,7 @@ public class StatefulDrone extends Drone {
 
 			Position newPos1 = this.currentPos.nextPosition(minDir);
 
-			if (newPos1.inPlayArea()) {
+			if (newPos1.inPlayArea() && avoidBadDirections.contains(minDir) && goal.coins > 0) {
 
 				if (getRange(convertToPoint(newPos1), convertToPoint(goal.pos)) < 0.00025) {
 					System.out.println("Collect from station");
@@ -373,7 +378,8 @@ public class StatefulDrone extends Drone {
 	 */
 	private boolean isTrapped() {
 		return (movesHistory.size() > 5
-				&& movesHistory.get(movesHistory.size() - 2).equals(movesHistory.get(movesHistory.size() - 4)));
+				&& movesHistory.get(movesHistory.size() - 2).equals(movesHistory.get(movesHistory.size() - 4))
+				&& movesHistory.get(movesHistory.size() - 1).equals(movesHistory.get(movesHistory.size() - 3)));
 	}
 
 	/**

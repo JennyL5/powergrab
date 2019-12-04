@@ -10,7 +10,7 @@ import java.util.List;
  * (Drone), and also has methods which is unique to the stateless drone class,
  * and cannot be accessed from the stateful drone class.
  * 
- * @author Jenny
+ * @author s1705544
  *
  */
 public class StatelessDrone extends Drone {
@@ -45,43 +45,13 @@ public class StatelessDrone extends Drone {
 	}
 
 	/**
-	 * Runs function if the drone's next move is outside the play area. This
-	 * generates a random direction from the list of directions that a good, and
-	 * moves towards that random direction generated. If there are no good
-	 * directions the drone will need to go towards a bad direction. And sets the
-	 * new position of the drone.
-	 * 
-	 * @param goodDirection an arraylist of direction that are positively charged
-	 * @param badDirection  an arraylist of direction that are negatively charged
-	 */
-	private void outsideArea(ArrayList<Direction> goodDirections, ArrayList<Direction> badDirections) {
-		System.out.print("Direction point outside play area");
-		Direction randomDir = randDirection(goodDirections);
-		Position newPos = this.currentPos.nextPosition(randomDir);
-		int c = 0;
-		while (!newPos.inPlayArea()) {
-			c++;
-			if (c < 16) {
-				randomDir = randDirection(goodDirections);
-				newPos = this.currentPos.nextPosition(randomDir);
-			} else {
-				while (!newPos.inPlayArea()) {
-					System.out.print("Just go through");
-					randomDir = randDirection(badDirections);
-					newPos = this.currentPos.nextPosition(randomDir);
-				}
-			}
-		}
-		moveDroneRandomly(randomDir);
-		setCurrentPos(newPos);
-	}
-
-	/**
 	 * Controls the strategy of the drone. Finds the good and bad stations that are
 	 * within range of the drone's current position, and gets their directions.
-	 * Tries to find from the good charging station within range, the one with the
-	 * maximum coins, and performs move if that move is within play area. Else it
-	 * will pick a random direction to move in.
+	 * Tries to find from the good charging station within range the one with the
+	 * maximum coins which also avoids the bad charging stations within range, and
+	 * performs move if that move is within play area, if the drone is surrounded by
+	 * bad stations, then it will pick the station with max coins. Else it will pick
+	 * a random direction to move in.
 	 * 
 	 */
 	private void strategy() throws IOException {
@@ -119,19 +89,7 @@ public class StatelessDrone extends Drone {
 				setCurrentPos(newPos);
 			}
 		} else if (badDirections.size() == 16) {
-			System.out.print("all directions are bad");
-			maxCoinDirection = findMaxCoins(badDirections, badStationsInRange);
-			sta = goodStationsInRange.get(maxCoinDirection);
-			Position newPos = this.currentPos.nextPosition(maxCoinDirection);
-			while (!newPos.inPlayArea()) {
-				badDirections.remove(maxCoinDirection);
-				maxCoinDirection = findMaxCoins(badDirections, badStationsInRange);
-				sta = goodStationsInRange.get(maxCoinDirection);
-				newPos = this.currentPos.nextPosition(maxCoinDirection);
-			}
-			moveDrone(maxCoinDirection, sta);
-			updateStation(sta);
-			setCurrentPos(newPos);
+			allDirectionsBad(badDirections, badStationsInRange, goodStationsInRange);
 		} else {
 			Direction randomDir = avoidBadStations(badDirections);
 			moveDroneRandomly(randomDir);
