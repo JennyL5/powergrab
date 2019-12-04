@@ -6,7 +6,7 @@ import java.util.HashMap;
  * This class represents a position and stores the latitude and longitude of the
  * position.
  * 
- * @author Jenny
+ * @author s1705544
  *
  */
 public class Position {

@@ -59,10 +59,12 @@ public class StatefulDrone extends Drone {
 	 * for storing goodStations and badStations nearby, to find their distances and
 	 * sort them in an ascending order to find minimum distance. The drone will try
 	 * get to the closest charging station, and will charge if in range, else either
-	 * move closer or change goal or move randomly.
+	 * move closer or change goal or move randomly. It ensures that the best
+	 * position to move in will not be in a direction of a negative charging
+	 * station.
 	 * 
 	 * @param goodStations a list of positively charged charging station
-	 * @param baddStations a list of negatively charged charging station
+	 * @param badStations  a list of negatively charged charging station
 	 * @param visitLater   a list of charging stations to be visited later due to it
 	 *                     being difficult to get
 	 * @throws IOException
@@ -126,7 +128,9 @@ public class StatefulDrone extends Drone {
 	 * checkVisitLater) and tries to charge from them, by sorting the visitLater
 	 * list distances in an ascending order to find minimum distance. The drone will
 	 * try get to the closest charging station, and will charge if in range, else
-	 * either move closer or change goal or move randomly.
+	 * either move closer or change goal or move randomly. It ensures that the best
+	 * position to move in will not be in a direction of a negative charging
+	 * station.
 	 * 
 	 * @param goodStations           a list of positively charged charging station
 	 * @param badDirectionsInRange   a list of directions for positively charged
@@ -259,7 +263,9 @@ public class StatefulDrone extends Drone {
 	 * 
 	 * This function is called when the next position of move is out of play area or
 	 * if the drone is trapped and will set a new charging station as goal using the
-	 * goodStations first then checking visitLater list.
+	 * goodStations first then checking visitLater list. It ensures that the best
+	 * position to move in will not be in a direction of a negative charging
+	 * station.
 	 * 
 	 * @param goodStations           a list of positively charged charging station
 	 * @param badDirectionsInRange   a list of directions for positively charged

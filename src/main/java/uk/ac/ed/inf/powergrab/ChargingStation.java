@@ -5,7 +5,7 @@ package uk.ac.ed.inf.powergrab;
  * the charging stations faster. This convenience allows the rendered Geo-JSON
  * features to be accessed more conveniently.
  * 
- * @author Jenny
+ * @author s1705544
  *
  */
 public class ChargingStation {

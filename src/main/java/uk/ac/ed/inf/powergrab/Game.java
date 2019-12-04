@@ -19,7 +19,7 @@ import com.mapbox.geojson.Point;
  * This class represents the game, and gets the map, writes to file and prepare
  * JSON file when the game has not yet started or has ended.
  * 
- * @author Jenny
+ * @author s1705544
  *
  */
 public class Game {

@@ -13,7 +13,7 @@ import com.mapbox.geojson.Point;
  * This class represents the drone and is the super-class, where it has all the
  * methods and function in which the stateless and stateful drone can inherit.
  * 
- * @author Jenny
+ * @author s1705544
  *
  */
 abstract public class Drone {
@@ -304,8 +304,6 @@ abstract public class Drone {
 					System.out.println("power: ");
 					System.out.println(CS.getPower());
 					CS.setPower(CS.power - this.power);
-					// CS.setPower(0.0);
-
 					System.out.println("power: ");
 					System.out.println(CS.getPower());
 
@@ -365,6 +363,17 @@ abstract public class Drone {
 		updateDrone(d);
 	}
 
+	/**
+	 * Function for when all directions are bad. The drone will find go to the
+	 * direction with the maximum amount of coins, and move to that as last option
+	 * 
+	 * @param badDirections       an arraylist of directions with bad charging
+	 *                            stations near by
+	 * @param badStationsInRange  a HashMap of Charging Stations and Directions that
+	 *                            are negative
+	 * @param goodStationsInRange a HashMap of Charging Stations and Directions that
+	 *                            are positve
+	 */
 	protected void allDirectionsBad(ArrayList<Direction> badDirections,
 			HashMap<Direction, ChargingStation> badStationsInRange,
 			HashMap<Direction, ChargingStation> goodStationsInRange) {

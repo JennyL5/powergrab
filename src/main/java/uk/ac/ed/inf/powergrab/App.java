@@ -12,7 +12,7 @@ import com.mapbox.geojson.Point;
  * Represents an App. This is the main class which calls the methods from the
  * other classes.
  * 
- * @author Jenny
+ * @author s1705544
  *
  */
 public class App {
