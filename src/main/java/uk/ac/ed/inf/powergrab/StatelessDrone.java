@@ -96,6 +96,7 @@ public class StatelessDrone extends Drone {
 
 		ArrayList<Direction> goodDirections = new ArrayList<Direction>(goodStationsInRange.keySet());
 		ArrayList<Direction> badDirections = new ArrayList<Direction>(badStationsInRange.keySet());
+		ArrayList<Direction> avoidBadDirections = avoidBadDirection(badDirections);
 
 		Direction maxCoinDirection = null;
 		ChargingStation sta = null;
@@ -104,7 +105,7 @@ public class StatelessDrone extends Drone {
 			sta = goodStationsInRange.get(maxCoinDirection);
 		}
 
-		if (!goodDirections.isEmpty() && sta.getCoins() > 0) {
+		if (!goodDirections.isEmpty() && sta.getCoins() > 0 && avoidBadDirections.contains(maxCoinDirection)) {
 			Position newPos = this.currentPos.nextPosition(maxCoinDirection);
 			if (newPos.inPlayArea()) {
 				System.out.println("move to closest good station");
@@ -112,9 +113,25 @@ public class StatelessDrone extends Drone {
 				updateStation(sta);
 				setCurrentPos(newPos);
 			} else {
-				outsideArea(goodDirections, badDirections);
+				Direction randomDir = avoidBadStations(badDirections);
+				moveDroneRandomly(randomDir);
+				newPos = this.currentPos.nextPosition(randomDir);
+				setCurrentPos(newPos);
 			}
-
+		} else if (badDirections.size() == 16) {
+			System.out.print("all directions are bad");
+			maxCoinDirection = findMaxCoins(badDirections, badStationsInRange);
+			sta = goodStationsInRange.get(maxCoinDirection);
+			Position newPos = this.currentPos.nextPosition(maxCoinDirection);
+			while (!newPos.inPlayArea()) {
+				badDirections.remove(maxCoinDirection);
+				maxCoinDirection = findMaxCoins(badDirections, badStationsInRange);
+				sta = goodStationsInRange.get(maxCoinDirection);
+				newPos = this.currentPos.nextPosition(maxCoinDirection);
+			}
+			moveDrone(maxCoinDirection, sta);
+			updateStation(sta);
+			setCurrentPos(newPos);
 		} else {
 			Direction randomDir = avoidBadStations(badDirections);
 			moveDroneRandomly(randomDir);
